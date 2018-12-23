@@ -11,31 +11,36 @@ namespace ArekX\PQL;
 
 class Mapper
 {
-    /** @var QueryableOwnerInterface */
+    /** @var SelectableOwnerInterface */
     protected $owner;
 
-    public function __construct(QueryableOwnerInterface $owner = null)
+    public function __construct(SelectableOwnerInterface $owner = null)
     {
         $this->owner = $owner;
     }
 
-    public static function from(QueryableOwnerInterface $owner = null)
+    public static function from(SelectableOwnerInterface $owner = null)
     {
         return new static($owner);
     }
 
-    public function toList($key, $value): QueryableOwnerInterface
+    public function then(): SelectableOwnerInterface
     {
         return $this->owner;
     }
 
-    public function indexedBy($key): QueryableOwnerInterface
+    public function toList($key, $value): Mapper
     {
-        return $this->owner;
+        return $this;
     }
 
-    public function to($callback): QueryableOwnerInterface
+    public function indexedBy($key): Mapper
     {
-        return $this->owner;
+        return $this;
+    }
+
+    public function to($callback): Mapper
+    {
+        return $this;
     }
 }

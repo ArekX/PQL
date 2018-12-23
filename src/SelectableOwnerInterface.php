@@ -11,11 +11,13 @@ namespace ArekX\PQL;
 
 use ArekX\PQL\DataSources\DataSourceInterface;
 
-interface QueryableOwnerInterface
+interface SelectableOwnerInterface
 {
     public function order(): Order;
 
     public function map(): Mapper;
+
+    public function reduce(): Reducer;
 
     public function fromSource(): DataSourceInterface;
 }

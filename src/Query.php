@@ -11,7 +11,7 @@ namespace ArekX\PQL;
 
 use ArekX\PQL\DataSources\DataSourceInterface;
 
-class Query implements QueryableOwnerInterface
+class Query implements SelectableOwnerInterface
 {
     /** @var Filter */
     public $filter;
@@ -58,6 +58,15 @@ class Query implements QueryableOwnerInterface
     }
 
     public function map(): Mapper
+    {
+        if ($this->mapper) {
+            return $this->mapper;
+        }
+
+        return $this->mapper = Mapper::from($this);
+    }
+
+    public function reduce(): Mapper
     {
         if ($this->mapper) {
             return $this->mapper;

@@ -18,15 +18,15 @@ class Filter
     /** @var OperatorInterface[] */
     protected $list = [];
 
-    /** @var QueryableOwnerInterface */
+    /** @var SelectableOwnerInterface */
     protected $owner;
 
-    public static function from(?QueryableOwnerInterface $owner = null, ?array $definition = null)
+    public static function from(?SelectableOwnerInterface $owner = null, ?array $definition = null)
     {
         return new static($owner, $definition);
     }
 
-    public function __construct(?QueryableOwnerInterface $owner = null, ?array $definition = null)
+    public function __construct(?SelectableOwnerInterface $owner = null, ?array $definition = null)
     {
         $this->owner = $owner;
 
@@ -35,7 +35,7 @@ class Filter
         }
     }
 
-    public function then(): QueryableOwnerInterface
+    public function then(): SelectableOwnerInterface
     {
         return $this->owner;
     }

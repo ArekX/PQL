@@ -43,12 +43,12 @@ class OperatorAndTest extends \PHPUnit\Framework\TestCase
             ->then()
                 ->order()->ascBy("name")
             ->then()
-            ->map()->toList('name', 'a.b')
-            ->fromSource()
-            ->getResults();
-
-
-
+                ->map()->toList('name', 'a.b')
+            ->then()
+                ->reduce()->toSum()
+            ->then()
+                ->fromSource()->getResults();
+        
         print_r($filter->extractDefinitions()); die;
     }
 

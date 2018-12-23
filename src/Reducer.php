@@ -9,7 +9,7 @@
 namespace ArekX\PQL;
 
 
-class Order
+class Reducer
 {
     /** @var SelectableOwnerInterface */
     protected $owner;
@@ -29,13 +29,34 @@ class Order
         return $this->owner;
     }
 
-    public function ascBy($value): Order
+    public function toCount(): Reducer
     {
         return $this;
     }
 
-    public function descBy($value): Order
+    public function toSum(): Reducer
     {
+        return $this;
+    }
+
+    public function toAverage(): Reducer
+    {
+        return $this;
+    }
+
+    public function toMaxValue(): Reducer
+    {
+        return $this;
+    }
+
+    public function toMinValue(): Reducer
+    {
+        return $this;
+    }
+
+    public function to($callback, $initial = null): Reducer
+    {
+
         return $this;
     }
 }
