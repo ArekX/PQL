@@ -9,7 +9,7 @@
 namespace ArekX\PQL\Values;
 
 
-class Raw implements ValueInterface
+class Raw implements ValueInterface, ValueParametersInterface
 {
     public $value;
 
@@ -21,7 +21,7 @@ class Raw implements ValueInterface
         $this->params = $params;
     }
 
-    public static function wrap($value, $params = []): ValueInterface
+    public static function wrap($value, $params = []): Raw
     {
         return new static($value, $params);
     }

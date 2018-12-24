@@ -9,8 +9,9 @@
 namespace ArekX\PQL\DataSources;
 
 use ArekX\PQL\Query;
+use ArekX\PQL\Values\ValueInterface;
 
-class ListSource implements DataSourceInterface
+class ListSource implements DataSourceInterface, ValueInterface
 {
     protected $dataSource = [];
 
@@ -29,20 +30,36 @@ class ListSource implements DataSourceInterface
 
     public function select($names) : Query
     {
-        if ($this->query) {
-            return $this->query;
+        if (!is_array($names)) {
+            $names = [$names];
         }
 
         return $this->query = Query::from($names, $this);
     }
 
-    public function query(Query $query)
+    public function query(?Query $query = null): Query
     {
-        $this->query = $query;
+        if ($query === null) {
+            return $this->query;
+        }
+
+        $query->dataSource = $this;
+
+        return $this->query = $query;
     }
 
     public function getResults()
     {
         // TODO: Implement results() method.
+    }
+
+    /**
+     * Extracts value from interface.
+     *
+     * @return mixed
+     */
+    public function extractValue()
+    {
+        // TODO: Implement extractValue() method.
     }
 }

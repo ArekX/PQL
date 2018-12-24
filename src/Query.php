@@ -25,6 +25,9 @@ class Query implements SelectableOwnerInterface
     /** @var Mapper */
     public $mapper;
 
+    /** @var Reducer */
+    public $reducer;
+
     /** @var DataSourceInterface */
     public $dataSource;
 
@@ -66,13 +69,13 @@ class Query implements SelectableOwnerInterface
         return $this->mapper = Mapper::from($this);
     }
 
-    public function reduce(): Mapper
+    public function reduce(): Reducer
     {
-        if ($this->mapper) {
-            return $this->mapper;
+        if ($this->reducer) {
+            return $this->reducer;
         }
 
-        return $this->mapper = Mapper::from($this);
+        return $this->reducer = Reducer::from($this);
     }
 
     public function fromSource(): DataSourceInterface

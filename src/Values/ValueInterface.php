@@ -11,12 +11,6 @@ namespace ArekX\PQL\Values;
 
 interface ValueInterface
 {
-    public static function wrap($value, $params = []): ValueInterface;
-
-    public function withParam($param, $value): ValueInterface;
-
-    public function withParams($params): ValueInterface;
-
     /**
      * Extracts value from interface.
      *
@@ -24,11 +18,4 @@ interface ValueInterface
      */
     public function extractValue();
 
-
-    /**
-     * Returns bound params to this value.
-     *
-     * @return mixed
-     */
-    public function extractParams();
 }

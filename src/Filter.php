@@ -12,6 +12,7 @@ use ArekX\PQL\Operators\BinaryOperatorInterface;
 use ArekX\PQL\Operators\BinaryOperator;
 use ArekX\PQL\Operators\OperatorGroup;
 use ArekX\PQL\Operators\OperatorInterface;
+use ArekX\PQL\Values\ValueInterface;
 
 class Filter
 {

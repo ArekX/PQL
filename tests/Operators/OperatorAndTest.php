@@ -40,6 +40,7 @@ class OperatorAndTest extends \PHPUnit\Framework\TestCase
                 ->and(["test_id", 2])->glue()
                 ->or("retries")->lt(4)
                 ->and("name")->find("Test", BinaryOperator::SEARCH_USER)
+                ->and("name")->eq(ListSource::from([])->select("name"))
             ->then()
                 ->order()->ascBy("name")
             ->then()
@@ -47,9 +48,9 @@ class OperatorAndTest extends \PHPUnit\Framework\TestCase
             ->then()
                 ->reduce()->toSum()
             ->then()
-                ->fromSource()->getResults();
-        
-        print_r($filter->extractDefinitions()); die;
+                ->fromSource();
+
+        print_r($query->query()->filter()->extractDefinitions()); die;
     }
 
 
