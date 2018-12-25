@@ -19,5 +19,7 @@ interface SelectableOwnerInterface
 
     public function reduce(): Reducer;
 
+    public function limit(): Limiter;
+
     public function fromSource(): DataSourceInterface;
 }

@@ -1,6 +1,7 @@
 <?php
 
 use ArekX\PQL\DataSources\ListSource;
+use ArekX\PQL\Instance;
 use ArekX\PQL\Operators\BinaryOperator;
 use ArekX\PQL\PQL;
 use ArekX\PQL\Values\Raw;
@@ -33,6 +34,9 @@ class OperatorAndTest extends \PHPUnit\Framework\TestCase
 
         ];
 
+        Instance::override(ListSource::class, function($list) {
+            return new \ArekX\PQL\DataSources\TranslateableSource();
+        });
 
         $query = ListSource::from($list)
             ->select(["name", "a.b"])
@@ -47,6 +51,8 @@ class OperatorAndTest extends \PHPUnit\Framework\TestCase
                 ->map()->toList('name', 'a.b')
             ->then()
                 ->reduce()->toSum()
+            ->then()
+                ->limit()->take(10)
             ->then()
                 ->fromSource();
 

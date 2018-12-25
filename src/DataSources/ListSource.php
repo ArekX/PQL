@@ -8,6 +8,7 @@
 
 namespace ArekX\PQL\DataSources;
 
+use ArekX\PQL\Instance;
 use ArekX\PQL\Query;
 use ArekX\PQL\Values\ValueInterface;
 
@@ -20,7 +21,7 @@ class ListSource implements DataSourceInterface, ValueInterface
 
     public static function from($dataSource): DataSourceInterface
     {
-        return new static($dataSource);
+        return Instance::ensure(static::class, [$dataSource]);
     }
 
     public function __construct($dataSource)

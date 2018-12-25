@@ -28,6 +28,9 @@ class Query implements SelectableOwnerInterface
     /** @var Reducer */
     public $reducer;
 
+    /** @var Limiter */
+    public $limiter;
+
     /** @var DataSourceInterface */
     public $dataSource;
 
@@ -39,7 +42,7 @@ class Query implements SelectableOwnerInterface
 
     public static function from(array $names, DataSourceInterface $dataSource = null)
     {
-        return new static($names, $dataSource);
+        return Instance::ensure(static::class, [$names, $dataSource]);
     }
 
     public function filter(): Filter
@@ -81,5 +84,14 @@ class Query implements SelectableOwnerInterface
     public function fromSource(): DataSourceInterface
     {
         return $this->dataSource;
+    }
+
+    public function limit(): Limiter
+    {
+        if ($this->limiter) {
+            return $this->limiter;
+        }
+
+        return $this->limiter = Limiter::as($this);
     }
 }

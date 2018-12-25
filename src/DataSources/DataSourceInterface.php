@@ -12,7 +12,6 @@ use ArekX\PQL\Query;
 
 interface DataSourceInterface
 {
-    public static function from($dataSource): DataSourceInterface;
     public function select($names) : Query;
     public function query(?Query $query = null): Query;
     public function getResults();

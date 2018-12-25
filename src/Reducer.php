@@ -21,7 +21,7 @@ class Reducer
 
     public static function from(SelectableOwnerInterface $owner = null)
     {
-        return new static($owner);
+        return Instance::ensure(static::class, [$owner]);
     }
 
     public function then(): SelectableOwnerInterface
@@ -56,7 +56,6 @@ class Reducer
 
     public function to($callback, $initial = null): Reducer
     {
-
         return $this;
     }
 }
