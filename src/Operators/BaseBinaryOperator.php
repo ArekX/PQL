@@ -10,7 +10,7 @@ namespace ArekX\PQL\Operators;
 
 use ArekX\PQL\Exceptions\InvalidForDefinition;
 use ArekX\PQL\Filter;
-use ArekX\PQL\Instance;
+use ArekX\PQL\Factory;
 use ArekX\PQL\Values\ValueInterface;
 
 abstract class BaseBinaryOperator extends BaseOperator implements BinaryOperatorInterface
@@ -49,7 +49,7 @@ abstract class BaseBinaryOperator extends BaseOperator implements BinaryOperator
      */
     public static function create(Filter $filter, $definition = null): OperatorInterface
     {
-        return Instance::ensure(static::class, [$filter, $definition]);
+        return Factory::matchClass(static::class, [$filter, $definition], self::class);
     }
 
     /**
@@ -60,7 +60,7 @@ abstract class BaseBinaryOperator extends BaseOperator implements BinaryOperator
     public static function fromDefinition(Filter $filter, array $definition): OperatorInterface
     {
         /** @var BaseBinaryOperator $op */
-        $op = Instance::ensure(static::class, [$filter, $definition]);
+        $op = Factory::matchClass(static::class, [$filter, $definition], self::class);
 
         [
             'operandA' => $op->operandA,

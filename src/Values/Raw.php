@@ -9,7 +9,7 @@
 namespace ArekX\PQL\Values;
 
 
-use ArekX\PQL\Instance;
+use ArekX\PQL\Factory;
 
 class Raw implements ValueInterface, ValueParametersInterface
 {
@@ -25,7 +25,7 @@ class Raw implements ValueInterface, ValueParametersInterface
 
     public static function wrap($value, $params = []): Raw
     {
-        return Instance::ensure(static::class, [$value, $params]);
+        return Factory::matchInterfaces(self::class, [$value, $params]);
     }
 
     public function withParam($param, $value): ValueInterface

@@ -24,7 +24,7 @@ class Filter
 
     public static function from(?SelectableOwnerInterface $owner = null, ?array $definition = null)
     {
-        return Instance::ensure(static::class, [$owner, $definition]);
+        return Factory::matchClass(self::class, [$owner, $definition]);
     }
 
     public function __construct(?SelectableOwnerInterface $owner = null, ?array $definition = null)

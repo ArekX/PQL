@@ -21,7 +21,7 @@ class Reducer
 
     public static function from(SelectableOwnerInterface $owner = null)
     {
-        return Instance::ensure(static::class, [$owner]);
+        return Factory::matchClass(self::class, [$owner]);
     }
 
     public function then(): SelectableOwnerInterface

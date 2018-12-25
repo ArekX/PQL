@@ -42,7 +42,7 @@ class Query implements SelectableOwnerInterface
 
     public static function from(array $names, DataSourceInterface $dataSource = null)
     {
-        return Instance::ensure(static::class, [$names, $dataSource]);
+        return Factory::matchClass(self::class, [$names, $dataSource]);
     }
 
     public function filter(): Filter
@@ -92,6 +92,6 @@ class Query implements SelectableOwnerInterface
             return $this->limiter;
         }
 
-        return $this->limiter = Limiter::as($this);
+        return $this->limiter = Limiter::create($this);
     }
 }

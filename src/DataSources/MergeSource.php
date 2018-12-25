@@ -8,7 +8,7 @@
 
 namespace ArekX\PQL\DataSources;
 
-use ArekX\PQL\Instance;
+use ArekX\PQL\Factory;
 use ArekX\PQL\Query;
 use ArekX\PQL\Values\ValueInterface;
 
@@ -21,7 +21,7 @@ class MergeSource implements DataSourceInterface, ValueInterface
 
     public static function from(...$dataSources): MergeSource
     {
-        return Instance::ensure(static::class, $dataSources);
+        return Factory::matchInterfaces(self::class, $dataSources);
     }
 
     public function __construct(...$dataSources)

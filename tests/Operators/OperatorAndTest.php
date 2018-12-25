@@ -1,7 +1,7 @@
 <?php
 
 use ArekX\PQL\DataSources\ListSource;
-use ArekX\PQL\Instance;
+use ArekX\PQL\Factory;
 use ArekX\PQL\Operators\BinaryOperator;
 use ArekX\PQL\PQL;
 use ArekX\PQL\Values\Raw;
@@ -34,7 +34,7 @@ class OperatorAndTest extends \PHPUnit\Framework\TestCase
 
         ];
 
-        Instance::override(ListSource::class, function($list) {
+        Factory::override(ListSource::class, function($list) {
             return new \ArekX\PQL\DataSources\TranslateableSource();
         });
 

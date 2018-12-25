@@ -10,7 +10,7 @@ namespace ArekX\PQL\Operators;
 
 use ArekX\PQL\Exceptions\InvalidForDefinition;
 use ArekX\PQL\Filter;
-use ArekX\PQL\Instance;
+use ArekX\PQL\Factory;
 
 abstract class BaseOperator implements OperatorInterface
 {
@@ -34,7 +34,7 @@ abstract class BaseOperator implements OperatorInterface
      */
     public static function create(Filter $filter, $definition = null): OperatorInterface
     {
-        return Instance::ensure(static::class, [$filter]);
+        return Factory::matchClass(static::class, [$filter], self::class);
     }
 
     /**
@@ -44,7 +44,7 @@ abstract class BaseOperator implements OperatorInterface
      */
     public static function fromDefinition(Filter $filter, array $definition): OperatorInterface
     {
-        return Instance::ensure(static::class, [$filter]);
+        return Factory::matchClass(static::class, [$filter], self::class);
     }
 
     /**

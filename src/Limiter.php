@@ -19,9 +19,9 @@ class Limiter
         $this->owner = $owner;
     }
 
-    public static function as(SelectableOwnerInterface $owner = null)
+    public static function create(SelectableOwnerInterface $owner = null)
     {
-        return Instance::ensure(static::class, [$owner]);
+        return Factory::matchClass(self::class, [$owner]);
     }
 
     public function then(): SelectableOwnerInterface

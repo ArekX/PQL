@@ -10,7 +10,7 @@ namespace ArekX\PQL;
 
 use ArekX\PQL\Exceptions\InvalidInstanceException;
 
-class Instance
+class Factory
 {
     protected static $map = [];
 
@@ -25,12 +25,29 @@ class Instance
         return new $class(...$params);
     }
 
-    public static function ensure($class, $params)
+    public static function matchClass($class, $params, $matchClass = null)
     {
         $instance = static::from($class, $params);
 
-        if (!($instance instanceof $class)) {
-            throw new InvalidInstanceException($instance, $class);
+        $matchClass = $matchClass ?: $class;
+
+        if (!($instance instanceof $matchClass)) {
+            throw new InvalidInstanceException($instance, $matchClass);
+        }
+
+        return $instance;
+    }
+
+    public static function matchInterfaces($class, $params, $interfaces = null)
+    {
+        $instance = static::from($class, $params);
+
+        $interfaces = $interfaces ?: static::getInterfaceNames($class);
+
+        foreach ($interfaces as $interface) {
+            if (!($instance instanceof $interface)) {
+                throw new InvalidInstanceException($instance, $interface);
+            }
         }
 
         return $instance;
@@ -46,6 +63,17 @@ class Instance
         if (!empty(static::$map[$class])) {
             unset(static::$map[$class]);
         }
+    }
+
+    protected static function getInterfaceNames($class)
+    {
+        static $cache = [];
+
+        if (empty($cache[$class])) {
+            $cache[$class] = (new \ReflectionClass($class))->getInterfaceNames();
+        }
+
+        return $cache[$class];
     }
 
     protected static function resolve($class)
