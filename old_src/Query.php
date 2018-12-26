@@ -31,6 +31,9 @@ class Query implements SelectableOwnerInterface
     /** @var Limiter */
     public $limiter;
 
+    /** @var Join */
+    public $join;
+
     /** @var DataSourceInterface */
     public $dataSource;
 
@@ -45,13 +48,13 @@ class Query implements SelectableOwnerInterface
         return Factory::matchClass(self::class, [$names, $dataSource]);
     }
 
-    public function filter(): Filter
+    public function filter($definition = null): Filter
     {
         if ($this->filter) {
             return $this->filter;
         }
 
-        return $this->filter = Filter::from($this, []);
+        return $this->filter = Filter::from($this, $definition);
     }
 
     public function order(): Order
@@ -80,6 +83,17 @@ class Query implements SelectableOwnerInterface
 
         return $this->reducer = Reducer::from($this);
     }
+
+
+    public function join(): Join
+    {
+        if ($this->join) {
+            return $this->join;
+        }
+
+        return $this->join = Join::from($this);
+    }
+
 
     public function fromSource(): DataSourceInterface
     {

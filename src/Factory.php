@@ -8,13 +8,11 @@
 
 namespace ArekX\PQL;
 
-use ArekX\PQL\Exceptions\InvalidInstanceException;
-
 class Factory
 {
     protected static $map = [];
 
-    public static function from($class, $params)
+    public static function from($class, $params = [])
     {
         $class = static::resolve($class);
 
@@ -25,55 +23,16 @@ class Factory
         return new $class(...$params);
     }
 
-    public static function matchClass($class, $params, $matchClass = null)
-    {
-        $instance = static::from($class, $params);
-
-        $matchClass = $matchClass ?: $class;
-
-        if (!($instance instanceof $matchClass)) {
-            throw new InvalidInstanceException($instance, $matchClass);
-        }
-
-        return $instance;
-    }
-
-    public static function matchInterfaces($class, $params, $interfaces = null)
-    {
-        $instance = static::from($class, $params);
-
-        $interfaces = $interfaces ?: static::getInterfaceNames($class);
-
-        foreach ($interfaces as $interface) {
-            if (!($instance instanceof $interface)) {
-                throw new InvalidInstanceException($instance, $interface);
-            }
-        }
-
-        return $instance;
-    }
-
     public static function override($class, $toClass)
     {
         static::$map[$class] = $toClass;
     }
 
-    public static function remove($class)
+    public static function map(array $mapList)
     {
-        if (!empty(static::$map[$class])) {
-            unset(static::$map[$class]);
+        foreach ($mapList as $fromClass => $toDefinition) {
+            static::override($fromClass, $toDefinition);
         }
-    }
-
-    protected static function getInterfaceNames($class)
-    {
-        static $cache = [];
-
-        if (empty($cache[$class])) {
-            $cache[$class] = (new \ReflectionClass($class))->getInterfaceNames();
-        }
-
-        return $cache[$class];
     }
 
     protected static function resolve($class)

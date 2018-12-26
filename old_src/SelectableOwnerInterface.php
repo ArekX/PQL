@@ -21,5 +21,7 @@ interface SelectableOwnerInterface
 
     public function limit(): Limiter;
 
+    public function join(): Join;
+
     public function fromSource(): DataSourceInterface;
 }

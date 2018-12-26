@@ -27,6 +27,10 @@ abstract class BaseBinaryOperator extends BaseOperator implements BinaryOperator
 
     protected $operator = null;
 
+    protected $noUnsetValues = false;
+
+    protected $noEmptyValues = false;
+
 
     /**
      * BaseOperator constructor.
@@ -90,6 +94,18 @@ abstract class BaseBinaryOperator extends BaseOperator implements BinaryOperator
         $this->inverted = !$this->inverted;
 
         /** @var BinaryOperatorInterface $this */
+        return $this;
+    }
+
+    public function noUnsetValues($value = true): BinaryOperatorInterface
+    {
+        $this->noUnsetValues = $value;
+        return $this;
+    }
+
+    public function noEmptyValues($value = true): BinaryOperatorInterface
+    {
+        $this->noEmptyValues = $value;
         return $this;
     }
 

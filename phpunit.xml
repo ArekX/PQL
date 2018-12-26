@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit colors="true" bootstrap="tests/bootstrap.php" verbose="true">
     <testsuites>
+        <testsuite name="Factory">
+            <directory>tests/factory</directory>
+        </testsuite>
         <testsuite name="Operators">
             <directory>tests/Operators</directory>
         </testsuite>

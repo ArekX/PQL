@@ -9,7 +9,7 @@
 namespace ArekX\PQL;
 
 
-class Reducer
+class Limiter
 {
     /** @var SelectableOwnerInterface */
     protected $owner;
@@ -19,7 +19,7 @@ class Reducer
         $this->owner = $owner;
     }
 
-    public static function from(SelectableOwnerInterface $owner = null)
+    public static function create(SelectableOwnerInterface $owner = null)
     {
         return Factory::matchClass(self::class, [$owner]);
     }
@@ -29,32 +29,17 @@ class Reducer
         return $this->owner;
     }
 
-    public function toCount(): Reducer
+    public function from($count): Limiter
     {
         return $this;
     }
 
-    public function toSum(): Reducer
+    public function to($count): Limiter
     {
         return $this;
     }
 
-    public function toAverage(): Reducer
-    {
-        return $this;
-    }
-
-    public function toMaxValue(): Reducer
-    {
-        return $this;
-    }
-
-    public function toMinValue(): Reducer
-    {
-        return $this;
-    }
-
-    public function to($callback, $initial = null): Reducer
+    public function take($count): Limiter
     {
         return $this;
     }
