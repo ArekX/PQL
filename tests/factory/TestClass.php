@@ -2,7 +2,7 @@
 
 namespace tests\factory;
 
-use ArekX\PQL\Factory;
+use ArekX\PQL\FactoryTrait;
 
 /**
  * Created by Aleksandar Panic
@@ -13,8 +13,5 @@ use ArekX\PQL\Factory;
 
 class TestClass
 {
-    public static function makeFrom()
-    {
-        return Factory::from(self::class);
-    }
+    use FactoryTrait;
 }

@@ -15,8 +15,8 @@ class FactoryFromTest extends \PHPUnit\Framework\TestCase
 {
     public function testCreateUsingFromCreatesThatClass()
     {
-        $this->assertInstanceOf(TestClass::class, TestClass::makeFrom());
-        $this->assertInstanceOf(TestDerivedClass::class, TestDerivedClass::makeFrom());
+        $this->assertInstanceOf(TestClass::class, TestClass::create());
+        $this->assertInstanceOf(TestDerivedClass::class, TestDerivedClass::create());
     }
 
     public function testCreateUsingCallableCallsIt()
@@ -28,14 +28,14 @@ class FactoryFromTest extends \PHPUnit\Framework\TestCase
         });
 
         $this->assertFalse($called);
-        TestClass::makeFrom();
+        TestClass::create();
         $this->assertTrue($called);
     }
 
     public function testCreateOverriddenClassWhenSet()
     {
         Factory::override(TestClass::class, TestOverrideClass::class);
-        $this->assertInstanceOf(TestOverrideClass::class, TestClass::makeFrom());
+        $this->assertInstanceOf(TestOverrideClass::class, TestClass::create());
     }
 
     public function testOverrideWillResolveRecursively()
@@ -43,7 +43,7 @@ class FactoryFromTest extends \PHPUnit\Framework\TestCase
         Factory::override(TestClass::class, TestOverrideClass::class);
         Factory::override(TestOverrideClass::class, TestSecondOverrideClass::class);
 
-        $this->assertInstanceOf(TestSecondOverrideClass::class, TestClass::makeFrom());
+        $this->assertInstanceOf(TestSecondOverrideClass::class, TestClass::create());
     }
 
     public function testCallingMapWillHaveSameConfigAsOverride()
@@ -58,7 +58,29 @@ class FactoryFromTest extends \PHPUnit\Framework\TestCase
         ]);
 
         $this->assertFalse($called);
-        $this->assertInstanceOf(TestSecondOverrideClass::class, TestClass::makeFrom());
+        $this->assertInstanceOf(TestSecondOverrideClass::class, TestClass::create());
         $this->assertTrue($called);
+    }
+
+
+    public function testCreatingClassWithParamsWillPassParams()
+    {
+        $instance = TestClassWithParams::create('a', 'b');
+
+        $this->assertInstanceOf(TestClassWithParams::class, $instance);
+        $this->assertEquals('a', $instance->param1);
+        $this->assertEquals('b', $instance->param2);
+    }
+
+
+    public function testCreateDerivedClassWithParams()
+    {
+        Factory::override(TestClassWithParams::class, TestDerivedClassWithParams::class);
+        $instance = TestClassWithParams::create('a', 'b', 'c');
+
+        $this->assertInstanceOf(TestDerivedClassWithParams::class, $instance);
+        $this->assertEquals('a', $instance->param1);
+        $this->assertEquals('b', $instance->param2);
+        $this->assertEquals('c', $instance->param3);
     }
 }
