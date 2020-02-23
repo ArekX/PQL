@@ -8,7 +8,15 @@
 namespace ArekX\PQL\Contracts;
 
 
+use ArekX\PQL\Query;
+
 interface DriverInterface
 {
+    const AS_SINGLE = 'single';
+    const AS_ALL = 'all';
+    const AS_COLUMN = 'column';
+    const AS_SCALAR = 'scalar';
+    const AS_MAP = 'map';
 
+    public function run(Query $query, string $as, array $asConfig = null);
 }
