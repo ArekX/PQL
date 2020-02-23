@@ -1,12 +1,13 @@
 <?php
 /**
- * Created by Aleksandar Panic
- * Date: 25-Dec-18
- * Time: 22:28
- * License: MIT
- */
+ * @author Aleksandar Panic
+ * @license http://www.apache.org/licenses/LICENSE-2.0
+ * @since 1.0.0
+ **/
 
 namespace ArekX\PQL;
+
+use ArekX\PQL\Exceptions\InvalidInstanceException;
 
 class Factory
 {
@@ -14,13 +15,19 @@ class Factory
 
     public static function from($class, $params = [])
     {
-        $class = static::resolve($class);
+        $resolvedClass = static::resolve($class);
 
-        if (is_callable($class)) {
-            return $class(...$params);
+        if (is_callable($resolvedClass)) {
+            $instance = $resolvedClass(...$params);
+        } else {
+            $instance = new $resolvedClass(...$params);
         }
 
-        return new $class(...$params);
+        if (!($instance instanceof $class)) {
+            throw new InvalidInstanceException($instance, $class);
+        }
+
+        return $instance;
     }
 
     public static function override($class, $toClass)

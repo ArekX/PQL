@@ -2,10 +2,7 @@
 <phpunit colors="true" bootstrap="tests/bootstrap.php" verbose="true">
     <testsuites>
         <testsuite name="Factory">
-            <directory>tests/factory</directory>
-        </testsuite>
-        <testsuite name="Operators">
-            <directory>tests/Operators</directory>
+            <directory>tests</directory>
         </testsuite>
     </testsuites>
 </phpunit>

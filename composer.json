@@ -18,9 +18,14 @@
       "php": ">=7.1"
   },
   "require-dev": {
-    "phpunit/phpunit": "^7.5"
+    "phpunit/phpunit": "^7.5",
+    "theseer/phpdox": "^0.12.0",
+    "phpunit/php-code-coverage": "6.1.4"
   },
   "scripts": {
-     "test": "vendor/bin/phpunit"
+    "test": "php vendor/bin/phpunit",
+    "guide": "mkdocs serve -f docs/mkdocs.yml",
+    "api": "php vendor/bin/phpunit --coverage-xml api/coverage --whitelist src && php vendor/bin/phpdox",
+    "coverage": "php vendor/bin/phpunit --coverage-html coverage --whitelist src"
   }
 }
