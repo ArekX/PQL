@@ -17,6 +17,13 @@ use ArekX\PQL\Contracts\DriverInterface;
  */
 class Query
 {
+    const AS_SINGLE = 'single';
+    const AS_ALL = 'all';
+    const AS_COLUMN = 'column';
+    const AS_SCALAR = 'scalar';
+    const AS_COUNT = 'count';
+    const AS_MAP = 'map';
+
     use FactoryTrait;
 
     /**
@@ -54,6 +61,18 @@ class Query
      * @var array
      */
     public $group;
+
+    /**
+     * Return As type
+     * @var string
+     */
+    public $returnAs = self::AS_ALL;
+
+    /**
+     * Return As config
+     * @var array
+     */
+    public $returnAsConfig;
 
     /**
      * Driver used to process the query
@@ -135,34 +154,46 @@ class Query
         ];
     }
 
-    public function runAs(string $as, array $asConfig = null)
+    public function as(string $as, array $asConfig = null)
     {
-        return $this->driver->run($this, $as, $asConfig);
+        $this->returnAs = $as;
+        $this->returnAsConfig = $asConfig;
+        return $this;
     }
 
-    public function runSingle()
+    public function asSingle()
     {
-        return $this->runAs(DriverInterface::AS_SINGLE);
+        return $this->as(self::AS_SINGLE);
     }
 
-    public function runAll()
+    public function asAll()
     {
-        return $this->runAs(DriverInterface::AS_ALL);
+        return $this->as(self::AS_ALL);
     }
 
-    public function runColumn($name)
+    public function asColumn($key = null)
     {
-        return $this->runAs(DriverInterface::AS_COLUMN, ['name' => $name]);
+        return $this->as(self::AS_COLUMN, ['key' => $key]);
     }
 
-    public function runMap($key, $value)
+    public function asCount()
     {
-        return $this->runAs(DriverInterface::AS_MAP, ['key' => $key, 'value' => $value]);
+        return $this->as(self::AS_COUNT);
     }
 
-    public function runScalar($key = null)
+    public function asMap($key, $value)
     {
-        return $this->runAs(DriverInterface::AS_MAP, ['key' => $key]);
+        return $this->as(self::AS_MAP, ['key' => $key, 'value' => $value]);
+    }
+
+    public function asScalar($key = null)
+    {
+        return $this->as(self::AS_SCALAR, ['key' => $key]);
+    }
+
+    public function run(Query $parentQuery = null)
+    {
+        return $this->driver->run($this, $parentQuery);
     }
 
     public function copy()

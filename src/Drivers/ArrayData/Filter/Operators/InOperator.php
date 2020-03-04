@@ -8,12 +8,11 @@
 
 namespace ArekX\PQL\Drivers\ArrayData\Filter\Operators;
 
-
 use ArekX\PQL\Drivers\ArrayData\Contracts\OperatorInterface;
 use ArekX\PQL\Drivers\ArrayData\Filter\Filter;
 use ArekX\PQL\FactoryTrait;
 
-class SearchOperator implements OperatorInterface
+class InOperator implements OperatorInterface
 {
     use FactoryTrait;
 
@@ -26,22 +25,13 @@ class SearchOperator implements OperatorInterface
 
     public function evaluate(array $rule): ?bool
     {
-        if ($rule[0] !== 'search' && $rule[0] !== 'startsWith' && $rule[0] !== 'endsWith') {
+        if ($rule[0] !== 'in') {
             return null;
         }
 
         $subject = $this->filter->from->get($rule[1]);
         $search = $rule[2];
 
-        switch ($rule[0]) {
-            case 'search':
-                return stristr($subject, $search) !== false;
-            case 'startsWith':
-                return $search === "" || substr_compare($subject, $search, 0, strlen($search), true) === 0;
-            case 'endsWith':
-                return $search === "" || substr_compare($subject, $search, -strlen($search), true) === 0;
-        }
-
-        return null;
+        return in_array($subject, $search);
     }
 }

@@ -16,22 +16,44 @@ class CompareOperator implements OperatorInterface
 {
     use FactoryTrait;
 
-    public function match($rule)
-    {
-        // TODO: Implement match() method.
-    }
-
-    public function evaluate($rule)
-    {
-        // TODO: Implement evaluate() method.
-    }
+    protected $filter;
 
     public function __construct(Filter $filter)
     {
+        $this->filter = $filter;
     }
 
-    public function parse($rule)
+    public function evaluate(array $rule): ?bool
     {
-        // TODO: Implement parse() method.
+        if (!preg_match('/^(!?=|>=?|<=?|<>|range)$/', $rule[0])) {
+            return null;
+        }
+
+        $getValue = $this->filter->from->get($rule[1]);
+        $vsValue = $rule[2];
+
+        switch ($rule[0]) {
+            case '=':
+                return $getValue == $vsValue;
+            case '<>':
+            case '!=':
+                return $getValue != $vsValue;
+            case '>=':
+                return $getValue >= $vsValue;
+            case '<=':
+                return $getValue <= $vsValue;
+            case '>':
+                return $getValue > $vsValue;
+            case '<':
+                return $getValue < $vsValue;
+        }
+
+        if ($rule[0] == 'range') {
+            $toValue = $this->filter->from->get($rule[3]);
+
+            return $vsValue <= $getValue && $getValue <= $toValue;
+        }
+
+        return null;
     }
 }

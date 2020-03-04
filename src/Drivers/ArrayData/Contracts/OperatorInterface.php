@@ -15,9 +15,5 @@ interface OperatorInterface
 {
     public function __construct(Filter $filter);
 
-    public function match($rule);
-
-    public function parse($rule);
-
-    public function evaluate($rule);
+    public function evaluate(array $rule): ?bool;
 }

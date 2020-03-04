@@ -13,11 +13,10 @@ use ArekX\PQL\Drivers\ArrayData\Contracts\OperatorInterface;
 use ArekX\PQL\Drivers\ArrayData\Filter\Filter;
 use ArekX\PQL\FactoryTrait;
 
-class AssociativeOperator implements OperatorInterface
+class AndOrOperator implements OperatorInterface
 {
     use FactoryTrait;
 
-    /** @var Filter */
     protected $filter;
 
     public function __construct(Filter $filter)
@@ -27,16 +26,25 @@ class AssociativeOperator implements OperatorInterface
 
     public function evaluate(array $rule): ?bool
     {
-        if (!empty($rule[0])) {
+        $operator = $rule[0];
+
+        if ($operator !== 'and' && $operator !== 'or') {
             return null;
         }
 
-        foreach ($rule as $key => $expected) {
-            if ($expected != $this->filter->from->get($key)) {
+        $max = count($rule);
+        for ($i = 1; $i < $max; $i++) {
+            $result = $this->filter->evaluate($rule[$i]);
+
+            if (!$result && $operator === 'and') {
                 return false;
+            }
+
+            if ($result && $operator === 'or') {
+                return true;
             }
         }
 
-        return true;
+        return $operator === 'and';
     }
 }
