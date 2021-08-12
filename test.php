@@ -7,31 +7,20 @@
  */
 
 use ArekX\PQL\Drivers\ArrayData\Driver;
-use ArekX\PQL\Query;
+use ArekX\PQL\Drivers\MySQL\MySqlDriver;
+use ArekX\PQL\Drivers\MySQL\QueryBuilder;
+use ArekX\PQL\Select;
 
 require __DIR__ . '/vendor/autoload.php';
 
-$driver = new Driver();
+$driver = new MySqlDriver();
+$builder = new QueryBuilder();
 
-$data = [
-    ['name' => 'jane', 'age' => 15],
-    ['name' => 'doe', 'age' => 5],
-    ['name' => 'doh', 'age' => 7],
-    ['name' => 'john', 'age' => 11],
-];
+$query = Select::fromTable(["'custom name'" => 'sakila', 'b' => 'killua'])
+    ->columns('a.*', 'b.*', 'a.id', 'b');
 
-$results = Query::create()
-    ->from($data)
-    ->select([
-        'name' => 'nameAs',
-        'age' => 'ageAs'
-    ])
-    ->where(['startsWith', 'name', 'ja'])
-    ->driver($driver)
-    ->run();
+echo $builder->build($query)->getQuery() . PHP_EOL;
 
-
-print_r($results);
 
 
 

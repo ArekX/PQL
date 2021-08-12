@@ -1,0 +1,19 @@
+namespace: tests
+suites:
+    unit:
+        bootstrap: ../bootstrap.php
+        path: ./unit
+
+settings:
+    shuffle: true
+    lint: true
+paths:
+    tests: tests
+    output: tests/_output
+    support: tests/_support
+    data: tests
+coverage:
+    enabled: true
+    include:
+        - src/*
+     
