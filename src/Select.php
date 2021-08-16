@@ -2,15 +2,15 @@
 
 namespace ArekX\PQL;
 
-use ArekX\PQL\Contracts\ConditionQuery;
+use ArekX\PQL\Contracts\FilteredQuery;
 use ArekX\PQL\Contracts\JoinQuery;
 use ArekX\PQL\Contracts\StructuredQuery;
 use ArekX\PQL\Traits\JoinConditionTrait;
-use ArekX\PQL\Traits\WhereConditionTrait;
+use ArekX\PQL\Traits\FilterConditionTrait;
 
-class Select implements StructuredQuery, ConditionQuery, JoinQuery
+class Select implements StructuredQuery, FilteredQuery, JoinQuery
 {
-    use WhereConditionTrait;
+    use FilterConditionTrait;
     use JoinConditionTrait;
 
     protected $from = null;
@@ -20,6 +20,8 @@ class Select implements StructuredQuery, ConditionQuery, JoinQuery
     protected ?array $having = null;
     protected ?array $group = null;
     protected ?array $union = null;
+    protected $limit = null;
+    protected $offset = null;
 
     public function getStructure(): array
     {
@@ -30,11 +32,13 @@ class Select implements StructuredQuery, ConditionQuery, JoinQuery
             'order' => $this->order,
             'having' => $this->having,
             'where' => $this->where,
-            'group' => $this->group
+            'group' => $this->group,
+            'limit' => $this->limit,
+            'offset' => $this->offset
         ];
     }
 
-    public static function fromTable($tableExpression): self
+    public static function table($tableExpression): self
     {
         return static::create()->from($tableExpression);
     }
@@ -71,22 +75,6 @@ class Select implements StructuredQuery, ConditionQuery, JoinQuery
     public function groupBy($groupExpression): self
     {
         $this->group = $groupExpression;
-        return $this;
-    }
-
-    public function setUnion($unionExpression): self
-    {
-        $this->union = $unionExpression;
-        return $this;
-    }
-
-    public function union(...$unionExpressions): self
-    {
-        if ($this->union === null) {
-            $this->union = [];
-        }
-
-        $this->union[] = $unionExpressions;
         return $this;
     }
 }

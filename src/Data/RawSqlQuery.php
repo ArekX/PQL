@@ -11,7 +11,7 @@ class RawSqlQuery implements RawQuery
 
     public static function create($sql, array $params = []): self
     {
-        return new RawSqlQuery($sql, $params);
+        return new static($sql, $params);
     }
 
     public function __construct(string $sql, array $params = [])

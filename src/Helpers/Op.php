@@ -26,7 +26,16 @@ class Op
 
     public static function compare($a, $b, $op = '='): array
     {
+        if (is_string($a)) {
+            $a = static::col($a);
+        }
+
         return ['compare', $op, $a, $b];
+    }
+
+    public static function col($op): array
+    {
+        return ['column', $op];
     }
 
     public static function not($op): array
@@ -34,28 +43,48 @@ class Op
         return ['not', $op];
     }
 
-    public static function in(...$values): array
+    public static function in($column, ...$values): array
     {
-        return ['in', count($values) === 1 && is_array($values[0]) ? $values[0] : $values];
-    }
-
-    public static function raw(string $expression, array $params = []): array
-    {
-        return ['raw', $expression, $params];
+        if (is_string($column)) {
+            $column = static::col($column);
+        }
+        return ['in', $column, count($values) === 1 && is_array($values[0]) ? $values[0] : $values];
     }
 
     public static function like($op, $value): array
     {
+        if (is_string($op)) {
+            $op = Op::col($op);
+        }
+
         return ['like', $op, $value];
+    }
+
+    public static function likeSearch($op, string $value): array
+    {
+        if (is_string($op)) {
+            $op = Op::col($op);
+        }
+
+        return ['like', $op, Op::val('%' . $value . '%')];
     }
 
     public static function val($value): array
     {
-        return ['val', $value];
+        return ['value', $value];
     }
 
-    public static function between($op, $from, $to): array
+    public static function between($expression, $from, $to): array
     {
-        return ['between', $op, $from, $to];
+        if (is_string($expression)) {
+            $expression = Op::col($expression);
+        }
+
+        return ['between', $expression, $from, $to];
+    }
+
+    public static function exists($value): array
+    {
+        return ['exists', $value];
     }
 }

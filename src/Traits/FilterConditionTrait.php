@@ -4,9 +4,11 @@ namespace ArekX\PQL\Traits;
 
 use ArekX\PQL\Helpers\Op;
 
-trait WhereConditionTrait
+trait FilterConditionTrait
 {
-    protected ?array $where = null;
+    protected $where = null;
+    protected $limit = null;
+    protected $offset = null;
 
     public function where($whereExpression): self
     {
@@ -31,6 +33,19 @@ trait WhereConditionTrait
         }
 
         $this->where = Op::or($this->where, $whereExpression);
+        return $this;
+    }
+
+
+    public function limit($rows): self
+    {
+        $this->limit = $rows;
+        return $this;
+    }
+
+    public function offset($rows): self
+    {
+        $this->offset = $rows;
         return $this;
     }
 }

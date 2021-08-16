@@ -2,15 +2,15 @@
 
 namespace ArekX\PQL;
 
-use ArekX\PQL\Contracts\ConditionQuery;
+use ArekX\PQL\Contracts\FilteredQuery;
 use ArekX\PQL\Contracts\JoinQuery;
 use ArekX\PQL\Contracts\StructuredQuery;
 use ArekX\PQL\Traits\JoinConditionTrait;
-use ArekX\PQL\Traits\WhereConditionTrait;
+use ArekX\PQL\Traits\FilterConditionTrait;
 
-class Delete implements StructuredQuery, ConditionQuery, JoinQuery
+class Delete implements StructuredQuery, FilteredQuery, JoinQuery
 {
-    use WhereConditionTrait;
+    use FilterConditionTrait;
     use JoinConditionTrait;
 
     protected ?string $table = null;
@@ -31,7 +31,9 @@ class Delete implements StructuredQuery, ConditionQuery, JoinQuery
         return [
             'table' => $this->table,
             'where' => $this->where,
-            'join' => $this->join
+            'join' => $this->join,
+            'limit' => $this->limit,
+            'offset' => $this->offset
         ];
     }
 }

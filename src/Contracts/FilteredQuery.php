@@ -2,7 +2,7 @@
 
 namespace ArekX\PQL\Contracts;
 
-interface ConditionQuery
+interface FilteredQuery
 {
     /**
      * @param $whereExpression
@@ -21,4 +21,9 @@ interface ConditionQuery
      * @return $this
      */
     public function orWhere($whereExpression): self;
+
+
+    public function limit($rows): self;
+
+    public function offset($rows): self;
 }
