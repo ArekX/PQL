@@ -16,7 +16,8 @@
   "minimum-stability": "stable",
   "require": {
     "php": ">=7.4",
-    "ext-json": "*"
+    "ext-json": "*",
+    "ext-pdo": "*"
   },
   "require-dev": {
     "codeception/codeception": "^4.1",

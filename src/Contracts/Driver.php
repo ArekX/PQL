@@ -12,7 +12,7 @@ interface Driver
 
     public function exists(RawQuery $query): bool;
 
-    public function fetchColumn(string $resultColumn, RawQuery $query): array;
+    public function fetchColumn(RawQuery $query, $column = null): array;
 
     public function fetchIndexed(string $byColumn, RawQuery $query): array;
 

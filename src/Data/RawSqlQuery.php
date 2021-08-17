@@ -8,6 +8,7 @@ class RawSqlQuery implements RawQuery
 {
     protected string $sql;
     protected array $params;
+    protected array $config;
 
     public static function create($sql, array $params = []): self
     {
@@ -28,5 +29,15 @@ class RawSqlQuery implements RawQuery
     public function getParams(): array
     {
         return $this->params;
+    }
+
+    public function setConfig(array $config)
+    {
+        $this->config = $config;
+    }
+
+    public function getConfig(): array
+    {
+        return $this->config;
     }
 }

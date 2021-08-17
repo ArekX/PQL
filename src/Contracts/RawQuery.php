@@ -7,4 +7,6 @@ interface RawQuery
     public function getQuery();
 
     public function getParams(): array;
+
+    public function getConfig(): array;
 }
