@@ -6,21 +6,41 @@ use ArekX\PQL\Contracts\StructuredQuery;
 
 class Insert implements StructuredQuery
 {
-    protected ?string $table = null;
+    protected $item = null;
     protected ?array $values = null;
+    protected ?array $columns = null;
+
+    public static function into($item, $values): self
+    {
+        $instance = static::create()->intoItem($item);
+
+        if (is_array($values)) {
+            $instance
+                ->columns(array_keys($values))
+                ->values(array_values($values));
+        }
+
+        return $instance;
+    }
 
     public static function create(): self
     {
         return new Insert();
     }
 
-    public function into(string $table): self
+    public function intoItem($item): self
     {
-        $this->table = $table;
+        $this->item = $item;
         return $this;
     }
 
-    public function values(array $values): self
+    public function columns($columns): self
+    {
+        $this->columns = $columns;
+        return $this;
+    }
+
+    public function values($values): self
     {
         $this->values = $values;
         return $this;
@@ -29,7 +49,8 @@ class Insert implements StructuredQuery
     public function getStructure(): array
     {
         return [
-            'table' => $this->table,
+            'item' => $this->item,
+            'columns' => $this->columns,
             'values' => $this->values
         ];
     }

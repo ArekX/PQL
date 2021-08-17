@@ -9,7 +9,7 @@ use ArekX\PQL\Data\PrefixQueryParams;
 class MySqlBuilderState implements QueryBuilderState
 {
     protected $state = [
-        'queryGlue' => PHP_EOL
+        'queryGlue' => ' '
     ];
 
     protected $queryParams;

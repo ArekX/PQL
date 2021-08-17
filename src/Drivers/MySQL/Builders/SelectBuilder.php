@@ -23,10 +23,13 @@ class SelectBuilder implements QueryBuilderChild
             $this->buildFrom($structure, $state),
             $this->buildJoins($structure, $state),
             $this->buildWhere($structure, $state),
+            $this->buildGroupBy($structure, $state),
+            $this->buildOrderBy($structure, $state),
+            $this->buildHaving($structure, $state),
             $this->buildLimit($structure)
         ]);
 
-        return RawSqlQuery::create(implode(PHP_EOL, $parts), $state->getQueryParams()->getParams());
+        return RawSqlQuery::create(implode($state->get('queryGlue'), $parts), $state->getQueryParams()->getParams());
     }
 
     protected function buildSelectPart(array $structure, QueryBuilderState $state): string
@@ -71,7 +74,7 @@ class SelectBuilder implements QueryBuilderChild
             $result[] = $itemString;
         }
 
-        return implode(',' . PHP_EOL, $result);
+        return implode(', ', $result);
     }
 
     protected function buildStructuredQuery(StructuredQuery $query, QueryBuilderState $state): string
@@ -87,7 +90,7 @@ class SelectBuilder implements QueryBuilderChild
 
     protected function isPrimitive($expression)
     {
-       return is_int($expression) || is_float($expression) || is_bool($expression) || is_null($expression);
+        return is_int($expression) || is_float($expression) || is_bool($expression) || is_null($expression);
     }
 
     protected function buildPrimitive($expression)
@@ -158,7 +161,7 @@ class SelectBuilder implements QueryBuilderChild
                 $operator = 'IN';
                 $values = [];
                 foreach ($value as $item) {
-                    $values[] = $state->getQueryParams()->addParam($item);
+                    $values[] = $this->buildLiteral($item, $state);
                 }
                 $rightSide = "(" . implode(', ', $values) . ")";
             } else if ($value instanceof StructuredQuery) {
@@ -225,7 +228,7 @@ class SelectBuilder implements QueryBuilderChild
     {
         $max = count($expression);
         $result = [];
-        for($i = 1; $i < $max; $i++) {
+        for ($i = 1; $i < $max; $i++) {
             $result[] = $this->buildSubConditionExpression($expression[$i], $state);
         }
 
@@ -272,6 +275,9 @@ class SelectBuilder implements QueryBuilderChild
 
         if (is_array($expression)) {
             if ($expression[0] === 'value') {
+                if (is_array($expression[1])) {
+                    return '(' . $this->buildValue($expression, $state) . ')';
+                }
                 return $this->buildValue($expression, $state);
             } else if ($expression[0] === 'column') {
                 return $this->quoteName($expression[1]);
@@ -322,20 +328,82 @@ class SelectBuilder implements QueryBuilderChild
     protected function buildValue($expression, QueryBuilderState $state): string
     {
         if (!is_array($expression[1])) {
-            return $state->getQueryParams()->addParam($expression[1]);
+            return $this->buildLiteral($expression[1], $state);
         }
 
         $items = [];
 
         foreach ($expression[1] as $value) {
-            $items[] = $state->getQueryParams()->addParam($value);
+            $items[] = $this->buildLiteral($value, $state);
         }
 
         return implode(', ', $items);
     }
 
+    protected function buildLiteral($value, QueryBuilderState $state)
+    {
+        if ($this->isPrimitive($value)) {
+            return $this->buildPrimitive($value);
+        }
+
+        return $state->getQueryParams()->addParam($value);
+    }
+
     public function setParent(QueryBuilder $parent)
     {
         $this->parent = $parent;
+    }
+
+    protected function buildGroupBy(array $structure, QueryBuilderState $state): ?string
+    {
+        if (empty($structure['group'])) {
+            return null;
+        }
+
+        $group = $structure['group'];
+
+        if (is_string($group)) {
+            $group = $this->quoteName($group);
+        } else if ($group instanceof StructuredQuery) {
+            $group = $this->buildStructuredQuery($group, $state);
+        } else {
+            $result = [];
+            foreach ($group as $name) {
+                $result[] = $this->quoteName($name);
+            }
+            $group = implode(', ', $result);
+        }
+
+        return 'GROUP BY ' . $group;
+    }
+
+    protected function buildOrderBy(array $structure, QueryBuilderState $state): ?string
+    {
+        if (empty($structure['order'])) {
+            return null;
+        }
+
+        $order = $structure['order'];
+
+        if ($order instanceof StructuredQuery) {
+            $order = $this->buildStructuredQuery($order, $state);
+        } else {
+            $result = [];
+            foreach ($order as $column => $value) {
+                $result[] = $this->quoteName($column) . ' ' . strtoupper($value);
+            }
+            $order = implode(', ', $result);
+        }
+
+        return 'ORDER BY ' . $order;
+    }
+
+    protected function buildHaving(array $structure, QueryBuilderState $state)
+    {
+        if (empty($structure['having'])) {
+            return null;
+        }
+
+        return 'HAVING ' . $this->buildConditionExpression($structure['having'], $state);
     }
 }

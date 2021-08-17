@@ -17,27 +17,27 @@ require __DIR__ . '/vendor/autoload.php';
 $driver = new MySqlDriver();
 $builder = new QueryBuilder();
 
-$query = Select::table(["'custom name'" => 'sakila', 'b' => 'killua', 'c' => 'sss'])
-    ->columns('a.*', 'b.*', 'a.id', 'b', Raw::query("OPA CUPA"))
-    ->innerJoin(['ds' => Raw::query('(t1 CROSS JOIN t2 CROSS JOIN t3)')], 'on')
-    ->leftJoin(['b' => 'hk'], ['multi', [
-        'a.id' => Raw::query('(t1 CROSS JOIN t2 CROSS JOIN t3)')]
+$query = Select::table(["'custom name'" => 'sakila', 'b' => ' x', 'c' => 'sss'])
+    ->columns('a.*', 'b.*', 'a.id', 'b', Raw::query('fzs'))
+    ->where([
+        'and',
+        Op::eq('is_active', 1),
+        Op::gte('create_time', 212414),
+        Op::between('time', 12, 44)
     ])
-    ->where(Op::and(
-        Op::not(Op::search(['opa.cupa' => null, 'a' => [1, 2, 3]])),
-        Op::or(Op::compare('is_active', 1), Raw::query('OPA CUPA')),
-        Op::likeSearch('st', '333'),
-        Select::table('user')->columns('1')->where([
-            'and',
-            Op::compare('is_deleted', 0),
-            Op::in('user_ids', Op::val([1, 2, 3, 4, 5]))
-        ])
-    ))
     ->offset(15)->limit(5);
 
+
+echo $builder->build(\ArekX\PQL\Insert::into('test', [
+    'a' => 1,
+    'b' => true,
+    'c' => 'whoaaa'
+]))->getQuery();
+
 $result = $builder->build($query);
-echo $result->getQuery() . PHP_EOL;
-print_r($result->getParams());
+echo $result->getQuery();
+var_dump($result->getParams());
+//echo \ArekX\PQL\Drivers\MySQL\DebugQuery::getString($result) . PHP_EOL;
 
 
 

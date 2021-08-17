@@ -24,13 +24,58 @@ class Op
         return ['search', $a];
     }
 
-    public static function compare($a, $b, $op = '='): array
+    public static function filteredSearch(array $search): array
+    {
+        $result = [];
+
+        foreach ($search as $key => $value) {
+            if ($value === '' || $value === null || $value === []) {
+                continue;
+            }
+
+            $result[$key] = $value;
+        }
+
+        return Op::search($result);
+    }
+
+    public static function compare($a, $op, $b): array
     {
         if (is_string($a)) {
             $a = static::col($a);
         }
 
         return ['compare', $op, $a, $b];
+    }
+
+    public static function eq($a, $b): array
+    {
+        return Op::compare($a, '=', $b);
+    }
+
+    public static function neq($a, $b): array
+    {
+        return Op::compare($a, '<>', $b);
+    }
+
+    public static function gt($a, $b): array
+    {
+        return Op::compare($a, '>', $b);
+    }
+
+    public static function lt($a, $b): array
+    {
+        return Op::compare($a, '<', $b,);
+    }
+
+    public static function gte($a, $b): array
+    {
+        return Op::compare($a, '>=', $b);
+    }
+
+    public static function lte($a, $b): array
+    {
+        return Op::compare($a, '<=', $b);
     }
 
     public static function col($op): array
@@ -43,12 +88,13 @@ class Op
         return ['not', $op];
     }
 
-    public static function in($column, ...$values): array
+    public static function in($column, $values): array
     {
         if (is_string($column)) {
             $column = static::col($column);
         }
-        return ['in', $column, count($values) === 1 && is_array($values[0]) ? $values[0] : $values];
+
+        return ['in', $column, Op::val($values)];
     }
 
     public static function like($op, $value): array

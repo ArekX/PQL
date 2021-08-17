@@ -16,10 +16,9 @@ class Select implements StructuredQuery, FilteredQuery, JoinQuery
     protected $from = null;
     protected $select = null;
     protected ?array $join = null;
-    protected ?array $order = null;
-    protected ?array $having = null;
-    protected ?array $group = null;
-    protected ?array $union = null;
+    protected $order = null;
+    protected $having = null;
+    protected $group = null;
     protected $limit = null;
     protected $offset = null;
 
