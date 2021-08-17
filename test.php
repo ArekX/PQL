@@ -8,37 +8,34 @@
 
 use ArekX\PQL\Drivers\MySQL\MySqlDriver;
 use ArekX\PQL\Drivers\MySQL\MySqlQueryBuilder;
-use ArekX\PQL\Helpers\Op;
-use ArekX\PQL\Raw;
-use ArekX\PQL\Select;
+use function ArekX\PQL\equals;
+use function ArekX\PQL\notOp;
+use function ArekX\PQL\raw;
+use function ArekX\PQL\select;
 
 require __DIR__ . '/vendor/autoload.php';
 
 $driver = new MySqlDriver();
 $builder = new MySqlQueryBuilder();
 
-$query = Select::table(["'custom name'" => 'sakila', 'b' => ' x', 'c' => 'sss'])
-    ->columns('a.*', 'b.*', 'a.id', 'b', Raw::query('fzs'))
-    ->where([
-        'and',
-        Op::eq('is_active', 1),
-        Op::gte('create_time', 212414),
-        Op::between('time', 12, 44)
-    ])
-    ->offset(15)->limit(5);
+$driver->configure(
+    'mysql:host=192.168.0.17;dbname=tester;charset=utf8mb4',
+    'root',
+    'root'
+);
 
+$q = select([
+    'name',
+    'total' => raw('COUNT(*)')
+])->from('table')
+    ->groupBy('name')
+    ->orderBy(['total' => 'desc'])
+    ->having(notOp(equals('total', 4)));
 
-$q = \ArekX\PQL\Update::item('idemo', [
-    'a' => 1,
-    'b' => true,
-    'c' => null,
-    'das.sss' => 'sasfasfasfsafsafasf'
-]);
-echo $builder->build($q)->getQuery();
-var_dump($builder->build($q)->getParams());
-$result = $builder->build($query);
-echo $result->getQuery();
-var_dump($result->getParams());
+$s = $driver->fetchAll($builder->build($q));
+
+var_dump($s);
+
 //echo \ArekX\PQL\Drivers\MySQL\DebugQuery::getString($result) . PHP_EOL;
 
 

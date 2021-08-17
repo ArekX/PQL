@@ -8,7 +8,7 @@ class RawSqlQuery implements RawQuery
 {
     protected string $sql;
     protected array $params;
-    protected array $config;
+    protected array $config = [];
 
     public static function create($sql, array $params = []): self
     {

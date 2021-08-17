@@ -39,8 +39,8 @@ class SelectBuilder implements QueryBuilderChild
             $this->buildJoins($structure, $state),
             $this->buildWhere($structure, $state),
             $this->buildGroupBy($structure, $state),
-            $this->buildOrderBy($structure, $state),
             $this->buildHaving($structure, $state),
+            $this->buildOrderBy($structure, $state),
             $this->buildLimit($structure)
         ]);
 

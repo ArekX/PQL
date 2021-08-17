@@ -42,43 +42,43 @@ class Op
     public static function compare($a, $op, $b): array
     {
         if (is_string($a)) {
-            $a = static::col($a);
+            $a = static::column($a);
         }
 
         return ['compare', $op, $a, $b];
     }
 
-    public static function eq($a, $b): array
+    public static function equals($a, $b): array
     {
         return Op::compare($a, '=', $b);
     }
 
-    public static function neq($a, $b): array
+    public static function notEquals($a, $b): array
     {
         return Op::compare($a, '<>', $b);
     }
 
-    public static function gt($a, $b): array
+    public static function greaterThan($a, $b): array
     {
         return Op::compare($a, '>', $b);
     }
 
-    public static function lt($a, $b): array
+    public static function lessThan($a, $b): array
     {
         return Op::compare($a, '<', $b,);
     }
 
-    public static function gte($a, $b): array
+    public static function greaterEquals($a, $b): array
     {
         return Op::compare($a, '>=', $b);
     }
 
-    public static function lte($a, $b): array
+    public static function lessEquals($a, $b): array
     {
         return Op::compare($a, '<=', $b);
     }
 
-    public static function col($op): array
+    public static function column($op): array
     {
         return ['column', $op];
     }
@@ -91,16 +91,16 @@ class Op
     public static function in($column, $values): array
     {
         if (is_string($column)) {
-            $column = static::col($column);
+            $column = static::column($column);
         }
 
-        return ['in', $column, Op::val($values)];
+        return ['in', $column, Op::value($values)];
     }
 
     public static function like($op, $value): array
     {
         if (is_string($op)) {
-            $op = Op::col($op);
+            $op = Op::column($op);
         }
 
         return ['like', $op, $value];
@@ -109,13 +109,13 @@ class Op
     public static function likeSearch($op, string $value): array
     {
         if (is_string($op)) {
-            $op = Op::col($op);
+            $op = Op::column($op);
         }
 
-        return ['like', $op, Op::val('%' . $value . '%')];
+        return ['like', $op, Op::value('%' . $value . '%')];
     }
 
-    public static function val($value): array
+    public static function value($value): array
     {
         return ['value', $value];
     }
@@ -123,7 +123,7 @@ class Op
     public static function between($expression, $from, $to): array
     {
         if (is_string($expression)) {
-            $expression = Op::col($expression);
+            $expression = Op::column($expression);
         }
 
         return ['between', $expression, $from, $to];
