@@ -7,8 +7,8 @@ use ArekX\PQL\Contracts\StructuredQuery;
 class Insert implements StructuredQuery
 {
     protected $item = null;
-    protected ?array $values = null;
-    protected ?array $columns = null;
+    protected $values = null;
+    protected $columns = null;
 
     public static function into($item, $values): self
     {
