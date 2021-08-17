@@ -13,23 +13,28 @@ class Update implements StructuredQuery, FilteredQuery, JoinQuery
     use FilterConditionTrait;
     use JoinConditionTrait;
 
-    protected ?string $table = null;
-    protected ?array $values = null;
+    protected $table = null;
+    protected $values = null;
 
     public static function create(): self
     {
         return new Update();
     }
 
-    public function table(string $table): self
+    public static function item($tableExpression, $setExpression): self
     {
-        $this->table = $table;
+        return static::create()->table($tableExpression)->set($setExpression);
+    }
+
+    public function table($tableExpression): self
+    {
+        $this->table = $tableExpression;
         return $this;
     }
 
-    public function set(array $valueMap): self
+    public function set($values): self
     {
-        $this->values = $valueMap;
+        $this->values = $values;
         return $this;
     }
 
@@ -39,7 +44,9 @@ class Update implements StructuredQuery, FilteredQuery, JoinQuery
             'table' => $this->table,
             'set' => $this->values,
             'where' => $this->where,
-            'join' => $this->join
+            'join' => $this->join,
+            'limit' => $this->limit,
+            'offset' => $this->offset
         ];
     }
 }

@@ -7,7 +7,7 @@
  */
 
 use ArekX\PQL\Drivers\MySQL\MySqlDriver;
-use ArekX\PQL\Drivers\MySQL\QueryBuilder;
+use ArekX\PQL\Drivers\MySQL\MySqlQueryBuilder;
 use ArekX\PQL\Helpers\Op;
 use ArekX\PQL\Raw;
 use ArekX\PQL\Select;
@@ -15,7 +15,7 @@ use ArekX\PQL\Select;
 require __DIR__ . '/vendor/autoload.php';
 
 $driver = new MySqlDriver();
-$builder = new QueryBuilder();
+$builder = new MySqlQueryBuilder();
 
 $query = Select::table(["'custom name'" => 'sakila', 'b' => ' x', 'c' => 'sss'])
     ->columns('a.*', 'b.*', 'a.id', 'b', Raw::query('fzs'))
@@ -28,12 +28,14 @@ $query = Select::table(["'custom name'" => 'sakila', 'b' => ' x', 'c' => 'sss'])
     ->offset(15)->limit(5);
 
 
-echo $builder->build(\ArekX\PQL\Insert::into('test', [
+$q = \ArekX\PQL\Update::item('idemo', [
     'a' => 1,
     'b' => true,
-    'c' => 'whoaaa'
-]))->getQuery();
-
+    'c' => null,
+    'das.sss' => 'sasfasfasfsafsafasf'
+]);
+echo $builder->build($q)->getQuery();
+var_dump($builder->build($q)->getParams());
 $result = $builder->build($query);
 echo $result->getQuery();
 var_dump($result->getParams());

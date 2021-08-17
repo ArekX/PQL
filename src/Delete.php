@@ -13,23 +13,28 @@ class Delete implements StructuredQuery, FilteredQuery, JoinQuery
     use FilterConditionTrait;
     use JoinConditionTrait;
 
-    protected ?string $table = null;
+    protected $table = null;
 
     public static function create(): self
     {
         return new Delete();
     }
 
-    public function table(string $table): self
+    public static function fromTable($tableExpression): self
     {
-        $this->table = $table;
+        return static::create()->from($tableExpression);
+    }
+
+    public function from($tableExpression): self
+    {
+        $this->table = $tableExpression;
         return $this;
     }
 
     public function getStructure(): array
     {
         return [
-            'table' => $this->table,
+            'from' => $this->table,
             'where' => $this->where,
             'join' => $this->join,
             'limit' => $this->limit,

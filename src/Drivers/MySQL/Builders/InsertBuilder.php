@@ -8,11 +8,16 @@ use ArekX\PQL\Contracts\QueryBuilderState;
 use ArekX\PQL\Contracts\RawQuery;
 use ArekX\PQL\Contracts\StructuredQuery;
 use ArekX\PQL\Data\RawSqlQuery;
+use ArekX\PQL\Drivers\MySQL\Traits\BuildLiteralTrait;
+use ArekX\PQL\Drivers\MySQL\Traits\BuildParentQuery;
+use ArekX\PQL\Drivers\MySQL\Traits\QuoteNameTrait;
 use Codeception\Step;
 
 class InsertBuilder implements QueryBuilderChild
 {
-    protected QueryBuilder $parent;
+    use BuildParentQuery;
+    use BuildLiteralTrait;
+    use QuoteNameTrait;
 
     public function build(StructuredQuery $query, QueryBuilderState $state): RawQuery
     {
@@ -24,22 +29,10 @@ class InsertBuilder implements QueryBuilderChild
             $this->buildValues($structure, $state)
         ];
 
-        return RawSqlQuery::create(implode(PHP_EOL, $parts), $state->getQueryParams()->getParams());
-    }
-
-
-    public function setParent(QueryBuilder $parent)
-    {
-        $this->parent = $parent;
-    }
-
-    protected function quoteName($name): string
-    {
-        if (strpos($name, "'") !== false) {
-            return $name;
-        }
-
-        return preg_replace("/([a-z_][a-zA-Z0-9_]*)/", "`$1`", $name);
+        return RawSqlQuery::create(
+            implode($state->get('queryGlue'), $parts),
+            $state->getQueryParams()->getParams()
+        );
     }
 
     protected function buildInto(array $structure, QueryBuilderState $state): string
@@ -47,7 +40,7 @@ class InsertBuilder implements QueryBuilderChild
         $item = $structure['item'];
 
         if ($item instanceof StructuredQuery) {
-            return 'INSERT ' . $this->parent->build($item, $state)->getQuery();
+            return 'INSERT ' . $this->buildQueryByParent($item, $state)->getQuery();
         }
 
         return 'INSERT INTO ' . $this->quoteName($structure['item']);
@@ -58,7 +51,7 @@ class InsertBuilder implements QueryBuilderChild
         $values = $structure['values'];
 
         if ($values instanceof StructuredQuery) {
-            return 'VALUES ' . $this->parent->build($values, $state)->getQuery();
+            return 'VALUES ' . $this->buildQueryByParent($values, $state)->getQuery();
         }
 
         $results = [];
@@ -69,41 +62,12 @@ class InsertBuilder implements QueryBuilderChild
         return 'VALUES (' . implode(', ', $results) . ')';
     }
 
-    protected function buildLiteral($value, QueryBuilderState $state)
-    {
-        if ($this->isPrimitive($value)) {
-            return $this->buildPrimitive($value);
-        }
-
-        return $state->getQueryParams()->addParam($value);
-    }
-
-    protected function isPrimitive($expression)
-    {
-        return is_int($expression) || is_float($expression) || is_bool($expression) || is_null($expression);
-    }
-
-    protected function buildPrimitive($expression)
-    {
-        if (is_bool($expression) || is_int($expression)) {
-            return (int)$expression;
-        }
-
-        if (is_float($expression)) {
-            return (float)$expression;
-        }
-
-        if (is_null($expression)) {
-            return 'NULL';
-        }
-    }
-
-    protected function buildColumns(array $structure, QueryBuilderState $state)
+    protected function buildColumns(array $structure, QueryBuilderState $state): string
     {
         $columns = $structure['columns'];
 
         if ($columns instanceof StructuredQuery) {
-            return $this->parent->build($columns, $state);
+            return $this->buildQueryByParent($columns, $state)->getQuery();
         }
 
         $result = [];

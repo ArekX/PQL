@@ -9,7 +9,7 @@ use ArekX\PQL\Contracts\RawQuery;
 use ArekX\PQL\Contracts\StructuredQuery;
 use ArekX\PQL\Data\PrefixQueryParams;
 use ArekX\PQL\Data\RawSqlQuery;
-use \ArekX\PQL\Drivers\MySQL\QueryBuilder as ParentBuilder;
+use \ArekX\PQL\Drivers\MySQL\MySqlQueryBuilder as ParentBuilder;
 
 class RawBuilder implements QueryBuilderChild
 {
