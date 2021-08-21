@@ -34,6 +34,15 @@ $q = select([
 
 $s = $driver->fetchAll($builder->build($q));
 
+$h = query('select')
+    ->with('columns', ['a' => query('raw', ['query' => 'h', 'params' => ['a' => 1]]), 'b', 'c'])
+    ->with('from', 'table')
+    ->with('orderBy', ['a' => 'asc'])
+    ->with('groupBy', ['by' => 'a'])
+    ->with('where', ['and',
+            ['a' => 'b']
+    ]);
+
 var_dump($s);
 
 //echo \ArekX\PQL\Drivers\MySQL\DebugQuery::getString($result) . PHP_EOL;
