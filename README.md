@@ -1,10 +1,22 @@
 # PQL
 
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/ArekX/PQL/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/ArekX/PQL/?branch=master)
+[![Code Coverage](https://scrutinizer-ci.com/g/ArekX/PQL/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/ArekX/PQL/?branch=master)
+[![Build Status](https://scrutinizer-ci.com/g/ArekX/PQL/badges/build.png?b=master)](https://scrutinizer-ci.com/g/ArekX/PQL/build-status/master)
+[![Code Intelligence Status](https://scrutinizer-ci.com/g/ArekX/PQL/badges/code-intelligence.svg?b=master)](https://scrutinizer-ci.com/code-intelligence)
+[![Documentation Status](https://readthedocs.org/projects/pql/badge/?version=latest)](https://pql.readthedocs.io/en/latest/?badge=latest)
+
+
 PHP Database Query Library
 
 ## Usage
 
 TODO
+
+## Documentation
+
+Documentation is available in `docs` folder.
+HTML version of the docs is available at: https://pql.readthedocs.io/
 
 ## Testing
 

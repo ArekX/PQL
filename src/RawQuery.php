@@ -17,30 +17,79 @@
 
 namespace ArekX\PQL;
 
+/**
+ * Represents a high-level implementation for a
+ * raw query  which can be used in a database driver.
+ */
 class RawQuery implements Contracts\RawQuery
 {
+    /**
+     * Passed query.
+     * @var mixed
+     */
+    protected $query = null;
+
+    /**
+     * Passed parameters
+     * @var array|null
+     */
+    protected $params = null;
+
+    /**
+     * Passed configuration
+     *
+     * @var array|null
+     */
+    protected $config = null;
+
+    /**
+     * Create new instance of this class
+     *
+     * @param mixed $query Query to be used
+     * @param array|null $params Parameters to be bound to the query
+     * @param array|null $config Configuration to be bound to the query
+     * @return static
+     */
     public static function create($query, $params = null, $config = null)
     {
         return new static($query, $params, $config);
     }
 
+    /**
+     * Constructor for RawQuery
+     *
+     * @param mixed $query Query to be used
+     * @param array|null $params Parameters to be bound to the query
+     * @param array|null $config Configuration to be bound to the query
+     */
     public function __construct($query, $params = null, $config = null)
     {
-
+        $this->query = $query;
+        $this->params = $params;
+        $this->config = $config;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getQuery()
     {
-        // TODO: Implement getQuery() method.
+        return $this->query;
     }
 
-    public function getParams(): array
+    /**
+     * @inheritDoc
+     */
+    public function getParams(): ?array
     {
-        // TODO: Implement getParams() method.
+        return $this->params;
     }
 
-    public function getConfig(): array
+    /**
+     * @inheritDoc
+     */
+    public function getConfig(): ?array
     {
-        // TODO: Implement getConfig() method.
+        return $this->config;
     }
 }
