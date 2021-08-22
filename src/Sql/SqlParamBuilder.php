@@ -49,6 +49,15 @@ class SqlParamBuilder implements ParamsBuilder
     protected $parameterIndex = 0;
 
     /**
+     * Create new intance of this class.
+     * @return static
+     */
+    public static function create()
+    {
+        return new static();
+    }
+
+    /**
      * @inheritDoc
      */
     public function wrapValue($value, $type = null)

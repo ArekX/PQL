@@ -21,7 +21,7 @@ namespace ArekX\PQL;
  * Represents a high-level implementation for a
  * raw query  which can be used in a database driver.
  */
-class RawQuery implements Contracts\RawQuery
+class RawQueryResult implements Contracts\RawQuery
 {
     /**
      * Passed query.

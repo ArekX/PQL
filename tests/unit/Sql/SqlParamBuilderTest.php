@@ -8,7 +8,7 @@ class SqlParamBuilderTest extends \Codeception\Test\Unit
 {
     public function testWrapValue()
     {
-        $p = new SqlParamBuilder();
+        $p = SqlParamBuilder::create();
 
         expect($p->wrapValue(2))->toBe(':t0');
         expect($p->get(':t0'))->toBe([2, null]);
@@ -19,7 +19,7 @@ class SqlParamBuilderTest extends \Codeception\Test\Unit
 
     public function testWrapValuePrefixChange()
     {
-        $p = new SqlParamBuilder();
+        $p = SqlParamBuilder::create();
 
         $p->prefix = ':param_';
 
@@ -32,7 +32,7 @@ class SqlParamBuilderTest extends \Codeception\Test\Unit
 
     public function testAddCustomParam()
     {
-        $p = new SqlParamBuilder();
+        $p = SqlParamBuilder::create();
 
         $p->add(':param', 2);
 
@@ -44,7 +44,7 @@ class SqlParamBuilderTest extends \Codeception\Test\Unit
 
     public function testGetNonExistentKey()
     {
-        $p = new SqlParamBuilder();
+        $p = SqlParamBuilder::create();
 
         $p->add(':param', 2);
 
@@ -53,7 +53,7 @@ class SqlParamBuilderTest extends \Codeception\Test\Unit
 
     public function testBuild()
     {
-        $p = new SqlParamBuilder();
+        $p = SqlParamBuilder::create();
         $p->wrapValue('custom value1');
         $p->wrapValue('custom value2', 'type1');
         $p->add(':custom_param', 2);
@@ -69,7 +69,7 @@ class SqlParamBuilderTest extends \Codeception\Test\Unit
 
     public function testBuildWithAddOverride()
     {
-        $p = new SqlParamBuilder();
+        $p = SqlParamBuilder::create();
         $p->wrapValue('custom value1');
         $p->add(':t0', true, 'bool');
 
@@ -80,7 +80,7 @@ class SqlParamBuilderTest extends \Codeception\Test\Unit
 
     public function testBuildWithCustomPrefix()
     {
-        $p = new SqlParamBuilder();
+        $p = SqlParamBuilder::create();
         $p->prefix = ':prefix_';
         $p->wrapValue('custom value1');
         $p->wrapValue('custom value2', 'type');

@@ -32,31 +32,36 @@ trait ConditionTrait
      *
      * When array is passed, it can be one of the operations:
      * ```
-     * ['not', variable] - Not operation
-     * ['and', variable1, ..., variableN] - AND operation
-     * ['or', variable1, ..., variableN] - OR operation
-     * ['=', leftVariable, rightVariable] - Comparison operation
-     * ['<', leftVariable, rightVariable] - Comparison operation
-     * ['>', leftVariable, rightVariable] - Comparison operation
-     * ['>=', leftVariable, rightVariable] - Comparison operation
-     * ['<=', leftVariable, rightVariable] - Comparison operation
-     * ['like', leftVariable, rightVariable] - Like operation
-     * ['exists', variable] - Exists operation
-     * ['in', leftVariable, rightVariable] - In operation
-     * ['between', variable, fromVariable, toVariable] - Between operation
-     * ['filter', associativeArray] - Associative array where key is the column and value is a prepared statement value.
+     * ['not', operation] - Not operation
+     * ['and', operation1, ..., operationN] - AND operation
+     * ['or', operation1, ..., operationN] - OR operation
+     * ['=', leftOperation, rightOperation] - Comparison operation
+     * ['<', leftOperation, rightOperation] - Comparison operation
+     * ['>', leftOperation, rightOperation] - Comparison operation
+     * ['>=', leftOperation, rightOperation] - Comparison operation
+     * ['<=', leftOperation, rightOperation] - Comparison operation
+     * ['like', leftOperation, rightOperation] - Like operation
+     * ['exists', operation] - Exists operation
+     * ['in', leftOperation, rightOperation] - In operation
+     * ['between', operation, fromOperation, toOperation] - Between operation
+     * ['all', associativeArray] - Associative array where key is the column and value is a prepared statement value.
      *                                All keys are turned into conditions joined together by AND.
      *                                All values are properly escaped and can be user inputs.
+     *                                If a value is an array it wil be processed as an operation.
      *                                If a value is a StructuredQuery it will be pre-processed.
-     * ['search', associativeArray] - Associative array where key is the column and value is a prepared statement value.
+     * ['any', associativeArray] - Associative array where key is the column and value is a prepared statement value.
      *                                All keys are turned into conditions joined by OR.
      *                                All values are properly escaped and can be user inputs.
      *                                If a value is a StructuredQuery it will be pre-processed.
-     * ['col', string] - Represents a column name or a `table.column` name.
+     * ['column', string] - Represents a column name or a `table.column` name.
      *                   This value is not escaped and should not contain user input.
-     * ['val', value, [type]] - Represents a value which can be user input.
+     * ['value', value, [type]] - Represents a value which can be user input.
      *                          Type must be a value supported by the driver if not passed, type will be inferred from
      *                          the value.
+     *                          If a value is an array it will result in multiple parameters. This is useful for IN
+     *                          operation checks.
+     * StructuredQuery - If this is passed it will be parsed by the builder as a sub query. This is useful for passing
+     *                   raw query values in any operation or just using a raw query for the where part.
      * ```
      * These operations are recursively parsed during query building.
      * A variable can be one of the following:
