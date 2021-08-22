@@ -62,12 +62,12 @@ class MySqlQueryBuilderState implements QueryBuilderState
         $this->state[$name] = $value;
     }
 
-    public function getParamsBuilder(): SqlParamBuilder
+    public function getParamsBuilder(): ?SqlParamBuilder
     {
         return $this->get('paramsBuilder');
     }
 
-    public function getParentBuilder(): QueryBuilder
+    public function getParentBuilder(): ?QueryBuilder
     {
         return $this->get('parentBuilder');
     }

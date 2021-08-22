@@ -12,7 +12,7 @@ class DeleteBuilder extends QueryPartBuilder
     protected function getPartBuilders(): array
     {
         return [
-            'from' => fn($part, $state) => $this->buildFrom($part)
+            'from' => fn($part) => $this->buildFrom($part)
         ];
     }
 
