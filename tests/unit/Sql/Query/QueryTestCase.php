@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-namespace tests\src\Sql\Query;
+namespace tests\Sql\Query;
 
 use ArekX\PQL\Contracts\StructuredQuery;
 use Codeception\Test\Unit;

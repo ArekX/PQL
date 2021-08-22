@@ -15,12 +15,12 @@
  * limitations under the License.
  */
 
-namespace tests\src\Sql\Query;
+namespace tests\Sql\Query;
 
+use ArekX\PQL\Sql\Query\Delete;
 use ArekX\PQL\Sql\Query\Raw;
-use Codeception\Test\Unit;
 
-class RawTest extends Unit
+class RawTest extends QueryTestCase
 {
     public function testCreation()
     {
@@ -33,19 +33,30 @@ class RawTest extends Unit
 
     public function testQuery()
     {
-        $query = Raw::create()->query('value');
-        expect($query->toArray()['query'])->toBe('value');
+        $this->assertQueryPartValues(Raw::create(), 'query', [
+            ['key' => 'value'],
+            'SELECT 1',
+            null
+        ]);
+    }
 
-        $query->query(['value' => 'value1']);
-        expect($query->toArray()['query'])->toBe(['value' => 'value1']);
 
-        $query->query(null);
-        expect($query->toArray()['query'])->toBe(null);
-
+    public function testConfigure()
+    {
+        $this->assertQueryPartValues(Delete::create(), 'config', [
+            ['key' => 'value'],
+            ['key2' => 'value2']
+        ]);
     }
 
     public function testParams()
     {
+        $this->assertQueryPartValues(Raw::create(), 'query', [
+            ['key' => 'value'],
+            'SELECT 1',
+            null
+        ]);
+
         $query = Raw::create()->params([
             ':key' => 'value',
             ':key2' => 'value2',

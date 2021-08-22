@@ -1,23 +1,50 @@
 <?php
+/**
+ * Copyright 2021 Aleksandar Panic
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
-namespace tests\src\Sql\Query;
+
+namespace tests\Sql\Query;
 
 use ArekX\PQL\Sql\Query\Delete;
 use ArekX\PQL\Sql\Query\Raw;
+use ArekX\PQL\Sql\Query\Update;
 
-class DeleteTest extends QueryTestCase
+class UpdateTest extends QueryTestCase
 {
     public function testCreation()
     {
-        $q = Delete::create();
-        expect($q)->toBeInstanceOf(Delete::class);
+        $q = Update::create();
+        expect($q)->toBeInstanceOf(Update::class);
     }
 
-
-    public function testFrom()
+    public function testTo()
     {
-        $this->assertQueryPartValues(Delete::create(), 'from', [
+        $this->assertQueryPartValues(Update::create(), 'to', [
             'table',
+            Raw::create()
+        ]);
+    }
+
+    public function testSet()
+    {
+        $this->assertQueryPartValues(Update::create(), 'set', [
+            [
+                'key' => 'value',
+                'key2' => 'value2'
+            ],
             Raw::create()
         ]);
     }

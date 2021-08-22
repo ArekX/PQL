@@ -1,5 +1,5 @@
 <?php
-namespace tests\src\Query;
+namespace tests;
 
 use ArekX\PQL\Query;
 

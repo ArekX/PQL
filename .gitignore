@@ -3,3 +3,5 @@ vendor
 api
 old
 coverage
+tests/_output
+tester.php

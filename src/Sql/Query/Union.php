@@ -19,6 +19,7 @@ namespace ArekX\PQL\Sql\Query;
 
 use ArekX\PQL\Contracts\StructuredQuery;
 use ArekX\PQL\Query;
+use ArekX\PQL\Sql\Query\Traits\ConfigureTrait;
 
 /**
  * Represents an union query
@@ -26,6 +27,8 @@ use ArekX\PQL\Query;
  */
 class Union extends Query
 {
+    use ConfigureTrait;
+
     /**
      * Set initial query to union other
      * queries with.

@@ -20,6 +20,7 @@ namespace ArekX\PQL\Sql\Query;
 use ArekX\PQL\Contracts\StructuredQuery;
 use ArekX\PQL\Query;
 use ArekX\PQL\Sql\Query\Traits\ConditionTrait;
+use ArekX\PQL\Sql\Query\Traits\ConfigureTrait;
 use ArekX\PQL\Sql\Query\Traits\JoinTrait;
 
 /**
@@ -30,6 +31,7 @@ class Select extends Query
 {
     use ConditionTrait;
     use JoinTrait;
+    use ConfigureTrait;
 
     /**
      * Sets a data source from which to pull the data from

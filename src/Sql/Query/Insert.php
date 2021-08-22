@@ -19,6 +19,7 @@ namespace ArekX\PQL\Sql\Query;
 
 use ArekX\PQL\Contracts\StructuredQuery;
 use ArekX\PQL\Query;
+use ArekX\PQL\Sql\Query\Traits\ConfigureTrait;
 
 /**
  * Represents an insert query
@@ -26,6 +27,8 @@ use ArekX\PQL\Query;
  */
 class Insert extends Query
 {
+    use ConfigureTrait;
+
     /**
      * Set the destination to insert data into.
      *

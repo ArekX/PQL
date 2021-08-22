@@ -18,17 +18,23 @@
 namespace ArekX\PQL\Sql\Query;
 
 use ArekX\PQL\Query;
+use ArekX\PQL\Sql\Query\Traits\ConfigureTrait;
 
 /**
  * Represents a query containing raw query or a value.
  */
 class Raw extends Query
 {
+    use ConfigureTrait;
+
     /**
      * Create an instance of raw query from params and query.
      *
-     * @param mixed $query
-     * @param array $params
+     * Query value can be a string or a different value
+     * depending on the driver in use.
+     *
+     * @param mixed $query Driver dependent query
+     * @param array $params Params to be bound to the query.
      * @return Raw
      */
     public static function from($query, $params = null)
@@ -43,7 +49,7 @@ class Raw extends Query
      * and should not be used to pass values from the user input to it. If you need to
      * pass user value then define the parameters in this query and use params() function.
      *
-     * @param mixed $query
+     * @param mixed $query Driver dependent query.
      * @return $this
      */
     public function query($query)
@@ -61,9 +67,7 @@ class Raw extends Query
      * Usual use case for these parameters are SQL parameters
      * when running an SQL query.
      *
-     * If null is passed, no params will be used.
-     *
-     * @param array|null $params
+     * @param array $params
      * @return $this
      */
     public function params($params)
