@@ -17,8 +17,6 @@
 
 namespace ArekX\PQL\Sql\Query\Traits;
 
-use ArekX\PQL\Query;
-
 trait ConfigureTrait
 {
     /**
