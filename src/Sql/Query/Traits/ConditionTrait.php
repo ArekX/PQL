@@ -72,7 +72,7 @@ trait ConditionTrait
      */
     public function where($where)
     {
-        $this->use('where', $where); // @scrutinizer ignore-call
+        $this->use('where', $where);
         return $this;
     }
 
@@ -105,7 +105,7 @@ trait ConditionTrait
      */
     protected function appendConditionPart($part, $glue, $condition)
     {
-        $current = $this->get($part); // @scrutinizer ignore-call
+        $current = $this->get($part);
 
         if (is_array($current) && ($current[0] ?? '') === $glue) {
             $current[] = $condition;
@@ -115,7 +115,7 @@ trait ConditionTrait
             $current = [$glue, $current, $condition];
         }
 
-        $this->use($part, $current); // @scrutinizer ignore-call
+        $this->use($part, $current);
         return $this;
     }
 
@@ -145,7 +145,7 @@ trait ConditionTrait
      */
     public function limit($limit)
     {
-        $this->use('limit', $limit); // @scrutinizer ignore-call
+        $this->use('limit', $limit);
         return $this;
     }
 
@@ -157,7 +157,7 @@ trait ConditionTrait
      */
     public function offset($offset)
     {
-        $this->use('offset', $offset); // @scrutinizer ignore-call
+        $this->use('offset', $offset);
         return $this;
     }
 }
