@@ -91,7 +91,7 @@ class MySqlQueryBuilderStateTest extends \Codeception\Test\Unit
     {
         $s = MySqlQueryBuilderState::create();
         expect($s->getQueryPartGlue())->toBe(' ');
-        $s->set('queryPartGlue', PHP_EOL);
+        $s->setQueryPartGlue(PHP_EOL);
         expect($s->getQueryPartGlue())->toBe(PHP_EOL);
     }
 }
