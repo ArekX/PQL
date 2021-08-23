@@ -15,12 +15,14 @@
  * limitations under the License.
  */
 
-$documentor = __DIR__ . '/phpDocumentor.phar';
+$documentor = 'phpDocumentor.phar';
 file_put_contents($documentor, file_get_contents('https://phpdoc.org/phpDocumentor.phar'));
+
+echo exec('php -v') ?: 'No PHP' . PHP_EOL;
 
 exec(implode([
     'php',
     $documentor,
     '-d src',
-    '-t _site/html/api'
+    '-t _build/html/api'
 ]));
