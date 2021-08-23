@@ -20,9 +20,9 @@ file_put_contents($documentor, file_get_contents('https://phpdoc.org/phpDocument
 
 echo exec('php -v') ?: 'No PHP' . PHP_EOL;
 
-exec(implode(' ', [
+echo exec(implode(' ', [
     'php',
     $documentor,
     '-d src',
     '-t _build/html/api'
-]));
+])) . PHP_EOL;
