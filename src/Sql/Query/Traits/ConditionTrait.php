@@ -30,44 +30,42 @@ trait ConditionTrait
      *
      * If null is sent, where will not be used.
      *
-     * When array is passed, it can be one of the operations:
-     * ```
-     * ['not', operation] - Not operation
-     * ['and', operation1, ..., operationN] - AND operation
-     * ['or', operation1, ..., operationN] - OR operation
-     * ['=', leftOperation, rightOperation] - Comparison operation
-     * ['<', leftOperation, rightOperation] - Comparison operation
-     * ['>', leftOperation, rightOperation] - Comparison operation
-     * ['>=', leftOperation, rightOperation] - Comparison operation
-     * ['<=', leftOperation, rightOperation] - Comparison operation
-     * ['like', leftOperation, rightOperation] - Like operation
-     * ['exists', operation] - Exists operation
-     * ['in', leftOperation, rightOperation] - In operation
-     * ['between', operation, fromOperation, toOperation] - Between operation
-     * ['all', associativeArray] - Associative array where key is the column and value is a prepared statement value.
+     * When array is passed, it can be one of the expressions:
+     * - ['not', operation] - Not expression
+     * - ['and', operation1, ..., operationN] - AND expression
+     * - ['or', expression1, ..., expressionN] - OR expression
+     * - ['=', leftExpression, rightExpression] - Comparison expression (equals)
+     * - ['!=', leftExpression, rightExpression] - Comparison expression (notEquals)
+     * - ['<>', leftExpression, rightExpression] - Comparison expression (notEquals)
+     * - ['<', leftExpression, rightExpression] - Comparison expression (lessThan)
+     * - ['>', leftExpression, rightExpression] - Comparison expression (greaterThan)
+     * - ['>=', leftExpression, rightExpression] - Comparison expression (greaterEqualThan)
+     * - ['<=', leftExpression, rightExpression] - Comparison expression (lessEqualThan)
+     * - ['like', leftExpression, rightExpression] - Like expression
+     * - ['exists', expression] - Exists expression
+     * - ['in', leftExpression, rightExpression] - In expression
+     * - ['between', expression, fromExpression, toExpression] - Between expression
+     * - ['all', associativeArray] - Associative array where key is the column and value is a prepared statement value.
      *                                All keys are turned into conditions joined together by AND.
      *                                All values are properly escaped and can be user inputs.
-     *                                If a value is an array it wil be processed as an operation.
+     *                                If a value is an array it wil be processed as an expression.
      *                                If a value is a StructuredQuery it will be pre-processed.
-     * ['any', associativeArray] - Associative array where key is the column and value is a prepared statement value.
+     * - ['any', associativeArray] - Associative array where key is the column and value is a prepared statement value.
      *                                All keys are turned into conditions joined by OR.
      *                                All values are properly escaped and can be user inputs.
      *                                If a value is a StructuredQuery it will be pre-processed.
-     * ['column', string] - Represents a column name or a `table.column` name.
-     *                   This value is not escaped and should not contain user input.
-     * ['value', value, [type]] - Represents a value which can be user input.
+     * - ['column', string] - Represents a column name or a `table.column` name.
+     *                      This value is not escaped and should NOT contain user input.
+     * - ['value', value, [type]] - Represents a value which can be user input.
      *                          Type must be a value supported by the driver if not passed, type will be inferred from
      *                          the value.
      *                          If a value is an array it will result in multiple parameters. This is useful for IN
-     *                          operation checks.
-     * StructuredQuery - If this is passed it will be parsed by the builder as a sub query. This is useful for passing
-     *                   raw query values in any operation or just using a raw query for the where part.
-     * ```
-     * These operations are recursively parsed during query building.
-     * A variable can be one of the following:
-     * Integer, Float, Boolean, Null, String - This value is always transformed and bound into a query as a parameter.
-     *                                   Depending on the driver, booleans are usually cast to
-     *                                   an integer value 1 (true) or 0 (false).
+     *                          expression checks.
+     * - StructuredQuery - If this is passed it will be parsed by the builder as a sub query. This is useful for passing
+     *                   raw query values in any expression or just using a raw query for the where part.
+     *
+     * These expressions are recursively parsed during query building.
+     *
      * StructuredQuery - When this is placed as a variable, driver will also process this query and join its data
      *                   and parameters into this query meaning StructuredQueries can be used as sub-queries or
      *                   for raw input (you can use Raw class for this).

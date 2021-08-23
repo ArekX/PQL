@@ -9,19 +9,87 @@
 
 PHP Database Query Library
 
+This library is a database abstraction layer which abstracts the query commands (Select, Delete, Update, etc.) out from the
+drivers (MySQL, Postgres, SQL Server, etc.). Queries are defined in an eloquent way allowing you to
+write almost all kinds of queries without having to rely on passing raw query data.
+
+## Installation
+
+Installing this library is done via composer `composer install arekxv/pql`
+
 ## Usage
 
-TODO
+First you need to decide on which driver you will use. Following drivers are supported:
+
+* [MySQL](docs/drivers/mysql.md)
+
+After you decide on the driver, writing a query is as simple as:
+
+```php
+use ArekX\PQL\Sql\Query\Select
+
+// ... driver and builder initialization left out for brevity.
+
+/** @var \ArekX\PQL\Contracts\Driver $driver */
+/** @var \ArekX\PQL\Contracts\QueryBuilder $builder */
+
+
+// Fetching all results
+
+$query = Select::create()
+    ->columns('*')
+    ->from('user')
+    ->where(['=', 'is_active', 1]);
+
+// Returns RawQuery object, built query equals to: SELECT * FROM `user` WHERE `is_active` = 1;
+$rawQuery = $builder->build($query);
+
+$driver->fetchAll($rawQuery); // Returns all data for user table
+
+
+// Complex select query:
+$query = Select::create()
+    ->columns('*')
+    ->from(['u' => 'user'])
+    ->innerJoin(['r' => 'user_role'], 'u.role_id = r.id')
+    ->where(['and',
+        ['=', 'u.is_active', 1],
+        ['in', 'r.id', Select::create()
+               ->columns('role_id')
+               ->from('application_roles')
+               ->where(['=', 'application_id', 2])
+       ]
+    ]);
+
+/* 
+Returns RawQuery object, built query equals to:
+SELECT 
+    * 
+FROM `user` AS `u`
+INNER JOIN `user_role` AS `r` ON u.role_id = r.id
+WHERE
+ `u`.`is_active` = 1
+ AND `r`.`id` IN (
+    SELECT `role_id` FROM `application_roles` WHERE `application_id` = 2
+ )
+*/
+$rawQuery = $builder->build($query);
+
+$driver->fetchAll($rawQuery); // Returns all data for this query
+
+```
 
 ## Documentation
 
-Documentation is available in `docs` folder.
+Documentation is available in [here](docs/index.md) (in docs folder).
+
 HTML version of the docs is available at: https://pql.readthedocs.io/
 
 ## Testing
 
 Run `composer install` and then run `composer test`
 
+For coverage report run `composer coverage` or you can take a look at it [here](https://scrutinizer-ci.com/g/ArekX/PQL/?branch=master).
 
 ## License
 
