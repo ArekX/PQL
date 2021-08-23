@@ -1,3 +1,4 @@
 steps:
-  - wget https://phpdoc.org/phpDocumentor.phar -O documentor.phar
+  - wget https://phpdoc.org/phpDocumentor.phar -q -O documentor.phar
   - php documentor.phar -d src -t _build/html/api
+  - python -m mkdocs build --clean --site-dir _build/html --config-file mkdocs.yml
