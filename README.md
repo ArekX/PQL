@@ -39,7 +39,7 @@ use ArekX\PQL\Sql\Query\Select
 $query = Select::create()
     ->columns('*')
     ->from('user')
-    ->where(['=', 'is_active', 1]);
+    ->where(['all', ['is_active' => 1]]);
 
 // Returns RawQuery object, built query equals to: SELECT * FROM `user` WHERE `is_active` = 1;
 $rawQuery = $builder->build($query);
@@ -52,15 +52,13 @@ $query = Select::create()
     ->columns('*')
     ->from(['u' => 'user'])
     ->innerJoin(['r' => 'user_role'], 'u.role_id = r.id')
-    ->where(['and',
-        ['=', 'u.is_active', 1],
-        ['in', 'r.id', Select::create()
+    ->where(['all', [
+         'u.is_active' => 1,
+         'r.id' => Select::create()
                ->columns('role_id')
                ->from('application_roles')
                ->where(['=', 'application_id', 2])
-       ]
-    ]);
-
+      ]);
 /* 
 Returns RawQuery object, built query equals to:
 SELECT 
