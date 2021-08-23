@@ -34,6 +34,7 @@ class DeleteTest extends QueryTestCase
     {
         $this->assertQueryPartValues(Delete::create(), 'from', [
             'table',
+            ['as' => 'table1', 'table2'],
             Raw::create()
         ]);
     }

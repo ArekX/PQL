@@ -21,7 +21,9 @@ use ArekX\PQL\Contracts\QueryBuilder;
 use ArekX\PQL\Contracts\QueryBuilderState;
 use ArekX\PQL\Drivers\MySql\Builder\Builders\DeleteBuilder;
 use ArekX\PQL\Drivers\MySql\Builder\Builders\QueryPartBuilder;
+use ArekX\PQL\Drivers\MySql\Builder\Builders\RawBuilder;
 use ArekX\PQL\Sql\Query\Delete;
+use ArekX\PQL\Sql\Query\Raw;
 use ArekX\PQL\Sql\SqlParamBuilder;
 use ArekX\PQL\Sql\SqlQueryBuilderFactory;
 
@@ -31,7 +33,8 @@ use ArekX\PQL\Sql\SqlQueryBuilderFactory;
 class MySqlQueryBuilder extends SqlQueryBuilderFactory
 {
     const BUILDERS = [
-        Delete::class => DeleteBuilder::class
+        Delete::class => DeleteBuilder::class,
+        Raw::class => RawBuilder::class
     ];
 
     /**
@@ -52,7 +55,7 @@ class MySqlQueryBuilder extends SqlQueryBuilderFactory
     /**
      * @inheritDoc
      */
-    protected function createState(): QueryBuilderState
+    public function createState(): QueryBuilderState
     {
         $state = MySqlQueryBuilderState::create();
 

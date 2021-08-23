@@ -106,29 +106,6 @@ class QueryPartBuilderTest extends Unit
         $builder->build($query);
     }
 
-    public function testBuildByParentIfItemIsStructuredQuery()
-    {
-        $builder = $this->createBuilder([
-            'getInitialParts' => fn() => ['INITIAL'],
-            'getPartBuilders' => fn() => [
-                'part' => fn() => 'PART'
-            ]
-        ]);
-
-        $query = Query::create();
-        $query->use('part', Query::create());
-
-        $params = new SqlParamBuilder();
-        $state = $this->make(MySqlQueryBuilderState::class, [
-            'getParentBuilder' => fn() => $builder,
-            'getParamsBuilder' => fn() => $params
-        ]);
-
-        $raw = $builder->build($query, $state);
-
-        expect($raw->getQuery())->toBe('INITIAL INITIAL');
-    }
-
     public function testRequiredPartsNotSetThrowsAnError()
     {
         $builder = $this->createBuilder([

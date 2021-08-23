@@ -19,15 +19,53 @@ namespace tests\Drivers\MySql\Builder\Builders;
 
 use ArekX\PQL\Drivers\MySql\Builder\MySqlQueryBuilder;
 use ArekX\PQL\Sql\Query\Delete;
+use ArekX\PQL\Sql\Query\Raw;
 
 class DeleteBuilderTest extends \Codeception\Test\Unit
 {
-    public function testBuilder()
+    public function testFromWithString()
+    {
+        $result = $this->build(Delete::create()->from('table'));
+        expect($result->getQuery())->toBe('DELETE FROM `table`');
+    }
+
+    protected function build(Delete $query)
     {
         $builder = new MySqlQueryBuilder();
+        return $builder->build($query);
+    }
 
-        $q = Delete::create()->from('table');
+    public function testFromWithArray()
+    {
+        $result = $this->build(Delete::create()->from(['table1', 'asName' => 'table2']));
+        expect($result->getQuery())->toBe('DELETE FROM `table1`, `table2` AS `asName`');
+    }
 
-        expect($builder->build($q)->getQuery())->toBe('DELETE FROM table');
+    public function testFromWithStructuredQuery()
+    {
+        $q = Delete::create()->from('sub');
+        $result = $this->build(Delete::create()->from($q));
+        expect($result->getQuery())->toBe('DELETE FROM (DELETE FROM `sub`)');
+    }
+
+    public function testFromWithRaw()
+    {
+        $q = Raw::from("RAW QUERY");
+        $result = $this->build(Delete::create()->from($q));
+        expect($result->getQuery())->toBe('DELETE FROM RAW QUERY');
+    }
+
+    public function testFromWithStructuredQueryInAs()
+    {
+        $q = Delete::create()->from('sub');
+        $result = $this->build(Delete::create()->from(['alias1' => $q]));
+        expect($result->getQuery())->toBe('DELETE FROM (DELETE FROM `sub`) AS `alias1`');
+    }
+
+    public function testFromWithRawInAs()
+    {
+        $q = Raw::from("RAW QUERY");
+        $result = $this->build(Delete::create()->from(['alias1' => $q]));
+        expect($result->getQuery())->toBe('DELETE FROM RAW QUERY AS `alias1`');
     }
 }

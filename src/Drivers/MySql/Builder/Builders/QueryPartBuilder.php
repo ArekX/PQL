@@ -30,25 +30,6 @@ use ArekX\PQL\RawQueryResult;
 abstract class QueryPartBuilder implements QueryBuilder
 {
     /**
-     * Build a specific query part.
-     *
-     * If the part is a structured query it will be built using a parent query builder.
-     *
-     * @param array|StructuredQuery $part Part to be built
-     * @param callable $buildPart Part builder
-     * @param MySqlQueryBuilderState $state State to be passed to the builder.
-     * @return mixed Result of the query.
-     */
-    protected function buildPart($part, $buildPart, MySqlQueryBuilderState $state)
-    {
-        if ($part instanceof StructuredQuery) {
-            return $state->getParentBuilder()->build($part, $state)->getQuery();
-        }
-
-        return $buildPart($part, $state);
-    }
-
-    /**
      * @inheritDoc
      */
     public function build(StructuredQuery $query, QueryBuilderState $state = null): RawQuery
@@ -92,7 +73,7 @@ abstract class QueryPartBuilder implements QueryBuilder
                 continue;
             }
 
-            $result = $this->buildPart($parts[$partName], $buildPart, $state);
+            $result = $buildPart($parts[$partName], $state);
 
             if ($result !== null) {
                 $results[] = $result;

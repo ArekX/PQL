@@ -69,5 +69,5 @@ abstract class SqlQueryBuilderFactory implements QueryBuilderFactory, QueryBuild
      * Create a new state for this query builder.
      * @return QueryBuilderState
      */
-    protected abstract function createState(): QueryBuilderState;
+    public abstract function createState(): QueryBuilderState;
 }

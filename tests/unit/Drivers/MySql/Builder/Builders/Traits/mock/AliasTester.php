@@ -15,36 +15,17 @@
  * limitations under the License.
  */
 
-namespace ArekX\PQL\Drivers\MySql\Builder\Builders;
+namespace tests\Drivers\MySql\Builder\Builders\Traits\mock;
 
 use ArekX\PQL\Drivers\MySql\Builder\Builders\Traits\AliasTrait;
-use ArekX\PQL\Drivers\MySql\Builder\Builders\Traits\SubQueryTrait;
 use ArekX\PQL\Drivers\MySql\Builder\MySqlQueryBuilderState;
 
-class DeleteBuilder extends QueryPartBuilder
+class AliasTester
 {
     use AliasTrait;
-    use SubQueryTrait;
 
-    protected function getInitialParts(): array
+    public function alias($name, $state = null)
     {
-        return ['DELETE'];
-    }
-
-    protected function getPartBuilders(): array
-    {
-        return [
-            'from' => fn($part, $state) => $this->buildFrom($part, $state)
-        ];
-    }
-
-    protected function buildFrom($part, MySqlQueryBuilderState $state)
-    {
-        return "FROM " . $this->buildAliasedNames($part, $state);
-    }
-
-    protected function getRequiredParts(): array
-    {
-        return ['from'];
+        return $this->buildAliasedNames($name, $state ?: MySqlQueryBuilderState::create());
     }
 }

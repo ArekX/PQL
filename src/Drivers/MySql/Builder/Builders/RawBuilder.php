@@ -17,34 +17,41 @@
 
 namespace ArekX\PQL\Drivers\MySql\Builder\Builders;
 
-use ArekX\PQL\Drivers\MySql\Builder\Builders\Traits\AliasTrait;
-use ArekX\PQL\Drivers\MySql\Builder\Builders\Traits\SubQueryTrait;
 use ArekX\PQL\Drivers\MySql\Builder\MySqlQueryBuilderState;
 
-class DeleteBuilder extends QueryPartBuilder
+class RawBuilder extends QueryPartBuilder
 {
-    use AliasTrait;
-    use SubQueryTrait;
-
     protected function getInitialParts(): array
     {
-        return ['DELETE'];
+        return [];
+    }
+
+    protected function getRequiredParts(): array
+    {
+        return ['query'];
     }
 
     protected function getPartBuilders(): array
     {
         return [
-            'from' => fn($part, $state) => $this->buildFrom($part, $state)
+            'query' => fn($part) => $part,
+            'params' => fn($part, MySqlQueryBuilderState $state) => $this->mergeParams($part, $state)
         ];
     }
 
-    protected function buildFrom($part, MySqlQueryBuilderState $state)
+    protected function mergeParams($part, MySqlQueryBuilderState $state)
     {
-        return "FROM " . $this->buildAliasedNames($part, $state);
-    }
+        $paramsBuilder = $state->getParamsBuilder();
 
-    protected function getRequiredParts(): array
-    {
-        return ['from'];
+        foreach ($part as $key => $value) {
+            $type = null;
+            $paramValue = $value;
+
+            if (is_array($value)) {
+                [$paramValue, $type] = $value;
+            }
+
+            $paramsBuilder->add($key, $paramValue, $type);
+        }
     }
 }
