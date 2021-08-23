@@ -6,4 +6,5 @@ coverage
 tests/_output
 tester.php
 _build
+profile.php
 .phpdoc

@@ -83,6 +83,8 @@ Documentation is available in [here](docs/index.md) (in docs folder).
 
 HTML version of the docs is available at: https://pql.readthedocs.io/
 
+Generated API Reference is available at: https://pql.readthedocs.io/en/latest/api/
+
 ## Testing
 
 Run `composer install` and then run `composer test`
