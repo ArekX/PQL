@@ -1,2 +1,3 @@
 steps:
-  - php build-api.php
+  - wget https://phpdoc.org/phpDocumentor.phar -O documentor.phar
+  - php documentor.phar -d src -t _build/html/api
