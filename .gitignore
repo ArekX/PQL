@@ -5,3 +5,4 @@ old
 coverage
 tests/_output
 tester.php
+.phpdoc

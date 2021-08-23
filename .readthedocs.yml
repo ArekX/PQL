@@ -1,4 +1,7 @@
 version: 2
 mkdocs:
   configuration: mkdocs.yml
+build:
+  apt_packages:
+    - php
 formats: all
