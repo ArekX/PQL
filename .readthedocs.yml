@@ -4,4 +4,10 @@ mkdocs:
 build:
   apt_packages:
     - php
+python:
+  version: 3.7
+  install:
+    - method: pip
+      path: .
+    - requirements: .readthedocs-requirements.txt
 formats: all
