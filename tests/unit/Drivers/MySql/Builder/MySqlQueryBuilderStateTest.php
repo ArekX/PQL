@@ -73,7 +73,7 @@ class MySqlQueryBuilderStateTest extends \Codeception\Test\Unit
     {
         $s = MySqlQueryBuilderState::create();
         $paramsBuilder = new SqlParamBuilder();
-        $s->set('paramsBuilder', $paramsBuilder);
+        $s->setParamsBuilder($paramsBuilder);
 
         expect($s->getParamsBuilder())->toBe($paramsBuilder);
     }
@@ -82,7 +82,7 @@ class MySqlQueryBuilderStateTest extends \Codeception\Test\Unit
     {
         $s = MySqlQueryBuilderState::create();
         $parentBuilder = new MySqlQueryBuilder();
-        $s->set('parentBuilder', $parentBuilder);
+        $s->setParentBuilder($parentBuilder);
 
         expect($s->getParentBuilder())->toBe($parentBuilder);
     }

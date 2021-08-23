@@ -23,11 +23,17 @@ class DeleteBuilder extends QueryPartBuilder
 {
     use FromPartTrait;
 
+    /**
+     * @inheritDoc
+     */
     protected function getInitialParts(): array
     {
         return ['DELETE'];
     }
 
+    /**
+     * @inheritDoc
+     */
     protected function getPartBuilders(): array
     {
         return [
@@ -36,6 +42,9 @@ class DeleteBuilder extends QueryPartBuilder
     }
 
 
+    /**
+     * @inheritDoc
+     */
     protected function getRequiredParts(): array
     {
         return ['from'];

@@ -44,6 +44,44 @@ class MySqlQueryBuilderState implements QueryBuilderState
     }
 
     /**
+     * Set currently used sql parameter builder.
+     *
+     * @param SqlParamBuilder $builder Main params builder to be used.
+     */
+    public function setParamsBuilder(SqlParamBuilder $builder): void
+    {
+        $this->set('paramsBuilder', $builder);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function set(string $name, $value): void
+    {
+        $this->state[$name] = $value;
+    }
+
+    /**
+     * Sets the currently used main query builder.
+     *
+     * @param QueryBuilder $builder Main Query builder to be used.
+     */
+    public function setParentBuilder(QueryBuilder $builder): void
+    {
+        $this->set('parentBuilder', $builder);
+    }
+
+    /**
+     * Return currently set sql parameter builder.
+     *
+     * @return SqlParamBuilder|null
+     */
+    public function getParamsBuilder(): ?SqlParamBuilder
+    {
+        return $this->get('paramsBuilder');
+    }
+
+    /**
      * @inheritDoc
      */
     public function get(string $name, $default = null)
@@ -55,23 +93,30 @@ class MySqlQueryBuilderState implements QueryBuilderState
     }
 
     /**
-     * @inheritDoc
+     * Return parent query builder to build sub queries.
+     *
+     * @return QueryBuilder|null
      */
-    public function set(string $name, $value): void
-    {
-        $this->state[$name] = $value;
-    }
-
-    public function getParamsBuilder(): ?SqlParamBuilder
-    {
-        return $this->get('paramsBuilder');
-    }
-
     public function getParentBuilder(): ?QueryBuilder
     {
         return $this->get('parentBuilder');
     }
 
+    /**
+     * Set a glue for joining query parts in MySQL.
+     *
+     * @param string $glue Glue string to be used
+     */
+    public function setQueryPartGlue(string $glue)
+    {
+        $this->set('queryPartGlue', $glue);
+    }
+
+    /**
+     * Return glue for joining query parts.
+     *
+     * @return string
+     */
     public function getQueryPartGlue(): string
     {
         return $this->get('queryPartGlue', ' ');

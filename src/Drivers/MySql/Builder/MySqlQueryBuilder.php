@@ -40,6 +40,19 @@ class MySqlQueryBuilder extends SqlQueryBuilderFactory
     /**
      * @inheritDoc
      */
+    public function createState(): QueryBuilderState
+    {
+        $state = MySqlQueryBuilderState::create();
+
+        $state->setParamsBuilder(SqlParamBuilder::create());
+        $state->setParentBuilder($this);
+
+        return $state;
+    }
+
+    /**
+     * @inheritDoc
+     */
     protected function createBuilder(string $queryClass): QueryBuilder
     {
         if (empty(self::BUILDERS[$queryClass])) {
@@ -50,18 +63,5 @@ class MySqlQueryBuilder extends SqlQueryBuilderFactory
         $builderClass = self::BUILDERS[$queryClass];
 
         return new $builderClass();
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function createState(): QueryBuilderState
-    {
-        $state = MySqlQueryBuilderState::create();
-
-        $state->set('paramsBuilder', SqlParamBuilder::create());
-        $state->set('parentBuilder', $this);
-
-        return $state;
     }
 }

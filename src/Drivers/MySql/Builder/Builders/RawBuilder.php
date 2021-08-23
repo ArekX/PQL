@@ -21,16 +21,25 @@ use ArekX\PQL\Drivers\MySql\Builder\MySqlQueryBuilderState;
 
 class RawBuilder extends QueryPartBuilder
 {
+    /**
+     * @inheritDoc
+     */
     protected function getInitialParts(): array
     {
         return [];
     }
 
+    /**
+     * @inheritDoc
+     */
     protected function getRequiredParts(): array
     {
         return ['query'];
     }
 
+    /**
+     * @inheritDoc
+     */
     protected function getPartBuilders(): array
     {
         return [
@@ -39,11 +48,19 @@ class RawBuilder extends QueryPartBuilder
         ];
     }
 
-    protected function mergeParams($part, MySqlQueryBuilderState $state)
+    /**
+     * Merges params set for this query into the parameters of the
+     * currently passed state.
+     *
+     * @param array $params Parameters to be merged.
+     * @param MySqlQueryBuilderState $state Query builder state.
+     * @return null Null is always returned as this function only parses the parameters.
+     */
+    protected function mergeParams($params, MySqlQueryBuilderState $state)
     {
         $paramsBuilder = $state->getParamsBuilder();
 
-        foreach ($part as $key => $value) {
+        foreach ($params as $key => $value) {
             $type = null;
             $paramValue = $value;
 
@@ -53,5 +70,7 @@ class RawBuilder extends QueryPartBuilder
 
             $paramsBuilder->add($key, $paramValue, $type);
         }
+
+        return null;
     }
 }
