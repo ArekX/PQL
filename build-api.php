@@ -18,11 +18,11 @@
 $documentor = 'phpDocumentor.phar';
 file_put_contents($documentor, file_get_contents('https://phpdoc.org/phpDocumentor.phar'));
 
-echo exec('php -v') ?: 'No PHP' . PHP_EOL;
-
-echo exec(implode(' ', [
+$result = exec(implode(' ', [
     'php',
     $documentor,
     '-d src',
     '-t _build/html/api'
-])) . PHP_EOL;
+]));
+
+echo str_replace('\n', '|', $result) . PHP_EOL;
