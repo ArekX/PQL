@@ -17,14 +17,11 @@
 
 namespace ArekX\PQL\Drivers\MySql\Builder\Builders;
 
-use ArekX\PQL\Drivers\MySql\Builder\Builders\Traits\AliasTrait;
-use ArekX\PQL\Drivers\MySql\Builder\Builders\Traits\SubQueryTrait;
-use ArekX\PQL\Drivers\MySql\Builder\MySqlQueryBuilderState;
+use ArekX\PQL\Drivers\MySql\Builder\Builders\Traits\FromPartTrait;
 
 class DeleteBuilder extends QueryPartBuilder
 {
-    use AliasTrait;
-    use SubQueryTrait;
+    use FromPartTrait;
 
     protected function getInitialParts(): array
     {
@@ -38,10 +35,6 @@ class DeleteBuilder extends QueryPartBuilder
         ];
     }
 
-    protected function buildFrom($part, MySqlQueryBuilderState $state)
-    {
-        return "FROM " . $this->buildAliasedNames($part, $state);
-    }
 
     protected function getRequiredParts(): array
     {

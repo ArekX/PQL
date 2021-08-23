@@ -19,22 +19,23 @@ namespace ArekX\PQL\Drivers\MySql\Builder\Builders\Traits;
 
 use ArekX\PQL\Contracts\StructuredQuery;
 use ArekX\PQL\Drivers\MySql\Builder\MySqlQueryBuilderState;
-use ArekX\PQL\Sql\Query\Raw;
 
-trait SubQueryTrait
+trait FromPartTrait
 {
+    use AliasTrait;
+
     /**
-     * Build a structured query as sub-query.
+     * Build FROM query part.
      *
-     * All structured queries except Raw query are wrapped in ().
+     * Names, sub queries and aliases are supported.
      *
-     * @param StructuredQuery $item Sub query to be built
-     * @param MySqlQueryBuilderState $state Query builder state.
-     * @return mixed|string
+     * @param string|array|StructuredQuery $part Part to be built
+     * @param MySqlQueryBuilderState $state Query builder state
+     * @return string Resulting query part.
+     * @see AliasTrait::buildAliasedNames()
      */
-    protected function buildSubQuery(StructuredQuery $item, MySqlQueryBuilderState $state)
+    protected function buildFrom($part, MySqlQueryBuilderState $state)
     {
-        $result = $state->getParentBuilder()->build($item)->getQuery();
-        return $item instanceof Raw ? $result : "({$result})";
+        return "FROM " . $this->buildAliasedNames($part, $state);
     }
 }

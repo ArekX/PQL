@@ -18,6 +18,7 @@
 namespace tests\Drivers\MySql\Builder\Builders;
 
 use ArekX\PQL\Drivers\MySql\Builder\MySqlQueryBuilder;
+use ArekX\PQL\Drivers\MySql\Builder\MySqlQueryBuilderState;
 use ArekX\PQL\Sql\Query\Delete;
 use ArekX\PQL\Sql\Query\Raw;
 
@@ -51,9 +52,28 @@ class RawBuilderTest extends \Codeception\Test\Unit
         ]);
     }
 
-    protected function build(Raw $query)
+    public function testRawParamsGetAppendedOnSameState()
     {
         $builder = new MySqlQueryBuilder();
-        return $builder->build($query);
+
+        /** @var MySqlQueryBuilderState $state */
+        $state = $builder->createState();
+        $builder->build(Raw::from("SELECT :val1", [
+            ':val1' => [1, 'string']
+        ]), $state);
+        $builder->build(Raw::from("SELECT :val2", [
+            ':val2' => [2, 'string']
+        ]), $state);
+
+        expect($state->getParamsBuilder()->build())->toBe([
+            ':val1' => [1, 'string'],
+            ':val2' => [2, 'string'],
+        ]);
+    }
+
+    protected function build(Raw $query, MySqlQueryBuilder $state = null)
+    {
+        $builder = new MySqlQueryBuilder();
+        return $builder->build($query, $state);
     }
 }
