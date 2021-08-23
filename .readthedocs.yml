@@ -4,6 +4,7 @@ mkdocs:
 build:
   apt_packages:
     - php
+    - php-xml
 python:
   version: "3.7"
   install:
