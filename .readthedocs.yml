@@ -5,6 +5,7 @@ build:
   apt_packages:
     - php
     - php-xml
+    - php-mbstring
 python:
   version: "3.7"
   install:
