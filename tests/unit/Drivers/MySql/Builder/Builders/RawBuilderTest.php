@@ -22,12 +22,13 @@ use ArekX\PQL\Drivers\MySql\Builder\MySqlQueryBuilderState;
 use ArekX\PQL\Sql\Query\Delete;
 use ArekX\PQL\Sql\Query\Raw;
 
-class RawBuilderTest extends \Codeception\Test\Unit
+class RawBuilderTest extends BuilderTestCase
 {
     public function testRawQuery()
     {
-        $result = $this->build(Raw::from("SELECT 1"));
-        expect($result->getQuery())->toBe('SELECT 1');
+        $this->assertQueryResults([
+            [Raw::from("SELECT 1"), 'SELECT 1']
+        ]);
     }
 
     public function testRawParams()
@@ -69,11 +70,5 @@ class RawBuilderTest extends \Codeception\Test\Unit
             ':val1' => [1, 'string'],
             ':val2' => [2, 'string'],
         ]);
-    }
-
-    protected function build(Raw $query, MySqlQueryBuilder $state = null)
-    {
-        $builder = new MySqlQueryBuilder();
-        return $builder->build($query, $state);
     }
 }
