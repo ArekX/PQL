@@ -20,7 +20,7 @@ file_put_contents($documentor, file_get_contents('https://phpdoc.org/phpDocument
 
 echo exec('php -v') ?: 'No PHP' . PHP_EOL;
 
-exec(implode([
+exec(implode(' ', [
     'php',
     $documentor,
     '-d src',
