@@ -35,4 +35,26 @@ class DeleteBuilderTest extends BuilderTestCase
             [Delete::create()->from(['a' => Delete::create()->from('test')]), 'DELETE FROM (DELETE FROM `test`) AS `a`'],
         ]);
     }
+
+    public function testExpectExceptionWhenStringIsPassed()
+    {
+        $this->expectException(\Exception::class);
+        $this->assertQueryResults([
+            [Delete::create()->from('table')->where('is_active = 1'), 'DELETE FROM `table` WHERE is_active = 1'],
+        ]);
+    }
+
+    public function testBuildWhere()
+    {
+        $this->assertQueryResults([
+            [Delete::create()->from('table')->where(Raw::from('is_activated = 0')), 'DELETE FROM `table` WHERE is_activated = 0'],
+            [Delete::create()->from('table')->where(['all', [
+                'is_activated' => 1,
+                'is_deleted' => 0
+            ]]), 'DELETE FROM `table` WHERE `is_activated` = :t0 AND `is_deleted` = :t1', [
+                ':t0' => [1, null],
+                ':t1' => [0, null],
+            ]],
+        ]);
+    }
 }

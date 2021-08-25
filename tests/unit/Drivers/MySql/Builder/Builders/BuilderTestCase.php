@@ -25,8 +25,16 @@ class BuilderTestCase extends Unit
 {
     protected function assertQueryResults(array $queries, MySqlQueryBuilder $state = null)
     {
-        foreach ($queries as [$query, $expectedResult]) {
-            expect($this->build($query, $state)->getQuery())->toBe($expectedResult);
+        foreach ($queries as $query) {
+            [$query, $expectedResult, $params] = $query + [
+                2 => null
+            ];
+            $raw = $this->build($query, $state);
+            expect($raw->getQuery())->toBe($expectedResult);
+
+            if ($params !== null) {
+                expect($raw->getParams())->toBe($params);
+            }
         }
     }
 

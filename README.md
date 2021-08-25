@@ -57,7 +57,7 @@ $query = Select::create()
          'r.id' => Select::create()
                ->columns('role_id')
                ->from('application_roles')
-               ->where(['=', 'application_id', 2])
+               ->where(['=', ['column', 'application_id'], ['value', 2]])
       ]);
 /* 
 Returns RawQuery object, built query equals to:
