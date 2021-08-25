@@ -37,7 +37,7 @@ class Select extends Query
      * Sets a data source from which to pull the data from
      * such as a table of data, depending on the driver.
      *
-     * SQL Injection Warning: Value in this function is not usually escaped in the driver
+     * **SQL Injection Warning**: Value in this function is not usually escaped in the driver
      * and should not be used to pass values from the user input to it. If you need to pass
      * and escape query use Raw query.
      *
@@ -59,7 +59,7 @@ class Select extends Query
     /**
      * Set columns to be retrieved from data source
      *
-     * SQL Injection Warning: Value in this function is not usually escaped in the driver
+     * **SQL Injection Warning**: Value in this function is not usually escaped in the driver
      * and should not be used to pass values from the user input to it. If you need to pass
      * and escape query use Raw query.
      *
@@ -79,9 +79,43 @@ class Select extends Query
     }
 
     /**
+     * Add a column to the columns list.
+     *
+     * **SQL Injection Warning**: Value in this function is not usually escaped in the driver
+     * and should not be used to pass values from the user input to it. If you need to pass
+     * and escape query use Raw query.
+     *
+     * If passed column is an array it will be merged
+     * with the current column list.
+     *
+     * @see Select::columns()
+     * @param array|string|StructuredQuery $column Column to be added
+     * @return $this
+     */
+    public function addColumns($column)
+    {
+        $columns = $this->get('columns');
+
+        if (!is_array($columns)) {
+            $columns = [$columns];
+        }
+
+        if (is_array($column)) {
+            foreach ($column as $key => $value) {
+                $columns[$key] = $value;
+            }
+        } else {
+            $columns[] = $column;
+        }
+
+        $this->use('columns', $columns);
+        return $this;
+    }
+
+    /**
      * Order results by a specific value.
      *
-     * SQL Injection Warning: Value in this function is not usually escaped in the driver
+     * **SQL Injection Warning**: Value in this function is not usually escaped in the driver
      * and should not be used to pass values from the user input to it. If you need to pass
      * and escape query use Raw query.
      *
@@ -102,7 +136,7 @@ class Select extends Query
     /**
      * Group results by specified value.
      *
-     * SQL Injection Warning: Value in this function is not usually escaped in the driver
+     * **SQL Injection Warning**: Value in this function is not usually escaped in the driver
      * and should not be used to pass values from the user input to it. If you need to pass
      * and escape query use Raw query.
      *

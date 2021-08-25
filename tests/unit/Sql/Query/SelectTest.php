@@ -59,6 +59,33 @@ class SelectTest extends QueryTestCase
         ]);
     }
 
+    public function testAddColumn()
+    {
+        $q = Select::create()
+            ->columns('a');
+
+        $q->addColumns('b');
+
+        expect($q->toArray()['columns'])->toBe([
+            'a',
+            'b'
+        ]);
+    }
+
+    public function testAddColumnWithAlias()
+    {
+        $q = Select::create()
+            ->columns('a');
+
+        $q->addColumns(['alias' => 'b']);
+
+        expect($q->toArray()['columns'])->toBe([
+            'a',
+            'alias' => 'b'
+        ]);
+    }
+
+
     public function testOrderBy()
     {
         $this->assertQueryPartValues(Select::create(), 'orderBy', [
