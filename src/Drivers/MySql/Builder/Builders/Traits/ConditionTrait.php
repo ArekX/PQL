@@ -25,44 +25,34 @@ trait ConditionTrait
     use SubQueryTrait;
     use QuoteNameTrait;
 
-    protected function resolveCondition($condition, MySqlQueryBuilderState $state)
+    protected function buildCondition($condition, MySqlQueryBuilderState $state)
     {
+        static $map = null;
+
+        if ($map === null) {
+            $map = [
+                'all' => fn($condition, $state) => $this->buildAssociativeCondition(' AND ', $condition, $state),
+                'any' => fn($condition, $state) => $this->buildAssociativeCondition(' OR ', $condition, $state),
+                'and' => fn($condition, $state) => $this->buildConjuctionCondition(' AND ', $condition, $state),
+                'or' => fn($condition, $state) => $this->buildConjuctionCondition(' OR ', $condition, $state),
+                'column' => fn($condition, $state) => $this->buildColumnCondition($condition),
+                'value' => fn($condition, $state) => $this->buildValueCondition($condition, $state),
+            ];
+        }
+
         if ($condition instanceof StructuredQuery) {
             return $this->buildSubQuery($condition, $state);
         }
 
         if (is_array($condition)) {
-            switch($condition[0]) {
-                case 'all':
-                    return $this->buildAssociativeCondition(' AND ',$condition, $state);
-                case 'any':
-                    return $this->buildAssociativeCondition(' OR ',$condition, $state);
-                case 'and':
-                    return $this->buildConjuctionCondition(' AND ', $condition, $state);
-                case 'or':
-                    return $this->buildConjuctionCondition(' OR ', $condition, $state);
-                case 'column':
-                    return $this->buildColumnCondition($condition);
-                case 'value':
-                    return $this->buildValueCondition($condition, $state);
+            if (empty($map[$condition[0]])) {
+                throw new \Exception('Unknown condition: ' . var_export($condition[0], true));
             }
 
-            throw new \Exception('Unknown condition: ' . var_export($condition[0], true));
+            return $map[$condition[0]]($condition, $state);
         }
 
         throw new \Exception('Condition must be an array.');
-    }
-
-    protected function buildConjuctionCondition(string $glue, $condition, MySqlQueryBuilderState $state)
-    {
-        $result = [];
-
-        $max = count($condition);
-        for($i = 1; $i < $max; $i++) {
-            $result[] = '(' . $this->resolveCondition($condition[$i], $state) . ')';
-        }
-
-        return implode($glue, $result);
     }
 
     protected function buildAssociativeCondition($glue, $condition, MySqlQueryBuilderState $state)
@@ -70,6 +60,18 @@ trait ConditionTrait
         $result = [];
         foreach ($condition[1] as $key => $value) {
             $result[] = $this->quoteName($key) . ' = ' . $state->getParamsBuilder()->wrapValue($value);
+        }
+
+        return implode($glue, $result);
+    }
+
+    protected function buildConjuctionCondition(string $glue, $condition, MySqlQueryBuilderState $state)
+    {
+        $result = [];
+
+        $max = count($condition);
+        for ($i = 1; $i < $max; $i++) {
+            $result[] = '(' . $this->buildCondition($condition[$i], $state) . ')';
         }
 
         return implode($glue, $result);

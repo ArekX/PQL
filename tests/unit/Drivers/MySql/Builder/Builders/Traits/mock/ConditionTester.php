@@ -26,6 +26,6 @@ class ConditionTester
 
     public function build($condition, MySqlQueryBuilderState $state)
     {
-        return $this->resolveCondition($condition, $state);
+        return $this->buildCondition($condition, $state);
     }
 }

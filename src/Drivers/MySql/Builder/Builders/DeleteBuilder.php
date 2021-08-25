@@ -47,7 +47,7 @@ class DeleteBuilder extends QueryPartBuilder
 
     protected function buildWhere($part, MySqlQueryBuilderState $state)
     {
-        return 'WHERE ' . $this->resolveCondition($part, $state);
+        return 'WHERE ' . $this->buildCondition($part, $state);
     }
 
     /**
