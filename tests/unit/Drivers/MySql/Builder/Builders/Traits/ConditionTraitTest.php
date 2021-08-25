@@ -19,6 +19,7 @@ namespace tests\Drivers\MySql\Builder\Builders\Traits;
 
 use ArekX\PQL\Drivers\MySql\Builder\MySqlQueryBuilder;
 use ArekX\PQL\Drivers\MySql\Builder\MySqlQueryBuilderState;
+use ArekX\PQL\Sql\Query\Raw;
 use Codeception\Test\Unit;
 use tests\Drivers\MySql\Builder\Builders\Traits\mock\ConditionTester;
 
@@ -101,6 +102,18 @@ class ConditionTraitTest extends Unit
             ':t0' => [1, null],
             ':t1' => [0, null]
         ]);
+
+        $this->assertCondition(['all', [
+            'is_active' => Raw::from('Query')
+        ]], '`is_active` IN Query');
+
+        $this->assertCondition(['all', [
+            'is_active' => [1, 2, 3]
+        ]], '`is_active` IN (:t0, :t1, :t2)', [
+            ':t0' => [1, null],
+            ':t1' => [2, null],
+            ':t2' => [3, null],
+        ]);
     }
 
     public function testBuildAnyCondition()
@@ -112,6 +125,18 @@ class ConditionTraitTest extends Unit
             ':t0' => [1, null],
             ':t1' => [0, null]
         ]);
+
+        $this->assertCondition(['any', [
+            'is_active' => Raw::from('Query')
+        ]], '`is_active` IN Query');
+
+        $this->assertCondition(['any', [
+            'is_active' => [1, 2, 3]
+        ]], '`is_active` IN (:t0, :t1, :t2)', [
+            ':t0' => [1, null],
+            ':t1' => [2, null],
+            ':t2' => [3, null],
+        ]);
     }
 
     public function testBuildEmptyValueIsNull()
@@ -119,5 +144,58 @@ class ConditionTraitTest extends Unit
         $this->assertCondition(['value'], ':t0', [
             ':t0' => [null, null]
         ]);
+    }
+
+    public function testBuildNot()
+    {
+        $this->assertCondition(['not', ['all', ['is_active' => 1]]], 'NOT (`is_active` = :t0)', [
+            ':t0' => [1, null]
+        ]);
+
+        $this->assertCondition(['not', Raw::from('QUERY')], 'NOT QUERY');
+    }
+
+    public function testBuildBetween()
+    {
+        $this->assertCondition(['between', ['value', 1], ['value', -5], ['value', 22]], ':t0 BETWEEN :t1 AND :t2', [
+            ':t0' => [1, null],
+            ':t1' => [-5, null],
+            ':t2' => [22, null]
+        ]);
+
+        $this->assertCondition(['between', Raw::from('DATE()'), ['value', -5], ['value', 22]], 'DATE() BETWEEN :t0 AND :t1', [
+            ':t0' => [-5, null],
+            ':t1' => [22, null]
+        ]);
+
+        $this->assertCondition(['between', ['value', 1], Raw::from('DATE()'), ['value', 22]], ':t0 BETWEEN DATE() AND :t1', [
+            ':t0' => [1, null],
+            ':t1' => [22, null]
+        ]);
+
+        $this->assertCondition(['between', ['value', 1], ['value', -5],Raw::from('DATE()')], ':t0 BETWEEN :t1 AND DATE()', [
+            ':t0' => [1, null],
+            ':t1' => [-5, null]
+        ]);
+    }
+
+    public function testBuildIn()
+    {
+        $this->assertCondition(['in', ['column', 'id'], ['value', [1, 2, 3]]], '`id` IN (:t0, :t1, :t2)', [
+            ':t0' => [1, null],
+            ':t1' => [2, null],
+            ':t2' => [3, null]
+        ]);
+
+        $this->assertCondition(['in', ['column', 'id'], Raw::from('QUERY')], '`id` IN QUERY');
+    }
+
+    public function testBuildLike()
+    {
+        $this->assertCondition(['like', ['column', 'name'], ['value', '%test%']], '`name` LIKE :t0', [
+            ':t0' => ['%test%', null],
+        ]);
+
+        $this->assertCondition(['like', ['column', 'name'], Raw::from('QUERY')], '`name` LIKE QUERY');
     }
 }

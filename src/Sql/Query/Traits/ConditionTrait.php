@@ -31,8 +31,8 @@ trait ConditionTrait
      * If null is sent, where will not be used.
      *
      * When array is passed, it can be one of the expressions:
-     * - ['not', operation] - Not expression
-     * - ['and', operation1, ..., operationN] - AND expression
+     * - ['not', expression] - Not expression
+     * - ['and', expression1, ..., expressionN] - AND expression
      * - ['or', expression1, ..., expressionN] - OR expression
      * - ['=', leftExpression, rightExpression] - Comparison expression (equals)
      * - ['!=', leftExpression, rightExpression] - Comparison expression (notEquals)

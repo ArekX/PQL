@@ -35,7 +35,11 @@ trait ConditionTrait
                 'any' => fn($condition, $state) => $this->buildAssociativeCondition(' OR ', $condition, $state),
                 'and' => fn($condition, $state) => $this->buildConjuctionCondition(' AND ', $condition, $state),
                 'or' => fn($condition, $state) => $this->buildConjuctionCondition(' OR ', $condition, $state),
-                'column' => fn($condition, $state) => $this->buildColumnCondition($condition),
+                'not' => fn($condition, $state) => $this->buildNotCondition($condition, $state),
+                'in' => fn($condition, $state) => $this->buildInCondition($condition, $state),
+                'between' => fn($condition, $state) => $this->buildBetweenCondition($condition, $state),
+                'like' => fn($condition, $state) => $this->buildLikeCondition($condition, $state),
+                'column' => fn($condition) => $this->buildColumnCondition($condition),
                 'value' => fn($condition, $state) => $this->buildValueCondition($condition, $state),
             ];
         }
@@ -59,10 +63,37 @@ trait ConditionTrait
     {
         $result = [];
         foreach ($condition[1] as $key => $value) {
-            $result[] = $this->quoteName($key) . ' = ' . $state->getParamsBuilder()->wrapValue($value);
+            $leftSide = $this->quoteName($key);
+
+            if ($value instanceof StructuredQuery) {
+                $result[] = $leftSide . ' IN ' . $this->buildSubQuery($value, $state);
+                continue;
+            }
+
+            if (is_array($value)) {
+                $result[] = $leftSide . ' IN (' . $this->buildWrapValue($value, $state) . ')';
+                continue;
+            }
+
+            $result[] = $leftSide . ' = ' . $this->buildWrapValue($value, $state);
         }
 
         return implode($glue, $result);
+    }
+
+    protected function buildWrapValue($value, MySqlQueryBuilderState $state, $type = null)
+    {
+        $builder = $state->getParamsBuilder();
+
+        if (is_array($value)) {
+            $results = [];
+            foreach ($value as $item) {
+                $results[] = $builder->wrapValue($item, $type);
+            }
+            return implode(', ', $results);
+        }
+
+        return $builder->wrapValue($value, $type);
     }
 
     protected function buildConjuctionCondition(string $glue, $condition, MySqlQueryBuilderState $state)
@@ -92,6 +123,48 @@ trait ConditionTrait
 
     protected function buildValueCondition($condition, MySqlQueryBuilderState $state)
     {
-        return $state->getParamsBuilder()->wrapValue($condition[1] ?? null, $condition[2] ?? null);
+        return $this->buildWrapValue(
+            $condition[1] ?? null,
+            $state,
+            $condition[2] ?? null
+        );
+    }
+
+    protected function buildNotCondition($condition, MySqlQueryBuilderState $state)
+    {
+        if ($condition[1] instanceof StructuredQuery) {
+            return 'NOT ' . $this->buildSubQuery($condition[1], $state);
+        }
+
+        return 'NOT (' . $this->buildCondition($condition[1], $state) . ')';
+    }
+
+    protected function buildBetweenCondition($condition, MySqlQueryBuilderState $state)
+    {
+        $of = $this->buildCondition($condition[1] ?? null, $state);
+        $from = $this->buildCondition($condition[2] ?? null, $state);
+        $to = $this->buildCondition($condition[3] ?? null, $state);
+
+        return $of . ' BETWEEN ' . $from . ' AND ' . $to;
+    }
+
+    protected function buildInCondition($condition, MySqlQueryBuilderState $state)
+    {
+        $left = $this->buildCondition($condition[1] ?? null, $state);
+
+        $right = $condition[2] ?? null;
+        if ($right instanceof StructuredQuery) {
+            return $left . ' IN ' . $this->buildSubQuery($right, $state);
+        }
+
+        return $left . ' IN (' . $this->buildCondition($right, $state) . ')';
+    }
+
+    protected function buildLikeCondition($condition, MySqlQueryBuilderState $state)
+    {
+        $left = $this->buildCondition($condition[1] ?? null, $state);
+        $right = $this->buildCondition($condition[2] ?? null, $state);
+
+        return $left . ' LIKE ' . $right;
     }
 }
