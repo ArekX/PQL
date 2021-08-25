@@ -35,10 +35,18 @@ trait ConditionTrait
                 'any' => fn($condition, $state) => $this->buildAssociativeCondition(' OR ', $condition, $state),
                 'and' => fn($condition, $state) => $this->buildConjuctionCondition(' AND ', $condition, $state),
                 'or' => fn($condition, $state) => $this->buildConjuctionCondition(' OR ', $condition, $state),
-                'not' => fn($condition, $state) => $this->buildNotCondition($condition, $state),
+                'not' => fn($condition, $state) => $this->buildUnaryCondition('NOT', $condition, $state),
+                'exists' => fn($condition, $state) => $this->buildUnaryCondition('EXISTS', $condition, $state),
                 'in' => fn($condition, $state) => $this->buildInCondition($condition, $state),
                 'between' => fn($condition, $state) => $this->buildBetweenCondition($condition, $state),
-                'like' => fn($condition, $state) => $this->buildLikeCondition($condition, $state),
+                'like' => fn($condition, $state) => $this->buildBinaryCondition(' LIKE ', $condition, $state),
+                '=' => fn($condition, $state) => $this->buildBinaryCondition(' = ', $condition, $state),
+                '>' => fn($condition, $state) => $this->buildBinaryCondition(' > ', $condition, $state),
+                '>=' => fn($condition, $state) => $this->buildBinaryCondition(' >= ', $condition, $state),
+                '<' => fn($condition, $state) => $this->buildBinaryCondition(' < ', $condition, $state),
+                '<=' => fn($condition, $state) => $this->buildBinaryCondition(' <= ', $condition, $state),
+                '<>' => fn($condition, $state) => $this->buildBinaryCondition(' <> ', $condition, $state),
+                '!=' => fn($condition, $state) => $this->buildBinaryCondition(' <> ', $condition, $state),
                 'column' => fn($condition) => $this->buildColumnCondition($condition),
                 'value' => fn($condition, $state) => $this->buildValueCondition($condition, $state),
             ];
@@ -130,13 +138,13 @@ trait ConditionTrait
         );
     }
 
-    protected function buildNotCondition($condition, MySqlQueryBuilderState $state)
+    protected function buildUnaryCondition(string $op, $condition, MySqlQueryBuilderState $state)
     {
         if ($condition[1] instanceof StructuredQuery) {
-            return 'NOT ' . $this->buildSubQuery($condition[1], $state);
+            return $op . ' ' . $this->buildSubQuery($condition[1], $state);
         }
 
-        return 'NOT (' . $this->buildCondition($condition[1], $state) . ')';
+        return $op . ' (' . $this->buildCondition($condition[1], $state) . ')';
     }
 
     protected function buildBetweenCondition($condition, MySqlQueryBuilderState $state)
@@ -146,6 +154,15 @@ trait ConditionTrait
         $to = $this->buildCondition($condition[3] ?? null, $state);
 
         return $of . ' BETWEEN ' . $from . ' AND ' . $to;
+    }
+
+
+    protected function buildBinaryCondition(string $operation, $condition, MySqlQueryBuilderState $state)
+    {
+        $left = $this->buildCondition($condition[1] ?? null, $state);
+        $right = $this->buildCondition($condition[2] ?? null, $state);
+
+        return $left . $operation . $right;
     }
 
     protected function buildInCondition($condition, MySqlQueryBuilderState $state)
@@ -158,13 +175,5 @@ trait ConditionTrait
         }
 
         return $left . ' IN (' . $this->buildCondition($right, $state) . ')';
-    }
-
-    protected function buildLikeCondition($condition, MySqlQueryBuilderState $state)
-    {
-        $left = $this->buildCondition($condition[1] ?? null, $state);
-        $right = $this->buildCondition($condition[2] ?? null, $state);
-
-        return $left . ' LIKE ' . $right;
     }
 }

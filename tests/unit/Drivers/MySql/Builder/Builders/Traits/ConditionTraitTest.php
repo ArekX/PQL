@@ -155,6 +155,15 @@ class ConditionTraitTest extends Unit
         $this->assertCondition(['not', Raw::from('QUERY')], 'NOT QUERY');
     }
 
+    public function testBuildExists()
+    {
+        $this->assertCondition(['exists', ['all', ['is_active' => 1]]], 'EXISTS (`is_active` = :t0)', [
+            ':t0' => [1, null]
+        ]);
+
+        $this->assertCondition(['exists', Raw::from('QUERY')], 'EXISTS QUERY');
+    }
+
     public function testBuildBetween()
     {
         $this->assertCondition(['between', ['value', 1], ['value', -5], ['value', 22]], ':t0 BETWEEN :t1 AND :t2', [
@@ -197,5 +206,65 @@ class ConditionTraitTest extends Unit
         ]);
 
         $this->assertCondition(['like', ['column', 'name'], Raw::from('QUERY')], '`name` LIKE QUERY');
+    }
+
+    public function testBuildEquals()
+    {
+        $this->assertCondition(['=', ['column', 'name'], ['value', 'test']], '`name` = :t0', [
+            ':t0' => ['test', null],
+        ]);
+
+        $this->assertCondition(['=', ['column', 'name'], Raw::from('QUERY')], '`name` = QUERY');
+    }
+
+    public function testBuildGreaterThan()
+    {
+        $this->assertCondition(['>', ['column', 'times'], ['value', 5]], '`times` > :t0', [
+            ':t0' => [5, null],
+        ]);
+
+        $this->assertCondition(['>', ['column', 'times'], Raw::from('QUERY')], '`times` > QUERY');
+    }
+
+    public function testBuildLessThan()
+    {
+        $this->assertCondition(['<', ['column', 'times'], ['value', 5]], '`times` < :t0', [
+            ':t0' => [5, null],
+        ]);
+
+        $this->assertCondition(['<', ['column', 'times'], Raw::from('QUERY')], '`times` < QUERY');
+    }
+
+    public function testBuildGreaterEqualThan()
+    {
+        $this->assertCondition(['>=', ['column', 'times'], ['value', 5]], '`times` >= :t0', [
+            ':t0' => [5, null],
+        ]);
+
+        $this->assertCondition(['>=', ['column', 'times'], Raw::from('QUERY')], '`times` >= QUERY');
+    }
+
+    public function testBuildLessEqualThan()
+    {
+        $this->assertCondition(['<=', ['column', 'times'], ['value', 5]], '`times` <= :t0', [
+            ':t0' => [5, null],
+        ]);
+
+        $this->assertCondition(['<=', ['column', 'times'], Raw::from('QUERY')], '`times` <= QUERY');
+    }
+
+    public function testBuildNotEqual()
+    {
+        $this->assertCondition(['!=', ['column', 'times'], ['value', 5]], '`times` <> :t0', [
+            ':t0' => [5, null],
+        ]);
+
+        $this->assertCondition(['!=', ['column', 'times'], Raw::from('QUERY')], '`times` <> QUERY');
+
+        $this->assertCondition(['<>', ['column', 'times'], ['value', 5]], '`times` <> :t0', [
+            ':t0' => [5, null],
+        ]);
+
+        $this->assertCondition(['<>', ['column', 'times'], Raw::from('QUERY')], '`times` <> QUERY');
     }
 }
