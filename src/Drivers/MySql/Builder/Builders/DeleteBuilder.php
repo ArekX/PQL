@@ -19,12 +19,15 @@ namespace ArekX\PQL\Drivers\MySql\Builder\Builders;
 
 use ArekX\PQL\Drivers\MySql\Builder\Builders\Traits\ConditionTrait;
 use ArekX\PQL\Drivers\MySql\Builder\Builders\Traits\FromPartTrait;
-use ArekX\PQL\Drivers\MySql\Builder\MySqlQueryBuilderState;
+use ArekX\PQL\Drivers\MySql\Builder\Builders\Traits\JoinTrait;
+use ArekX\PQL\Drivers\MySql\Builder\Builders\Traits\WhereTrait;
 
 class DeleteBuilder extends QueryPartBuilder
 {
     use FromPartTrait;
     use ConditionTrait;
+    use JoinTrait;
+    use WhereTrait;
 
     /**
      * @inheritDoc
@@ -41,14 +44,11 @@ class DeleteBuilder extends QueryPartBuilder
     {
         return [
             'from' => fn($part, $state) => $this->buildFrom($part, $state),
+            'join' => fn($part, $state) => $this->buildJoin($part, $state),
             'where' => fn($part, $state) => $this->buildWhere($part, $state),
         ];
     }
 
-    protected function buildWhere($part, MySqlQueryBuilderState $state)
-    {
-        return 'WHERE ' . $this->buildCondition($part, $state);
-    }
 
     /**
      * @inheritDoc
@@ -57,4 +57,6 @@ class DeleteBuilder extends QueryPartBuilder
     {
         return ['from'];
     }
+
+
 }

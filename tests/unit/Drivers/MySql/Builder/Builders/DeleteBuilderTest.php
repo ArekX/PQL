@@ -17,6 +17,7 @@
 
 namespace tests\Drivers\MySql\Builder\Builders;
 
+use ArekX\PQL\Contracts\RawQuery;
 use ArekX\PQL\Sql\Query\Delete;
 use ArekX\PQL\Sql\Query\Raw;
 
@@ -54,6 +55,32 @@ class DeleteBuilderTest extends BuilderTestCase
             ]]), 'DELETE FROM `table` WHERE `is_activated` = :t0 AND `is_deleted` = :t1', [
                 ':t0' => [1, null],
                 ':t1' => [0, null],
+            ]],
+        ]);
+    }
+
+    public function testBuildHelperJoinTypes()
+    {
+        $this->assertQueryResults([
+            [Delete::create()->from('table')->leftJoin('table', 'table.id = t.id'), 'DELETE FROM `table` LEFT JOIN `table` ON table.id = t.id'],
+            [Delete::create()->from('table')->rightJoin('table', 'table.id = t.id'), 'DELETE FROM `table` RIGHT JOIN `table` ON table.id = t.id'],
+            [Delete::create()->from('table')->innerJoin('table', 'table.id = t.id'), 'DELETE FROM `table` INNER JOIN `table` ON table.id = t.id'],
+            [Delete::create()->from('table')->fullOuterJoin('table', 'table.id = t.id'), 'DELETE FROM `table` FULL OUTER JOIN `table` ON table.id = t.id'],
+        ]);
+    }
+
+    public function testBuildJoin()
+    {
+        $this->assertQueryResults([
+            [Delete::create()->from('table')->join('inner', 'table', 'table.id = t.id'), 'DELETE FROM `table` INNER JOIN `table` ON table.id = t.id'],
+            [Delete::create()->from('table')->join('inner', 'table'), 'DELETE FROM `table` INNER JOIN `table`'],
+            [Delete::create()->from('table')->join('inner', 'table', Raw::from('TEST')), 'DELETE FROM `table` INNER JOIN `table` ON TEST'],
+            [Delete::create()->from('table')->join('left', 'table', 'table.id = t.id'), 'DELETE FROM `table` LEFT JOIN `table` ON table.id = t.id'],
+            [Delete::create()->from('table')->join('right', 'table', 'table.id = t.id'), 'DELETE FROM `table` RIGHT JOIN `table` ON table.id = t.id'],
+            [Delete::create()->from('table')->join('right', ['alias' => 'table'], 'table.id = t.id'), 'DELETE FROM `table` RIGHT JOIN `table` AS `alias` ON table.id = t.id'],
+            [Delete::create()->from('table')->join('inner', Raw::from('QUERY'), 'table.id = t.id'), 'DELETE FROM `table` INNER JOIN QUERY ON table.id = t.id'],
+            [Delete::create()->from('table')->join('inner', 'table', ['all', ['table.id' => 'column']]), 'DELETE FROM `table` INNER JOIN `table` ON `table`.`id` = :t0', [
+                ':t0' => ['column', null]
             ]],
         ]);
     }
