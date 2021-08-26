@@ -20,6 +20,7 @@ namespace ArekX\PQL\Drivers\MySql\Builder\Builders;
 use ArekX\PQL\Drivers\MySql\Builder\Builders\Traits\ConditionTrait;
 use ArekX\PQL\Drivers\MySql\Builder\Builders\Traits\FromPartTrait;
 use ArekX\PQL\Drivers\MySql\Builder\Builders\Traits\JoinTrait;
+use ArekX\PQL\Drivers\MySql\Builder\Builders\Traits\NumberPartTrait;
 use ArekX\PQL\Drivers\MySql\Builder\Builders\Traits\WhereTrait;
 
 class DeleteBuilder extends QueryPartBuilder
@@ -28,6 +29,7 @@ class DeleteBuilder extends QueryPartBuilder
     use ConditionTrait;
     use JoinTrait;
     use WhereTrait;
+    use NumberPartTrait;
 
     /**
      * @inheritDoc
@@ -46,6 +48,8 @@ class DeleteBuilder extends QueryPartBuilder
             'from' => fn($part, $state) => $this->buildFrom($part, $state),
             'join' => fn($part, $state) => $this->buildJoin($part, $state),
             'where' => fn($part, $state) => $this->buildWhere($part, $state),
+            'limit' => fn($part) => $this->buildLimit($part),
+            'offset' => fn($part) => $this->buildOffset($part),
         ];
     }
 
