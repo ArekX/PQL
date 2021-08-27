@@ -71,6 +71,6 @@ class InsertTest extends QueryTestCase
             'column2' => 'value2'
         ]);
         expect($q->toArray()['columns'])->toBe(['column1', 'column2']);
-        expect($q->toArray()['values'])->toBe(['value1', 'value2']);
+        expect($q->toArray()['values'])->toBe([['value1', 'value2']]);
     }
 }

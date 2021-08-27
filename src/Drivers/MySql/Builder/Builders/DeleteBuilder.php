@@ -23,6 +23,9 @@ use ArekX\PQL\Drivers\MySql\Builder\Builders\Traits\JoinTrait;
 use ArekX\PQL\Drivers\MySql\Builder\Builders\Traits\NumberPartTrait;
 use ArekX\PQL\Drivers\MySql\Builder\Builders\Traits\WhereTrait;
 
+/**
+ * Represents a query builder for building a DELETE query.
+ */
 class DeleteBuilder extends QueryPartBuilder
 {
     use FromPartTrait;

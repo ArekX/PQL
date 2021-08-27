@@ -17,7 +17,6 @@
 
 namespace tests\Drivers\MySql\Builder\Builders;
 
-use ArekX\PQL\Contracts\RawQuery;
 use ArekX\PQL\Sql\Query\Delete;
 use ArekX\PQL\Sql\Query\Raw;
 
@@ -58,6 +57,21 @@ class DeleteBuilderTest extends BuilderTestCase
             ]],
         ]);
     }
+
+    public function testBuildLimit()
+    {
+        $this->assertQueryResults([
+            [Delete::create()->from('table')->limit(5), 'DELETE FROM `table` LIMIT 5'],
+        ]);
+    }
+
+    public function testBuildOffset()
+    {
+        $this->assertQueryResults([
+            [Delete::create()->from('table')->offset(10)->limit(5), 'DELETE FROM `table` LIMIT 5 OFFSET 10'],
+        ]);
+    }
+
 
     public function testBuildHelperJoinTypes()
     {

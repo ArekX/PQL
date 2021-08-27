@@ -20,10 +20,18 @@ namespace ArekX\PQL\Drivers\MySql\Builder;
 use ArekX\PQL\Contracts\QueryBuilder;
 use ArekX\PQL\Contracts\QueryBuilderState;
 use ArekX\PQL\Drivers\MySql\Builder\Builders\DeleteBuilder;
+use ArekX\PQL\Drivers\MySql\Builder\Builders\InsertBuilder;
 use ArekX\PQL\Drivers\MySql\Builder\Builders\QueryPartBuilder;
 use ArekX\PQL\Drivers\MySql\Builder\Builders\RawBuilder;
+use ArekX\PQL\Drivers\MySql\Builder\Builders\SelectBuilder;
+use ArekX\PQL\Drivers\MySql\Builder\Builders\UnionBuilder;
+use ArekX\PQL\Drivers\MySql\Builder\Builders\UpdateBuilder;
 use ArekX\PQL\Sql\Query\Delete;
+use ArekX\PQL\Sql\Query\Insert;
 use ArekX\PQL\Sql\Query\Raw;
+use ArekX\PQL\Sql\Query\Select;
+use ArekX\PQL\Sql\Query\Union;
+use ArekX\PQL\Sql\Query\Update;
 use ArekX\PQL\Sql\SqlParamBuilder;
 use ArekX\PQL\Sql\SqlQueryBuilderFactory;
 
@@ -32,9 +40,18 @@ use ArekX\PQL\Sql\SqlQueryBuilderFactory;
  */
 class MySqlQueryBuilder extends SqlQueryBuilderFactory
 {
-    const BUILDERS = [
+    /**
+     * Builder map representing how each query will be built.
+     *
+     * @var string[]
+     */
+    public $builderMap = [
+        Raw::class => RawBuilder::class,
+        Select::class => SelectBuilder::class,
+        Union::class => UnionBuilder::class,
         Delete::class => DeleteBuilder::class,
-        Raw::class => RawBuilder::class
+        Insert::class => InsertBuilder::class,
+        Update::class => UpdateBuilder::class
     ];
 
     /**
@@ -55,12 +72,12 @@ class MySqlQueryBuilder extends SqlQueryBuilderFactory
      */
     protected function createBuilder(string $queryClass): QueryBuilder
     {
-        if (empty(self::BUILDERS[$queryClass])) {
+        if (empty($this->builderMap[$queryClass])) {
             throw new \Exception('No builder defined for: ' . $queryClass);
         }
 
         /** @var QueryPartBuilder $builderClass */
-        $builderClass = self::BUILDERS[$queryClass];
+        $builderClass = $this->builderMap[$queryClass];
 
         return new $builderClass();
     }

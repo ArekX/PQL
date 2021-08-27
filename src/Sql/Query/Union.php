@@ -46,10 +46,10 @@ class Union extends Query
      * Append union to the current
      *
      * @param StructuredQuery $query Query to be used.
-     * @param string $type Type of the union
+     * @param string|null $type Type of the union. If null, means no specific type.
      * @return $this
      */
-    public function union(StructuredQuery $query, $type = 'default')
+    public function union(StructuredQuery $query, $type = null)
     {
         $this->append('union', [$query, $type]);
         return $this;

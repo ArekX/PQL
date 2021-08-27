@@ -23,8 +23,22 @@ use ArekX\PQL\Drivers\MySql\Builder\MySqlQueryBuilderState;
 trait ConditionTrait
 {
     use SubQueryTrait;
+    use WrapValueTrait;
     use QuoteNameTrait;
 
+    /**
+     * Build a condition into a string
+     *
+     * Conditions are recursively parsed.
+     *
+     * See where() in conditions trait for options which can be passed here.
+     *
+     * @see \ArekX\PQL\Sql\Query\Traits\ConditionTrait::where()
+     * @param array|StructuredQuery $condition Condition to be built.
+     * @param MySqlQueryBuilderState $state Query builder state.
+     * @return string
+     * @throws \Exception
+     */
     protected function buildCondition($condition, MySqlQueryBuilderState $state)
     {
         static $map = null;
@@ -67,6 +81,20 @@ trait ConditionTrait
         throw new \Exception('Condition must be an array.');
     }
 
+    /**
+     * Builder for associative condition.
+     *
+     * Builds:
+     * ```
+     * ['all', ['key' => 'value']]
+     * ['any', ['key' => 'value']]
+     * ```
+     *
+     * @param string $glue Glue to be used between checks (AND/OR)
+     * @param array $condition Condition to be parsed
+     * @param MySqlQueryBuilderState $state Query builder state
+     * @return string
+     */
     protected function buildAssociativeCondition($glue, $condition, MySqlQueryBuilderState $state)
     {
         $result = [];
@@ -89,21 +117,20 @@ trait ConditionTrait
         return implode($glue, $result);
     }
 
-    protected function buildWrapValue($value, MySqlQueryBuilderState $state, $type = null)
-    {
-        $builder = $state->getParamsBuilder();
-
-        if (is_array($value)) {
-            $results = [];
-            foreach ($value as $item) {
-                $results[] = $builder->wrapValue($item, $type);
-            }
-            return implode(', ', $results);
-        }
-
-        return $builder->wrapValue($value, $type);
-    }
-
+    /**
+     * Builder for conjunction conditions
+     *
+     * Builds:
+     * ```
+     * ['and', expression1, expression2, ..., expressionN]
+     * ['or', expression1, expression2, ..., expressionN]
+     * ```
+     *
+     * @param string $glue Glue to be used between checks (AND/OR)
+     * @param array $condition Condition to be parsed
+     * @param MySqlQueryBuilderState $state Query builder state
+     * @return string
+     */
     protected function buildConjuctionCondition(string $glue, $condition, MySqlQueryBuilderState $state)
     {
         $result = [];
@@ -116,6 +143,112 @@ trait ConditionTrait
         return implode($glue, $result);
     }
 
+    /**
+     * Builder for unary conditions
+     *
+     * Builds:
+     * ```
+     * ['not', expression]
+     * ['exists', expression]
+     * ```
+     *
+     * @param string $op Resulting operation (NOT/EXISTS)
+     * @param array $condition Condition to be parsed
+     * @param MySqlQueryBuilderState $state Query builder state
+     * @return string
+     */
+    protected function buildUnaryCondition(string $op, $condition, MySqlQueryBuilderState $state)
+    {
+        if ($condition[1] instanceof StructuredQuery) {
+            return $op . ' ' . $this->buildSubQuery($condition[1], $state);
+        }
+
+        return $op . ' (' . $this->buildCondition($condition[1], $state) . ')';
+    }
+
+    /**
+     * Builder for IN condition
+     *
+     * Builds:
+     * ```
+     * ['in', leftExpression, rightExpression]
+     * ```
+     *
+     * @param array $condition Condition to be parsed
+     * @param MySqlQueryBuilderState $state Query builder state
+     * @return string
+     */
+    protected function buildInCondition($condition, MySqlQueryBuilderState $state)
+    {
+        $left = $this->buildCondition($condition[1] ?? null, $state);
+
+        $right = $condition[2] ?? null;
+        if ($right instanceof StructuredQuery) {
+            return $left . ' IN ' . $this->buildSubQuery($right, $state);
+        }
+
+        return $left . ' IN (' . $this->buildCondition($right, $state) . ')';
+    }
+
+    /**
+     * Builder for BETWEEN condition
+     *
+     * Builds:
+     * ```
+     * ['between', ofExpression, fromExpression, toExpression]
+     * ```
+     *
+     * @param array $condition Condition to be parsed
+     * @param MySqlQueryBuilderState $state Query builder state
+     * @return string
+     */
+    protected function buildBetweenCondition($condition, MySqlQueryBuilderState $state)
+    {
+        $of = $this->buildCondition($condition[1] ?? null, $state);
+        $from = $this->buildCondition($condition[2] ?? null, $state);
+        $to = $this->buildCondition($condition[3] ?? null, $state);
+
+        return $of . ' BETWEEN ' . $from . ' AND ' . $to;
+    }
+
+    /**
+     * Builder for binary conditions
+     *
+     * Builds:
+     * ```
+     * ['=', leftExpression, rightExpression]
+     * ['<', leftExpression, rightExpression]
+     * ['>', leftExpression, rightExpression]
+     * ['<=', leftExpression, rightExpression]
+     * ['>=', leftExpression, rightExpression]
+     * ['!=', leftExpression, rightExpression]
+     * ['<>', leftExpression, rightExpression]
+     * ```
+     *
+     * @param string $operation Operation to be used
+     * @param array $condition Condition to be parsed
+     * @param MySqlQueryBuilderState $state Query builder state
+     * @return string
+     */
+    protected function buildBinaryCondition(string $operation, $condition, MySqlQueryBuilderState $state)
+    {
+        $left = $this->buildCondition($condition[1] ?? null, $state);
+        $right = $this->buildCondition($condition[2] ?? null, $state);
+
+        return $left . $operation . $right;
+    }
+
+    /**
+     * Builder for column
+     *
+     * Builds:
+     * ```
+     * ['column', string]
+     * ```
+     *
+     * @param array $condition Condition to be parsed
+     * @return string
+     */
     protected function buildColumnCondition($condition)
     {
         $column = $condition[1] ?? null;
@@ -129,6 +262,19 @@ trait ConditionTrait
         return $this->quoteName($column);
     }
 
+
+    /**
+     * Builder for value (user input)
+     *
+     * Builds:
+     * ```
+     * ['value', anyValue, type]
+     * ```
+     *
+     * @param array $condition Condition to be parsed
+     * @param MySqlQueryBuilderState $state Query builder state
+     * @return string
+     */
     protected function buildValueCondition($condition, MySqlQueryBuilderState $state)
     {
         return $this->buildWrapValue(
@@ -136,44 +282,5 @@ trait ConditionTrait
             $state,
             $condition[2] ?? null
         );
-    }
-
-    protected function buildUnaryCondition(string $op, $condition, MySqlQueryBuilderState $state)
-    {
-        if ($condition[1] instanceof StructuredQuery) {
-            return $op . ' ' . $this->buildSubQuery($condition[1], $state);
-        }
-
-        return $op . ' (' . $this->buildCondition($condition[1], $state) . ')';
-    }
-
-    protected function buildBetweenCondition($condition, MySqlQueryBuilderState $state)
-    {
-        $of = $this->buildCondition($condition[1] ?? null, $state);
-        $from = $this->buildCondition($condition[2] ?? null, $state);
-        $to = $this->buildCondition($condition[3] ?? null, $state);
-
-        return $of . ' BETWEEN ' . $from . ' AND ' . $to;
-    }
-
-
-    protected function buildBinaryCondition(string $operation, $condition, MySqlQueryBuilderState $state)
-    {
-        $left = $this->buildCondition($condition[1] ?? null, $state);
-        $right = $this->buildCondition($condition[2] ?? null, $state);
-
-        return $left . $operation . $right;
-    }
-
-    protected function buildInCondition($condition, MySqlQueryBuilderState $state)
-    {
-        $left = $this->buildCondition($condition[1] ?? null, $state);
-
-        $right = $condition[2] ?? null;
-        if ($right instanceof StructuredQuery) {
-            return $left . ' IN ' . $this->buildSubQuery($right, $state);
-        }
-
-        return $left . ' IN (' . $this->buildCondition($right, $state) . ')';
     }
 }

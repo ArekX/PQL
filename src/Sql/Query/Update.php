@@ -54,11 +54,13 @@ class Update extends Query
     /**
      * Set values to be updated.
      *
+     * Data accepted is an associative array where key is the column name and value is the value to update.
+     *
      * SQL Injection Warning: If an array is passed the keys in the array are not escaped
      * meaning they should not be for user input, values are escaped properly and user input
      * can be used for them.
      *
-     * @param $data
+     * @param array $data
      * @return $this
      */
     public function set($data)

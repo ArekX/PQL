@@ -41,11 +41,11 @@ trait AliasTrait
      *
      * If structured query is passed as a name part, it will be processed too.
      *
-     * @see QuoteNameTrait::quoteName()
-     * @see SubQueryTrait::buildSubQuery()
      * @param string|array|StructuredQuery $namePart Part to be processed.
      * @param MySqlQueryBuilderState $state State of the builder
      * @return string
+     *@see SubQueryTrait::buildSubQuery()
+     * @see QuoteNameTrait::quoteName()
      */
     protected function buildAliasedNames($namePart, MySqlQueryBuilderState $state)
     {

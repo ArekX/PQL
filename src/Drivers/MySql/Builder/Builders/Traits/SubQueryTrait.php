@@ -34,7 +34,19 @@ trait SubQueryTrait
      */
     protected function buildSubQuery(StructuredQuery $item, MySqlQueryBuilderState $state)
     {
-        $result = $state->getParentBuilder()->build($item)->getQuery();
+        $result = $this->buildQuery($item, $state);
         return $item instanceof Raw ? $result : "({$result})";
+    }
+
+    /**
+     * Builds a structured query using parent builder from state.
+     *
+     * @param StructuredQuery $item Query to be built
+     * @param MySqlQueryBuilderState $state State to be used
+     * @return string
+     */
+    protected function buildQuery(StructuredQuery $item, MySqlQueryBuilderState $state)
+    {
+        return $state->getParentBuilder()->build($item)->getQuery();
     }
 }

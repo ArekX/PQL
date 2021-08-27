@@ -68,7 +68,7 @@ class Insert extends Query
     }
 
     /**
-     * Set values to insert.
+     * Append values to insert.
      *
      * Value count should match the column count if an array is passed.
      *
@@ -82,7 +82,7 @@ class Insert extends Query
      */
     public function values($values)
     {
-        $this->use('values', $values);
+        $this->append('values', $values);
         return $this;
     }
 

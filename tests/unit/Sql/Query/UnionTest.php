@@ -47,8 +47,8 @@ class UnionTest extends \Codeception\Test\Unit
             ->union($q2);
 
         expect($u->toArray()['union'])->toBe([
-            [$q1, 'default'],
-            [$q2, 'default']
+            [$q1, null],
+            [$q2, null]
         ]);
     }
 
@@ -61,7 +61,7 @@ class UnionTest extends \Codeception\Test\Unit
             ->union($q2, 'all');
 
         expect($u->toArray()['union'])->toBe([
-            [$q1, 'default'],
+            [$q1, null],
             [$q2, 'all']
         ]);
     }

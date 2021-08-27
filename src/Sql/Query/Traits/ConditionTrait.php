@@ -56,7 +56,7 @@ trait ConditionTrait
      *                                If a value is a StructuredQuery it will be pre-processed.
      * - ['column', string] - Represents a column name or a `table.column` name.
      *                      This value is not escaped and should NOT contain user input.
-     * - ['value', value, [type]] - Represents a value which can be user input.
+     * - ['value', value, type] - Represents a value which can be user input. Type is optional.
      *                          Type must be a value supported by the driver if not passed, type will be inferred from
      *                          the value.
      *                          If a value is an array it will result in multiple parameters. This is useful for IN
