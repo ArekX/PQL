@@ -64,15 +64,15 @@ class UpdateBuilder extends QueryPartBuilder
             'join' => fn($parts, $state) => $this->buildJoin($parts, $state),
             'set' => fn($parts, $state) => $this->buildSet($parts, $state),
             'where' => fn($parts, $state) => $this->buildWhere($parts, $state),
-            'limit' => fn($parts, $state) => $this->buildLimit($parts),
-            'offset' => fn($parts, $state) => $this->buildOffset($parts),
+            'limit' => fn($parts) => $this->buildLimit($parts),
+            'offset' => fn($parts) => $this->buildOffset($parts),
         ];
     }
 
     /**
      * Builds table which will be updated.
      *
-     * @param array|StructuredQuery $parts Part which will be updated.
+     * @param string|StructuredQuery $parts Part which will be updated.
      * @param MySqlQueryBuilderState $state Query builder state.
      * @return string
      */
