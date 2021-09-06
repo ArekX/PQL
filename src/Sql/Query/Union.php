@@ -17,6 +17,7 @@
 
 namespace ArekX\PQL\Sql\Query;
 
+use ArekX\PQL\Contracts\GroupedSubQuery;
 use ArekX\PQL\Contracts\StructuredQuery;
 use ArekX\PQL\Query;
 use ArekX\PQL\Sql\Query\Traits\ConfigureTrait;
@@ -25,7 +26,7 @@ use ArekX\PQL\Sql\Query\Traits\ConfigureTrait;
  * Represents an union query
  * for union of multiple queries.
  */
-class Union extends Query
+class Union extends Query implements GroupedSubQuery
 {
     use ConfigureTrait;
 
@@ -49,7 +50,7 @@ class Union extends Query
      * @param string|null $type Type of the union. If null, means no specific type.
      * @return $this
      */
-    public function union(StructuredQuery $query, $type = null)
+    public function unionWith(StructuredQuery $query, $type = null)
     {
         $this->append('union', [$query, $type]);
         return $this;

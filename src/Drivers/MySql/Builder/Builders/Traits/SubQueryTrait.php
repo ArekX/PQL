@@ -17,9 +17,9 @@
 
 namespace ArekX\PQL\Drivers\MySql\Builder\Builders\Traits;
 
+use ArekX\PQL\Contracts\GroupedSubQuery;
 use ArekX\PQL\Contracts\StructuredQuery;
 use ArekX\PQL\Drivers\MySql\Builder\MySqlQueryBuilderState;
-use ArekX\PQL\Sql\Query\Raw;
 
 trait SubQueryTrait
 {
@@ -35,7 +35,7 @@ trait SubQueryTrait
     protected function buildSubQuery(StructuredQuery $item, MySqlQueryBuilderState $state)
     {
         $result = $this->buildQuery($item, $state);
-        return $item instanceof Raw ? $result : "({$result})";
+        return $item instanceof GroupedSubQuery ? "({$result})" : $result;
     }
 
     /**

@@ -19,8 +19,11 @@ namespace ArekX\PQL\Drivers\MySql\Builder;
 
 use ArekX\PQL\Contracts\QueryBuilder;
 use ArekX\PQL\Contracts\QueryBuilderState;
+use ArekX\PQL\Drivers\MySql\Builder\Builders\CallBuilder;
+use ArekX\PQL\Drivers\MySql\Builder\Builders\CaseWhenBuilder;
 use ArekX\PQL\Drivers\MySql\Builder\Builders\DeleteBuilder;
 use ArekX\PQL\Drivers\MySql\Builder\Builders\InsertBuilder;
+use ArekX\PQL\Drivers\MySql\Builder\Builders\MethodBuilder;
 use ArekX\PQL\Drivers\MySql\Builder\Builders\QueryPartBuilder;
 use ArekX\PQL\Drivers\MySql\Builder\Builders\RawBuilder;
 use ArekX\PQL\Drivers\MySql\Builder\Builders\SelectBuilder;
@@ -34,6 +37,9 @@ use ArekX\PQL\Sql\Query\Union;
 use ArekX\PQL\Sql\Query\Update;
 use ArekX\PQL\Sql\SqlParamBuilder;
 use ArekX\PQL\Sql\SqlQueryBuilderFactory;
+use ArekX\PQL\Sql\Statement\Call;
+use ArekX\PQL\Sql\Statement\CaseWhen;
+use ArekX\PQL\Sql\Statement\Method;
 
 /**
  * Represents a query builder for MySQL
@@ -51,7 +57,10 @@ class MySqlQueryBuilder extends SqlQueryBuilderFactory
         Union::class => UnionBuilder::class,
         Delete::class => DeleteBuilder::class,
         Insert::class => InsertBuilder::class,
-        Update::class => UpdateBuilder::class
+        Update::class => UpdateBuilder::class,
+        Call::class => CallBuilder::class,
+        Method::class => MethodBuilder::class,
+        CaseWhen::class => CaseWhenBuilder::class,
     ];
 
     /**

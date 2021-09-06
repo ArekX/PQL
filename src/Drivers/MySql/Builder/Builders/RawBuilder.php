@@ -18,7 +18,13 @@
 namespace ArekX\PQL\Drivers\MySql\Builder\Builders;
 
 use ArekX\PQL\Drivers\MySql\Builder\MySqlQueryBuilderState;
+use ArekX\PQL\Sql\Query\Raw;
 
+/**
+ * Represents a query builder for building raw queries.
+ *
+ * @see Raw
+ */
 class RawBuilder extends QueryPartBuilder
 {
     /**
@@ -72,5 +78,13 @@ class RawBuilder extends QueryPartBuilder
         }
 
         return null;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function getLastParts(): array
+    {
+        return [];
     }
 }

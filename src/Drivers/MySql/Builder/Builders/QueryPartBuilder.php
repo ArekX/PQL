@@ -41,13 +41,44 @@ abstract class QueryPartBuilder implements QueryBuilder
         }
 
         $input = $query->toArray();
-        $results = implode($state->getQueryPartGlue(), $this->buildQueryParts($input, $state));
+
 
         return RawQueryResult::create(
-            $results,
+            $this->joinParts($state->getQueryPartGlue(), $this->buildQueryParts($input, $state)),
             $state->getParamsBuilder()->build(),
             $query->get('config') ?? null
         );
+    }
+
+    /**
+     * Join built parts into one complete string.
+     *
+     * Part can be a string, in which case it will be joined with other by
+     * using a string in $stringGlue
+     *
+     * If a part is an array it is used as a tuple [glue, partString] and
+     * it will use its own glue string to join.
+     *
+     * @param string $stringGlue Default string glue to use if part is string
+     * @param array $builtParts List of parts to join.
+     *
+     * @return string
+     */
+    protected function joinParts($stringGlue, array $builtParts): string
+    {
+        $result = '';
+
+        foreach ($builtParts as $index => $part) {
+            if (is_string($part)) {
+                $result .= $index > 0 ? $stringGlue . $part : $part;
+                continue;
+            }
+
+            [$partGlue, $partString] = $part;
+            $result .= $partGlue . $partString;
+        }
+
+        return $result;
     }
 
     /**
@@ -80,6 +111,10 @@ abstract class QueryPartBuilder implements QueryBuilder
             }
         }
 
+        foreach ($this->getLastParts() as $part) {
+            $results[] = $part;
+        }
+
         return $results;
     }
 
@@ -102,4 +137,11 @@ abstract class QueryPartBuilder implements QueryBuilder
      * @return array
      */
     protected abstract function getPartBuilders(): array;
+
+    /**
+     * Return last parts to be applied at the end of the query.
+     *
+     * @return array
+     */
+    protected abstract function getLastParts(): array;
 }

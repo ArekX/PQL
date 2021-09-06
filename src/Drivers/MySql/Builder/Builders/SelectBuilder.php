@@ -24,9 +24,12 @@ use ArekX\PQL\Drivers\MySql\Builder\Builders\Traits\JoinTrait;
 use ArekX\PQL\Drivers\MySql\Builder\Builders\Traits\NumberPartTrait;
 use ArekX\PQL\Drivers\MySql\Builder\Builders\Traits\WhereTrait;
 use ArekX\PQL\Drivers\MySql\Builder\MySqlQueryBuilderState;
+use ArekX\PQL\Sql\Query\Select;
 
 /**
- * Represents a query builder for building an INSERT query.
+ * Represents a query builder for building a SELECT query.
+ *
+ * @see Select
  */
 class SelectBuilder extends QueryPartBuilder
 {
@@ -127,5 +130,13 @@ class SelectBuilder extends QueryPartBuilder
         }
 
         return 'ORDER BY ' . implode(', ', $result);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function getLastParts(): array
+    {
+        return [];
     }
 }

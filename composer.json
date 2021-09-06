@@ -11,7 +11,10 @@
   "autoload": {
     "psr-4": {
       "ArekX\\PQL\\": "src/"
-    }
+    },
+    "files": [
+      "src/Sql/functions.php"
+    ]
   },
   "minimum-stability": "stable",
   "require": {

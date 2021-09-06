@@ -17,6 +17,7 @@
 
 namespace ArekX\PQL\Sql\Query;
 
+use ArekX\PQL\Contracts\GroupedSubQuery;
 use ArekX\PQL\Contracts\StructuredQuery;
 use ArekX\PQL\Query;
 use ArekX\PQL\Sql\Query\Traits\ConditionTrait;
@@ -27,7 +28,7 @@ use ArekX\PQL\Sql\Query\Traits\JoinTrait;
  * Class representing a select query for retrieving data from
  * database.
  */
-class Select extends Query
+class Select extends Query implements GroupedSubQuery
 {
     use ConditionTrait;
     use JoinTrait;
@@ -88,9 +89,9 @@ class Select extends Query
      * If passed column is an array it will be merged
      * with the current column list.
      *
-     * @see Select::columns()
      * @param array|string|StructuredQuery $column Column to be added
      * @return $this
+     * @see Select::columns()
      */
     public function addColumns($column)
     {

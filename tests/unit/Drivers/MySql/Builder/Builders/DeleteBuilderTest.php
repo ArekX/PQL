@@ -26,13 +26,13 @@ class DeleteBuilderTest extends BuilderTestCase
     {
         $this->assertQueryResults([
             [Delete::create()->from(Raw::from('CROSS TABLE')), 'DELETE FROM CROSS TABLE'],
-            [Delete::create()->from(Delete::create()->from('subtable')), 'DELETE FROM (DELETE FROM `subtable`)'],
+            [Delete::create()->from(Delete::create()->from('subtable')), 'DELETE FROM DELETE FROM `subtable`'],
             [Delete::create()->from('table'), 'DELETE FROM `table`'],
             [Delete::create()->from('schema.table'), 'DELETE FROM `schema`.`table`'],
             [Delete::create()->from(['schema.table1', 'table2']), 'DELETE FROM `schema`.`table1`, `table2`'],
             [Delete::create()->from(['a' => 'table1', 'schema.table2']), 'DELETE FROM `table1` AS `a`, `schema`.`table2`'],
             [Delete::create()->from(['a' => Raw::from('rawquery')]), 'DELETE FROM rawquery AS `a`'],
-            [Delete::create()->from(['a' => Delete::create()->from('test')]), 'DELETE FROM (DELETE FROM `test`) AS `a`'],
+            [Delete::create()->from(['a' => Delete::create()->from('test')]), 'DELETE FROM DELETE FROM `test` AS `a`'],
         ]);
     }
 

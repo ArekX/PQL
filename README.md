@@ -26,7 +26,7 @@ First you need to decide on which driver you will use. Following drivers are sup
 After you decide on the driver, writing a query is as simple as:
 
 ```php
-use ArekX\PQL\Sql\Query\Select
+use function \ArekX\PQL\Sql\select;
 
 // ... driver and builder initialization left out for brevity.
 
@@ -36,8 +36,7 @@ use ArekX\PQL\Sql\Query\Select
 
 // Fetching all results
 
-$query = Select::create()
-    ->columns('*')
+$query = select('*')
     ->from('user')
     ->where(['all', ['is_active' => 1]]);
 
@@ -48,8 +47,7 @@ $driver->fetchAll($rawQuery); // Returns all data for user table
 
 
 // Complex select query:
-$query = Select::create()
-    ->columns('*')
+$query = select('*')
     ->from(['u' => 'user'])
     ->innerJoin(['r' => 'user_role'], 'u.role_id = r.id')
     ->where(['all', [

@@ -22,9 +22,12 @@ use ArekX\PQL\Drivers\MySql\Builder\Builders\Traits\QuoteNameTrait;
 use ArekX\PQL\Drivers\MySql\Builder\Builders\Traits\SubQueryTrait;
 use ArekX\PQL\Drivers\MySql\Builder\Builders\Traits\WrapValueTrait;
 use ArekX\PQL\Drivers\MySql\Builder\MySqlQueryBuilderState;
+use ArekX\PQL\Sql\Query\Insert;
 
 /**
  * Represents a query builder for building an INSERT query
+ *
+ * @see Insert
  */
 class InsertBuilder extends QueryPartBuilder
 {
@@ -136,5 +139,13 @@ class InsertBuilder extends QueryPartBuilder
         }
 
         return '(' . implode(', ', $result) . ')';
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function getLastParts(): array
+    {
+        return [];
     }
 }

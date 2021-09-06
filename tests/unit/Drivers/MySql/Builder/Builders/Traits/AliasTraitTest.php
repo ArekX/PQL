@@ -44,7 +44,7 @@ class AliasTraitTest extends Unit
         $t = new AliasTester();
 
         $builder = new MySqlQueryBuilder();
-        expect($t->alias(Delete::create()->from('test'), $builder->createState()))->toBe('(DELETE FROM `test`)');
+        expect($t->alias(Delete::create()->from('test'), $builder->createState()))->toBe('DELETE FROM `test`');
     }
 
     public function testAliasTheRawQuery()
@@ -60,7 +60,7 @@ class AliasTraitTest extends Unit
         $t = new AliasTester();
 
         $builder = new MySqlQueryBuilder();
-        expect($t->alias(['alias1' => Delete::create()->from('test')], $builder->createState()))->toBe('(DELETE FROM `test`) AS `alias1`');
+        expect($t->alias(['alias1' => Delete::create()->from('test')], $builder->createState()))->toBe('DELETE FROM `test` AS `alias1`');
     }
 
 

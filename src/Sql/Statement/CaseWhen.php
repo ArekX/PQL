@@ -17,13 +17,14 @@
 
 namespace ArekX\PQL\Sql\Statement;
 
+use ArekX\PQL\Contracts\GroupedSubQuery;
 use ArekX\PQL\Contracts\StructuredQuery;
 use ArekX\PQL\Query;
 
 /**
  * Represents a CASE statement.
  */
-class CaseWhen extends Query
+class CaseWhen extends Query implements GroupedSubQuery
 {
     /**
      * Of value to be set for the CASE

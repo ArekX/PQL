@@ -43,8 +43,8 @@ class UnionTest extends \Codeception\Test\Unit
         $q1 = Select::create();
         $q2 = Select::create();
         $u = Union::create()
-            ->union($q1)
-            ->union($q2);
+            ->unionWith($q1)
+            ->unionWith($q2);
 
         expect($u->toArray()['union'])->toBe([
             [$q1, null],
@@ -57,8 +57,8 @@ class UnionTest extends \Codeception\Test\Unit
         $q1 = Select::create();
         $q2 = Select::create();
         $u = Union::create()
-            ->union($q1)
-            ->union($q2, 'all');
+            ->unionWith($q1)
+            ->unionWith($q2, 'all');
 
         expect($u->toArray()['union'])->toBe([
             [$q1, null],

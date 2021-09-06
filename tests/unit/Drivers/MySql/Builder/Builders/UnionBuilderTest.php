@@ -40,8 +40,8 @@ class UnionBuilderTest extends BuilderTestCase
     public function testBuildWithUnion()
     {
         $this->assertQueryResults([
-            [Union::create()->from(Raw::from('SELECT 1'))->union(Raw::from('SELECT 2')), 'SELECT 1 UNION SELECT 2'],
-            [Union::create()->from(Raw::from('SELECT 1'))->union(Delete::create()->from('test')), 'SELECT 1 UNION DELETE FROM `test`'],
+            [Union::create()->from(Raw::from('SELECT 1'))->unionWith(Raw::from('SELECT 2')), 'SELECT 1 UNION SELECT 2'],
+            [Union::create()->from(Raw::from('SELECT 1'))->unionWith(Delete::create()->from('test')), 'SELECT 1 UNION DELETE FROM `test`'],
         ]);
     }
 
@@ -49,12 +49,12 @@ class UnionBuilderTest extends BuilderTestCase
     public function testBuildWithUnionWithType()
     {
         $this->assertQueryResults([
-            [Union::create()->from(Raw::from('SELECT 1'))->union(Raw::from('SELECT 2'), 'all'), 'SELECT 1 UNION ALL SELECT 2'],
-            [Union::create()->from(Raw::from('SELECT 1'))->union(Delete::create()->from('test'), 'all'), 'SELECT 1 UNION ALL DELETE FROM `test`'],
+            [Union::create()->from(Raw::from('SELECT 1'))->unionWith(Raw::from('SELECT 2'), 'all'), 'SELECT 1 UNION ALL SELECT 2'],
+            [Union::create()->from(Raw::from('SELECT 1'))->unionWith(Delete::create()->from('test'), 'all'), 'SELECT 1 UNION ALL DELETE FROM `test`'],
             [Union::create()
                 ->from(Raw::from('SELECT 1'))
-                ->union(Raw::from('ORDINARY'))
-                ->union(Raw::from('SELECT 2'), 'all'), 'SELECT 1 UNION ORDINARY UNION ALL SELECT 2'],
+                ->unionWith(Raw::from('ORDINARY'))
+                ->unionWith(Raw::from('SELECT 2'), 'all'), 'SELECT 1 UNION ORDINARY UNION ALL SELECT 2'],
         ]);
     }
 }

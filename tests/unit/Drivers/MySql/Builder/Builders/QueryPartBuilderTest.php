@@ -45,6 +45,7 @@ class QueryPartBuilderTest extends Unit
     {
         return $this->make(QueryPartBuilder::class, $override + [
                 'getInitialParts' => fn() => [],
+                'getLastParts' => fn() => [],
                 'getPartBuilders' => fn() => [],
                 'getRequiredParts' => fn() => [],
             ]);

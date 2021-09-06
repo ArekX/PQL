@@ -25,9 +25,12 @@ use ArekX\PQL\Drivers\MySql\Builder\Builders\Traits\SubQueryTrait;
 use ArekX\PQL\Drivers\MySql\Builder\Builders\Traits\WhereTrait;
 use ArekX\PQL\Drivers\MySql\Builder\Builders\Traits\WrapValueTrait;
 use ArekX\PQL\Drivers\MySql\Builder\MySqlQueryBuilderState;
+use ArekX\PQL\Sql\Query\Update;
 
 /**
  * Represents a query builder for building UPDATE query.
+ *
+ * @see Update
  */
 class UpdateBuilder extends QueryPartBuilder
 {
@@ -105,5 +108,13 @@ class UpdateBuilder extends QueryPartBuilder
         }
 
         return 'SET ' . implode(', ', $results);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function getLastParts(): array
+    {
+        return [];
     }
 }

@@ -44,7 +44,7 @@ class FromPartTraitTest extends Unit
 
     public function testFromWithStructuredQuery()
     {
-        expect($this->build(Delete::create()->from('sub')))->toBe('FROM (DELETE FROM `sub`)');
+        expect($this->build(Delete::create()->from('sub')))->toBe('FROM DELETE FROM `sub`');
     }
 
     public function testFromWithRaw()
@@ -56,7 +56,7 @@ class FromPartTraitTest extends Unit
     {
         expect($this->build([
             'alias1' => Delete::create()->from('sub')
-        ]))->toBe('FROM (DELETE FROM `sub`) AS `alias1`');
+        ]))->toBe('FROM DELETE FROM `sub` AS `alias1`');
     }
 
     public function testFromWithRawInAs()

@@ -19,9 +19,12 @@ namespace ArekX\PQL\Drivers\MySql\Builder\Builders;
 
 use ArekX\PQL\Drivers\MySql\Builder\Builders\Traits\SubQueryTrait;
 use ArekX\PQL\Drivers\MySql\Builder\MySqlQueryBuilderState;
+use ArekX\PQL\Sql\Query\Union;
 
 /**
  * Represents a query builder for building an UNION query
+ *
+ * @see Union
  */
 class UnionBuilder extends QueryPartBuilder
 {
@@ -69,5 +72,13 @@ class UnionBuilder extends QueryPartBuilder
         }
 
         return 'UNION ' . implode(' UNION ', $result);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    protected function getLastParts(): array
+    {
+        return [];
     }
 }
