@@ -17,17 +17,45 @@
 
 namespace ArekX\PQL\Contracts;
 
+/**
+ * Interface representing a result builder
+ * for handling results from a driver.
+ */
 interface ResultBuilder
 {
+    /**
+     * Set result reader to use.
+     *
+     * This result reader will be used to read data from.
+     *
+     * @param ResultReader $reader Reader to be used
+     * @return $this
+     */
     public function useReader(ResultReader $reader): self;
 
-    public function all();
+    /**
+     * Return all rows from the result reader.
+     *
+     * All pipelines added to the result builder
+     * will be processed before the result is returned.
+     *
+     * @return array
+     */
+    public function all(): array;
 
+    /**
+     * Return only the first result from result reader.
+     *
+     * All pipelines added to the result builder
+     * will be processed before the result is returned.
+     *
+     * @return mixed
+     */
     public function first();
 
     public function scalar($index = 0);
 
-    public function column();
+    public function column($index = 0);
 
     public function exists(): bool;
 

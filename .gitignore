@@ -2,6 +2,7 @@ vendor
 .idea
 api
 old
+.DS_Store
 coverage
 tests/_output
 tester.php

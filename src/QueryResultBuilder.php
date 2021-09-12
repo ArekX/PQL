@@ -24,13 +24,6 @@ class QueryResultBuilder implements ResultBuilder
 {
     protected ResultReader $reader;
 
-    protected $pipeline = [];
-
-    public static function create()
-    {
-        return new static();
-    }
-
     public function useReader(ResultReader $reader): ResultBuilder
     {
         $this->reader = $reader;
@@ -39,118 +32,83 @@ class QueryResultBuilder implements ResultBuilder
 
     public function all()
     {
-        $this->reader->reset();
-        $results = $this->applyPipeline($this->reader->getAllRows());
+        $result = $this->reader->getAllRows();
         $this->reader->finalize();
-        return $results;
+        return $result;
     }
 
     public function first()
     {
-        $this->reader->reset();
-        $result = $this->applyPipeline($this->reader->getNextRow());
+        $result = $this->reader->getNextRow();
         $this->reader->finalize();
         return $result;
     }
 
     public function scalar($index = 0)
     {
-        $this->reader->reset();
-        $result = $this->applyPipeline($this->reader->getNextColumn($index));
+        $result = $this->reader->getNextColumn($index);
         $this->reader->finalize();
         return $result;
     }
 
-    public function column()
+    public function column($index = 0)
     {
-        $this->reader->reset();
-        $result = $this->applyPipeline($this->reader->getAllColumns());
+        $result = $this->reader->getAllColumns($index);
         $this->reader->finalize();
         return $result;
     }
 
     public function exists(): bool
     {
-        $this->reader->reset();
         $result = $this->reader->getNextColumn();
         $this->reader->finalize();
-        return !empty($result);
+        return $result !== null;
     }
 
     public function list($keyColumn, $valueColumn)
     {
-        $results = $this->all();
+        $map = [];
 
-        $list = [];
-        foreach ($results as $row) {
-            $list[$row[$keyColumn]] = $row[$valueColumn];
+        $rows = $this->all();
+
+        foreach ($rows as $row) {
+            if (!array_key_exists($keyColumn, $row) || !array_key_exists($valueColumn, $row)) {
+                throw new \Exception('$keyColumn and $valueColumn must exist in the result.');
+            }
+
+            $map[$row[$keyColumn]] = $row[$valueColumn];
         }
 
-        return $list;
+        return $map;
     }
 
     public function clearPipeline(): ResultBuilder
     {
-        $this->pipeline = [];
-    }
-
-    protected function applyPipeline($result)
-    {
-        foreach ($this->pipeline as $runMethod) {
-            $result = $runMethod($result);
-        }
-
-        return $result;
-    }
-
-    public function pipe(callable $method): ResultBuilder
-    {
-        $this->pipeline[] = $method;
-        return $this;
+        // TODO: Implement clearPipeline() method.
     }
 
     public function pipeIndexBy(string $column): ResultBuilder
     {
-        return $this->pipe(function ($input) use ($column) {
-            $results = [];
-
-            foreach ($input as $row) {
-                if (!is_array($row) || !array_key_exists($column, $row)) {
-                    throw new \Exception("Column '{$column}' is not defined in result.");
-                }
-                $results[$row[$column]] = $row;
-            }
-
-            return $results;
-        });
+        // TODO: Implement pipeIndexBy() method.
     }
 
     public function pipeSort(callable $sorter): ResultBuilder
     {
-        return $this->pipe(function ($input) use ($sorter) {
-            usort($input, $sorter);
-            return $input;
-        });
+        // TODO: Implement pipeSort() method.
     }
 
     public function pipeMap(callable $mapper): ResultBuilder
     {
-        return $this->pipe(function ($input) use ($mapper) {
-            return array_map($mapper, $input);
-        });
+        // TODO: Implement pipeMap() method.
     }
 
     public function pipeReduce(callable $reducer): ResultBuilder
     {
-        return $this->pipe(function ($input) use ($reducer) {
-            return array_reduce($input, $reducer);
-        });
+        // TODO: Implement pipeReduce() method.
     }
 
     public function pipeFilter(callable $filter): ResultBuilder
     {
-        return $this->pipe(function ($input) use ($filter) {
-            return array_filter($input, $filter);
-        });
+        // TODO: Implement pipeFilter() method.
     }
 }
