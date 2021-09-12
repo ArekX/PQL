@@ -17,22 +17,32 @@
 
 namespace ArekX\PQL\Contracts;
 
-/**
- * Interface for a driver to run the raw queries.
- */
-interface Driver
+interface ResultBuilder
 {
-    public function run(RawQuery $query);
+    public function useReader(ResultReader $reader): self;
 
-    public function useMiddleware(string $step, array $middlewareList): self;
+    public function all();
 
-    public function appendMiddleware(string $step, callable $middleware): self;
+    public function first();
 
-    public function fetchFirst(RawQuery $query);
+    public function scalar($index = 0);
 
-    public function fetchReader(RawQuery $query): ResultReader;
+    public function column();
 
-    public function fetchAll(RawQuery $query): array;
+    public function exists(): bool;
 
-    public function fetch(RawQuery $query): ResultBuilder;
+    public function list($keyColumn, $valueColumn);
+
+    public function clearPipeline(): self;
+
+    public function pipeIndexBy(string $column): self;
+
+    public function pipeSort(callable $sorter): self;
+
+    public function pipeMap(callable $mapper): self;
+
+    public function pipeReduce(callable $reducer): self;
+
+    public function pipeFilter(callable $filter): self;
+
 }

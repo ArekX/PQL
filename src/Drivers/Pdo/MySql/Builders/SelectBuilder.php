@@ -15,15 +15,15 @@
  * limitations under the License.
  */
 
-namespace ArekX\PQL\Drivers\MySql\Builder\Builders;
+namespace ArekX\PQL\Drivers\Pdo\MySql\Builders;
 
 use ArekX\PQL\Contracts\StructuredQuery;
-use ArekX\PQL\Drivers\MySql\Builder\Builders\Traits\AliasTrait;
-use ArekX\PQL\Drivers\MySql\Builder\Builders\Traits\FromPartTrait;
-use ArekX\PQL\Drivers\MySql\Builder\Builders\Traits\JoinTrait;
-use ArekX\PQL\Drivers\MySql\Builder\Builders\Traits\NumberPartTrait;
-use ArekX\PQL\Drivers\MySql\Builder\Builders\Traits\WhereTrait;
-use ArekX\PQL\Drivers\MySql\Builder\MySqlQueryBuilderState;
+use ArekX\PQL\Drivers\Pdo\MySql\Builders\Traits\AliasTrait;
+use ArekX\PQL\Drivers\Pdo\MySql\Builders\Traits\FromPartTrait;
+use ArekX\PQL\Drivers\Pdo\MySql\Builders\Traits\JoinTrait;
+use ArekX\PQL\Drivers\Pdo\MySql\Builders\Traits\NumberPartTrait;
+use ArekX\PQL\Drivers\Pdo\MySql\Builders\Traits\WhereTrait;
+use ArekX\PQL\Drivers\Pdo\MySql\MySqlQueryBuilderState;
 use ArekX\PQL\Sql\Query\Select;
 
 /**

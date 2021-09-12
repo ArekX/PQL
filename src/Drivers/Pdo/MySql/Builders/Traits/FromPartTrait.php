@@ -15,25 +15,27 @@
  * limitations under the License.
  */
 
-namespace ArekX\PQL\Drivers\MySql\Builder\Builders\Traits;
+namespace ArekX\PQL\Drivers\Pdo\MySql\Builders\Traits;
 
-trait QuoteNameTrait
+use ArekX\PQL\Contracts\StructuredQuery;
+use ArekX\PQL\Drivers\Pdo\MySql\MySqlQueryBuilderState;
+
+trait FromPartTrait
 {
-    /**
-     * Quotes a name variable backticks for mysql names.
-     *
-     * If a name already contains backtick characters this method will
-     * not perform any transformations.
-     *
-     * @param string $name Name to be quoted.
-     * @return string
-     */
-    protected function quoteName($name): string
-    {
-        if (strpos($name, '`') !== false) {
-            return $name;
-        }
+    use AliasTrait;
 
-        return preg_replace("/([a-zA-Z_][a-zA-Z0-9_]*)/", "`$1`", $name);
+    /**
+     * Build FROM query part.
+     *
+     * Names, sub queries and aliases are supported.
+     *
+     * @param string|array|StructuredQuery $part Part to be built
+     * @param MySqlQueryBuilderState $state Query builder state
+     * @return string Resulting query part.
+     * @see AliasTrait::buildAliasedNames()
+     */
+    protected function buildFrom($part, MySqlQueryBuilderState $state)
+    {
+        return "FROM " . $this->buildAliasedNames($part, $state);
     }
 }

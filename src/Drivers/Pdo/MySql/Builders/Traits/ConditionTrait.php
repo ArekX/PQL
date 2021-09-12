@@ -15,10 +15,10 @@
  * limitations under the License.
  */
 
-namespace ArekX\PQL\Drivers\MySql\Builder\Builders\Traits;
+namespace ArekX\PQL\Drivers\Pdo\MySql\Builders\Traits;
 
 use ArekX\PQL\Contracts\StructuredQuery;
-use ArekX\PQL\Drivers\MySql\Builder\MySqlQueryBuilderState;
+use ArekX\PQL\Drivers\Pdo\MySql\MySqlQueryBuilderState;
 
 trait ConditionTrait
 {

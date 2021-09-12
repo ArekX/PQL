@@ -17,8 +17,8 @@
 
 namespace tests\Drivers\MySql\Builder\Builders\Traits\mock;
 
-use ArekX\PQL\Drivers\MySql\Builder\Builders\Traits\WhereTrait;
-use ArekX\PQL\Drivers\MySql\Builder\MySqlQueryBuilderState;
+use ArekX\PQL\Drivers\Pdo\MySql\Builders\Traits\WhereTrait;
+use ArekX\PQL\Drivers\Pdo\MySql\MySqlQueryBuilderState;
 
 class WherePartTester
 {

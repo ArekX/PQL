@@ -15,16 +15,16 @@
  * limitations under the License.
  */
 
-namespace ArekX\PQL\Drivers\MySql\Builder\Builders;
+namespace ArekX\PQL\Drivers\Pdo\MySql\Builders;
 
 use ArekX\PQL\Contracts\StructuredQuery;
-use ArekX\PQL\Drivers\MySql\Builder\Builders\Traits\JoinTrait;
-use ArekX\PQL\Drivers\MySql\Builder\Builders\Traits\NumberPartTrait;
-use ArekX\PQL\Drivers\MySql\Builder\Builders\Traits\QuoteNameTrait;
-use ArekX\PQL\Drivers\MySql\Builder\Builders\Traits\SubQueryTrait;
-use ArekX\PQL\Drivers\MySql\Builder\Builders\Traits\WhereTrait;
-use ArekX\PQL\Drivers\MySql\Builder\Builders\Traits\WrapValueTrait;
-use ArekX\PQL\Drivers\MySql\Builder\MySqlQueryBuilderState;
+use ArekX\PQL\Drivers\Pdo\MySql\Builders\Traits\JoinTrait;
+use ArekX\PQL\Drivers\Pdo\MySql\Builders\Traits\NumberPartTrait;
+use ArekX\PQL\Drivers\Pdo\MySql\Builders\Traits\QuoteNameTrait;
+use ArekX\PQL\Drivers\Pdo\MySql\Builders\Traits\SubQueryTrait;
+use ArekX\PQL\Drivers\Pdo\MySql\Builders\Traits\WhereTrait;
+use ArekX\PQL\Drivers\Pdo\MySql\Builders\Traits\WrapValueTrait;
+use ArekX\PQL\Drivers\Pdo\MySql\MySqlQueryBuilderState;
 use ArekX\PQL\Sql\Query\Update;
 
 /**

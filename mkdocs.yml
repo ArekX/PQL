@@ -1,4 +1,5 @@
 site_name: PQL
 nav:
   - Home: index.md
+  - Architecture: architecture.md
 theme: readthedocs

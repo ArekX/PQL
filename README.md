@@ -33,17 +33,16 @@ use function \ArekX\PQL\Sql\select;
 /** @var \ArekX\PQL\Contracts\Driver $driver */
 /** @var \ArekX\PQL\Contracts\QueryBuilder $builder */
 
+$runner = QueryRunner::create($driver, $builder);
 
 // Fetching all results
 
-$query = select('*')
+$query = select('*') // or Select::create()->columns('*') if you do not want to use functions.
     ->from('user')
     ->where(['all', ['is_active' => 1]]);
 
-// Returns RawQuery object, built query equals to: SELECT * FROM `user` WHERE `is_active` = 1;
-$rawQuery = $builder->build($query);
-
-$driver->fetchAll($rawQuery); // Returns all data for user table
+// Built query equals to: SELECT * FROM `user` WHERE `is_active` = 1;
+$runner->fetchAll($query); // Returns all data for user table
 
 
 // Complex select query:
@@ -52,13 +51,12 @@ $query = select('*')
     ->innerJoin(['r' => 'user_role'], 'u.role_id = r.id')
     ->where(['all', [
          'u.is_active' => 1,
-         'r.id' => Select::create()
-               ->columns('role_id')
-               ->from('application_roles')
-               ->where(['=', ['column', 'application_id'], ['value', 2]])
+         'r.id' => select('role_id')
+                    ->from('application_roles')
+                    ->where(['=', ['column', 'application_id'], ['value', 2]])
       ]);
 /* 
-Returns RawQuery object, built query equals to:
+Built query equals to:
 SELECT 
     * 
 FROM `user` AS `u`
@@ -69,9 +67,7 @@ WHERE
     SELECT `role_id` FROM `application_roles` WHERE `application_id` = 2
  )
 */
-$rawQuery = $builder->build($query);
-
-$driver->fetchAll($rawQuery); // Returns all data for this query
+$runner->fetchAll($query); // Returns all data for this query
 
 ```
 

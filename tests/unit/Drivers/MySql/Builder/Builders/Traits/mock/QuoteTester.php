@@ -17,7 +17,7 @@
 
 namespace tests\Drivers\MySql\Builder\Builders\Traits\mock;
 
-use ArekX\PQL\Drivers\MySql\Builder\Builders\Traits\QuoteNameTrait;
+use ArekX\PQL\Drivers\Pdo\MySql\Builders\Traits\QuoteNameTrait;
 
 class QuoteTester
 {

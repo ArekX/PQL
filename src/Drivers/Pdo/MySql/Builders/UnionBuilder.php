@@ -15,10 +15,10 @@
  * limitations under the License.
  */
 
-namespace ArekX\PQL\Drivers\MySql\Builder\Builders;
+namespace ArekX\PQL\Drivers\Pdo\MySql\Builders;
 
-use ArekX\PQL\Drivers\MySql\Builder\Builders\Traits\SubQueryTrait;
-use ArekX\PQL\Drivers\MySql\Builder\MySqlQueryBuilderState;
+use ArekX\PQL\Drivers\Pdo\MySql\Builders\Traits\SubQueryTrait;
+use ArekX\PQL\Drivers\Pdo\MySql\MySqlQueryBuilderState;
 use ArekX\PQL\Sql\Query\Union;
 
 /**

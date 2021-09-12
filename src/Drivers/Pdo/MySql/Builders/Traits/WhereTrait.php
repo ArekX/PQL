@@ -15,20 +15,24 @@
  * limitations under the License.
  */
 
-namespace ArekX\PQL\Drivers\MySql\Builder\Builders;
+namespace ArekX\PQL\Drivers\Pdo\MySql\Builders\Traits;
 
-/**
- * Represents a query builder for building an SQL method call like GROUP_CONCAT(), SUM(), etc.
- *
- * @see Method
- */
-class MethodBuilder extends CallBuilder
+use ArekX\PQL\Contracts\StructuredQuery;
+use ArekX\PQL\Drivers\Pdo\MySql\MySqlQueryBuilderState;
+
+trait WhereTrait
 {
+    use ConditionTrait;
+
     /**
-     * @inheritDoc
+     * Build WHERE part of the query
+     *
+     * @param array|StructuredQuery $condition Condition to be built
+     * @param MySqlQueryBuilderState $state Query builder state
+     * @return string
      */
-    protected function getInitialParts(): array
+    protected function buildWhere($condition, MySqlQueryBuilderState $state)
     {
-        return [];
+        return 'WHERE ' . $this->buildCondition($condition, $state);
     }
 }

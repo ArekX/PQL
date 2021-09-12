@@ -17,8 +17,8 @@
 
 namespace tests\Drivers\MySql\Builder\Builders\Traits;
 
-use ArekX\PQL\Drivers\MySql\Builder\MySqlQueryBuilder;
-use ArekX\PQL\Drivers\MySql\Builder\MySqlQueryBuilderState;
+use ArekX\PQL\Drivers\Pdo\MySql\MySqlQueryBuilder;
+use ArekX\PQL\Drivers\Pdo\MySql\MySqlQueryBuilderState;
 use ArekX\PQL\Sql\Query\Raw;
 use Codeception\Test\Unit;
 use tests\Drivers\MySql\Builder\Builders\Traits\mock\ConditionTester;

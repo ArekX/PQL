@@ -15,20 +15,20 @@
  * limitations under the License.
  */
 
-namespace ArekX\PQL\Drivers\MySql\Builder;
+namespace ArekX\PQL\Drivers\Pdo\MySql;
 
 use ArekX\PQL\Contracts\QueryBuilder;
 use ArekX\PQL\Contracts\QueryBuilderState;
-use ArekX\PQL\Drivers\MySql\Builder\Builders\CallBuilder;
-use ArekX\PQL\Drivers\MySql\Builder\Builders\CaseWhenBuilder;
-use ArekX\PQL\Drivers\MySql\Builder\Builders\DeleteBuilder;
-use ArekX\PQL\Drivers\MySql\Builder\Builders\InsertBuilder;
-use ArekX\PQL\Drivers\MySql\Builder\Builders\MethodBuilder;
-use ArekX\PQL\Drivers\MySql\Builder\Builders\QueryPartBuilder;
-use ArekX\PQL\Drivers\MySql\Builder\Builders\RawBuilder;
-use ArekX\PQL\Drivers\MySql\Builder\Builders\SelectBuilder;
-use ArekX\PQL\Drivers\MySql\Builder\Builders\UnionBuilder;
-use ArekX\PQL\Drivers\MySql\Builder\Builders\UpdateBuilder;
+use ArekX\PQL\Drivers\Pdo\MySql\Builders\CallBuilder;
+use ArekX\PQL\Drivers\Pdo\MySql\Builders\CaseWhenBuilder;
+use ArekX\PQL\Drivers\Pdo\MySql\Builders\DeleteBuilder;
+use ArekX\PQL\Drivers\Pdo\MySql\Builders\InsertBuilder;
+use ArekX\PQL\Drivers\Pdo\MySql\Builders\MethodBuilder;
+use ArekX\PQL\Drivers\Pdo\MySql\Builders\QueryPartBuilder;
+use ArekX\PQL\Drivers\Pdo\MySql\Builders\RawBuilder;
+use ArekX\PQL\Drivers\Pdo\MySql\Builders\SelectBuilder;
+use ArekX\PQL\Drivers\Pdo\MySql\Builders\UnionBuilder;
+use ArekX\PQL\Drivers\Pdo\MySql\Builders\UpdateBuilder;
 use ArekX\PQL\Sql\Query\Delete;
 use ArekX\PQL\Sql\Query\Insert;
 use ArekX\PQL\Sql\Query\Raw;

@@ -17,8 +17,8 @@
 
 namespace tests\Drivers\MySql\Builder\Builders\Traits\mock;
 
-use ArekX\PQL\Drivers\MySql\Builder\Builders\Traits\JoinTrait;
-use ArekX\PQL\Drivers\MySql\Builder\MySqlQueryBuilderState;
+use ArekX\PQL\Drivers\Pdo\MySql\Builders\Traits\JoinTrait;
+use ArekX\PQL\Drivers\Pdo\MySql\MySqlQueryBuilderState;
 
 class JoinPartTester
 {

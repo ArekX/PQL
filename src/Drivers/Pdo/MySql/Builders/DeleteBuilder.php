@@ -15,13 +15,13 @@
  * limitations under the License.
  */
 
-namespace ArekX\PQL\Drivers\MySql\Builder\Builders;
+namespace ArekX\PQL\Drivers\Pdo\MySql\Builders;
 
-use ArekX\PQL\Drivers\MySql\Builder\Builders\Traits\ConditionTrait;
-use ArekX\PQL\Drivers\MySql\Builder\Builders\Traits\FromPartTrait;
-use ArekX\PQL\Drivers\MySql\Builder\Builders\Traits\JoinTrait;
-use ArekX\PQL\Drivers\MySql\Builder\Builders\Traits\NumberPartTrait;
-use ArekX\PQL\Drivers\MySql\Builder\Builders\Traits\WhereTrait;
+use ArekX\PQL\Drivers\Pdo\MySql\Builders\Traits\ConditionTrait;
+use ArekX\PQL\Drivers\Pdo\MySql\Builders\Traits\FromPartTrait;
+use ArekX\PQL\Drivers\Pdo\MySql\Builders\Traits\JoinTrait;
+use ArekX\PQL\Drivers\Pdo\MySql\Builders\Traits\NumberPartTrait;
+use ArekX\PQL\Drivers\Pdo\MySql\Builders\Traits\WhereTrait;
 use ArekX\PQL\Sql\Query\Delete;
 
 /**

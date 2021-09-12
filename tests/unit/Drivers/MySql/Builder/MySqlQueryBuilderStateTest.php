@@ -17,8 +17,8 @@
 
 namespace tests\Drivers\MySql\Builder;
 
-use ArekX\PQL\Drivers\MySql\Builder\MySqlQueryBuilder;
-use ArekX\PQL\Drivers\MySql\Builder\MySqlQueryBuilderState;
+use ArekX\PQL\Drivers\Pdo\MySql\MySqlQueryBuilder;
+use ArekX\PQL\Drivers\Pdo\MySql\MySqlQueryBuilderState;
 use ArekX\PQL\Sql\SqlParamBuilder;
 
 class MySqlQueryBuilderStateTest extends \Codeception\Test\Unit

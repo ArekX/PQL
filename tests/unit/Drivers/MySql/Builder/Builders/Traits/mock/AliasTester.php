@@ -17,8 +17,8 @@
 
 namespace tests\Drivers\MySql\Builder\Builders\Traits\mock;
 
-use ArekX\PQL\Drivers\MySql\Builder\Builders\Traits\AliasTrait;
-use ArekX\PQL\Drivers\MySql\Builder\MySqlQueryBuilderState;
+use ArekX\PQL\Drivers\Pdo\MySql\Builders\Traits\AliasTrait;
+use ArekX\PQL\Drivers\Pdo\MySql\MySqlQueryBuilderState;
 
 class AliasTester
 {

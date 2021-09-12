@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-namespace ArekX\PQL\Drivers\MySql\Builder;
+namespace ArekX\PQL\Drivers\Pdo\MySql;
 
 use ArekX\PQL\Contracts\QueryBuilder;
 use ArekX\PQL\Contracts\QueryBuilderState;

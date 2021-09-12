@@ -15,11 +15,11 @@
  * limitations under the License.
  */
 
-namespace ArekX\PQL\Drivers\MySql\Builder\Builders;
+namespace ArekX\PQL\Drivers\Pdo\MySql\Builders;
 
 use ArekX\PQL\Contracts\StructuredQuery;
-use ArekX\PQL\Drivers\MySql\Builder\Builders\Traits\ValueColumnTrait;
-use ArekX\PQL\Drivers\MySql\Builder\MySqlQueryBuilderState;
+use ArekX\PQL\Drivers\Pdo\MySql\Builders\Traits\ValueColumnTrait;
+use ArekX\PQL\Drivers\Pdo\MySql\MySqlQueryBuilderState;
 use ArekX\PQL\Sql\Statement\Call;
 
 /**

@@ -17,30 +17,18 @@
 
 namespace ArekX\PQL\Contracts;
 
-/**
- * Interface for reading a result.
- */
 interface ResultReader
 {
-    /**
-     * Iterate results in the reader and returns them one by one.
-     * @return \Generator
-     */
-    public function iterate(): \Generator;
+    public function reset();
 
-    /**
-     * Return whether there is a next value to be read.
-     *
-     * @return bool
-     */
-    public function hasNext(): bool;
+    public function getAllRows();
 
-    /**
-     * Read and return the next value.
-     *
-     * If there is no next value, null is returned.
-     *
-     * @return mixed
-     */
-    public function read();
+    public function getAllColumns($columnIndex = 0);
+
+    public function getNextRow();
+
+    public function getNextColumn($columnIndex = 0);
+
+    public function finalize();
+
 }

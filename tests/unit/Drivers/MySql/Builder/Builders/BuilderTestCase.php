@@ -18,7 +18,7 @@
 namespace tests\Drivers\MySql\Builder\Builders;
 
 use ArekX\PQL\Contracts\StructuredQuery;
-use ArekX\PQL\Drivers\MySql\Builder\MySqlQueryBuilder;
+use ArekX\PQL\Drivers\Pdo\MySql\MySqlQueryBuilder;
 use Codeception\Test\Unit;
 
 class BuilderTestCase extends Unit

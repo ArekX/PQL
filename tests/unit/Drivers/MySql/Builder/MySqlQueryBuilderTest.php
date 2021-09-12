@@ -17,9 +17,9 @@
 
 namespace tests\Drivers\MySql\Builder;
 
-use ArekX\PQL\Drivers\MySql\Builder\Builders\DeleteBuilder;
-use ArekX\PQL\Drivers\MySql\Builder\MySqlQueryBuilder;
-use ArekX\PQL\Drivers\MySql\Builder\MySqlQueryBuilderState;
+use ArekX\PQL\Drivers\Pdo\MySql\Builders\DeleteBuilder;
+use ArekX\PQL\Drivers\Pdo\MySql\MySqlQueryBuilder;
+use ArekX\PQL\Drivers\Pdo\MySql\MySqlQueryBuilderState;
 use ArekX\PQL\Sql\Query\Delete;
 use ArekX\PQL\Sql\SqlParamBuilder;
 use mock\QueryBuilderMock;
