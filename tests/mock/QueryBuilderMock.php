@@ -31,6 +31,11 @@ class QueryBuilderMock implements QueryBuilder
 
     public $lastState;
 
+    public static function create()
+    {
+        return new static();
+    }
+
     public function build(StructuredQuery $query, QueryBuilderState $state = null): RawQuery
     {
         $this->lastState = $state;
