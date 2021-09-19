@@ -61,7 +61,7 @@ class CallBuilder extends QueryPartBuilder
     /**
      * Build name of the procedure part.
      *
-     * @param string $name Name of the procedure
+     * @param string|StructuredQuery $name Name of the procedure
      * @param MySqlQueryBuilderState $state Current query builder state.
      * @return string
      */
