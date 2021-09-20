@@ -3,7 +3,9 @@ suites:
     unit:
         bootstrap: ../bootstrap.php
         path: ./unit
-
+    integration:
+        bootstrap: ../integration-bootstrap.php
+        path: ./integration
 settings:
     shuffle: true
     lint: true

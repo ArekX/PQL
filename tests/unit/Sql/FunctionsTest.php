@@ -283,7 +283,7 @@ class FunctionsTest extends TestCase
             ['', equal(value('c'), value('d'))],
             [null, equal(value('e'), value('f'))],
         ]))->toBe([
-            ['=', ['value', 'a'], ['value', 'b']]
+            'and', ['=', ['value', 'a'], ['value', 'b']]
         ]);
 
         expect(asFilters([
@@ -292,6 +292,19 @@ class FunctionsTest extends TestCase
             [fn() => false, equal(value('e'), value('f'))],
             [fn() => true, equal(value('h'), value('g'))],
         ]))->toBe([
+            'and',
+            ['=', ['value', 'a'], ['value', 'b']],
+            ['=', ['value', 'h'], ['value', 'g']]
+        ]);
+
+
+        expect(asFilters([
+            [1, equal(value('a'), value('b'))],
+            ['', equal(value('c'), value('d'))],
+            [fn() => false, equal(value('e'), value('f'))],
+            [fn() => true, equal(value('h'), value('g'))],
+        ], 'or'))->toBe([
+            'or',
             ['=', ['value', 'a'], ['value', 'b']],
             ['=', ['value', 'h'], ['value', 'g']]
         ]);

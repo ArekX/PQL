@@ -18,18 +18,18 @@ class ResultReaderMock implements ResultReader
         return $instance;
     }
 
-    public function reset()
+    public function reset(): void
     {
         $this->index = 0;
         $this->isFinalized = false;
     }
 
-    public function getAllRows()
+    public function getAllRows(): array
     {
         return $this->rows;
     }
 
-    public function getAllColumns($columnIndex = 0)
+    public function getAllColumns($columnIndex = 0): array
     {
         return array_map(fn($row) => $row[$columnIndex] ?? null, $this->rows);
     }
@@ -49,7 +49,7 @@ class ResultReaderMock implements ResultReader
         return $this->rows[$index][$columnIndex];
     }
 
-    public function finalize()
+    public function finalize(): void
     {
         $this->index = count($this->rows);
         $this->isFinalized = true;

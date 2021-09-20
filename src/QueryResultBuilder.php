@@ -41,6 +41,22 @@ class QueryResultBuilder implements ResultBuilder
     protected $pipelines = [];
 
     /**
+     * Create new instance query result builder.
+     * @param ResultReader|null $reader Reader to be used
+     * @return static
+     */
+    public static function create(ResultReader $reader = null)
+    {
+        $instance = new static();
+
+        if ($reader) {
+            $instance->useReader($reader);
+        }
+
+        return $instance;
+    }
+
+    /**
      * @inheritDoc
      */
     public function useReader(ResultReader $reader): ResultBuilder

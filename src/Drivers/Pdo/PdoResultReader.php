@@ -19,60 +19,113 @@ namespace ArekX\PQL\Drivers\Pdo;
 
 use ArekX\PQL\Contracts\ResultReader;
 
+/**
+ * PDO Reader for reading data from Statements.
+ */
 class PdoResultReader implements ResultReader
 {
+    /**
+     * Current statement in use.
+     * @var \PDOStatement
+     */
     public \PDOStatement $statement;
+
+    /**
+     * Current fetch mode.
+     * @var int
+     */
     public $fetchMode = \PDO::FETCH_ASSOC;
 
-    public static function createFromStatement(\PDOStatement $statement)
-    {
-        return new static($statement);
-    }
+    /**
+     * Whether statement was executed.
+     * @var bool
+     */
+    protected $isExecuted = false;
 
+    /**
+     * Constructor for PDO Result reader
+     * @param \PDOStatement $statement Statement to be read from.
+     */
     public function __construct(\PDOStatement $statement)
     {
         $this->statement = $statement;
     }
 
-    public function getAllRows()
+
+    /**
+     * Create a reader from PDO statement.
+     *
+     * @param \PDOStatement $statement
+     * @return static
+     */
+    public static function create(\PDOStatement $statement)
+    {
+        return new static($statement);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getAllRows(): array
     {
         $results = [];
 
-        while(($row = $this->getNextRow()) !== false) {
+        while (($row = $this->getNextRow()) !== false) {
             $results[] = $row;
         }
 
         return $results;
     }
 
-    public function getAllColumns($columnIndex = 0)
+    /**
+     * @inheritDoc
+     */
+    public function getNextRow()
+    {
+        return $this->statement->fetch($this->fetchMode);
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getAllColumns($columnIndex = 0): array
     {
         $results = [];
 
-        while(($column = $this->getNextColumn($columnIndex)) !== false) {
+        while (($column = $this->getNextColumn($columnIndex)) !== false) {
             $results[] = $column;
         }
 
         return $results;
     }
 
-    public function getNextRow()
-    {
-        return $this->statement->fetch($this->fetchMode);
-    }
-
+    /**
+     * @inheritDoc
+     */
     public function getNextColumn($columnIndex = 0)
     {
         return $this->statement->fetchColumn($columnIndex);
     }
 
-    public function finalize()
+    /**
+     * @inheritDoc
+     */
+    public function reset(): void
     {
-        $this->statement->closeCursor();
+        if ($this->isExecuted) {
+            $this->finalize();
+        }
+
+        $this->statement->execute();
+        $this->isExecuted = true;
     }
 
-    public function reset()
+    /**
+     * @inheritDoc
+     */
+    public function finalize(): void
     {
-        $this->statement->execute();
+        $this->statement->closeCursor();
+        $this->isExecuted = false;
     }
 }

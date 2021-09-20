@@ -30,6 +30,8 @@
   "scripts": {
     "test": "vendor/bin/codecept run",
     "coverage": "XDEBUG_MODE=coverage vendor/bin/codecept run --coverage-html",
-    "coverage-clover": "XDEBUG_MODE=coverage vendor/bin/codecept run --coverage-xml"
+    "coverage-clover": "XDEBUG_MODE=coverage vendor/bin/codecept run --coverage-xml",
+    "coverage-unit-clover": "XDEBUG_MODE=coverage vendor/bin/codecept run unit --coverage-xml",
+    "coverage-integration-clover": "XDEBUG_MODE=coverage vendor/bin/codecept run integration --coverage-xml"
   }
 }

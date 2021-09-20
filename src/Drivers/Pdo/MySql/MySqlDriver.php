@@ -34,7 +34,8 @@ class MySqlDriver extends PdoDriver
         }
 
         if ($this->charset) {
-            $this->pdo->exec('SET NAMES ' . $this->pdo->quote($this->charset));
+            $pdo = $this->getPdo();
+            $pdo->exec('SET NAMES ' . $pdo->quote($this->charset));
         }
 
         return $instance;
@@ -42,7 +43,7 @@ class MySqlDriver extends PdoDriver
 
     protected function extendConfigure(array $config)
     {
-        $this->emulatePrepare ??= $config['emulatePrepare'];
-        $this->charset ??= $config['charset'];
+        $this->emulatePrepare = $config['emulatePrepare'] ?? $this->emulatePrepare;
+        $this->charset = $config['charset'] ?? $this->charset;
     }
 }

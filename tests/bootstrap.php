@@ -20,3 +20,5 @@ $loader = require __DIR__ . '/../vendor/autoload.php';
 
 $loader->addPsr4('tests\\', __DIR__ . '/unit');
 $loader->addPsr4('mock\\', __DIR__ . '/mock');
+
+return $loader;

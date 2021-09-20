@@ -39,7 +39,7 @@ abstract class PdoDriver implements Driver
     public $options = [];
 
     protected $middlewares = [];
-    protected ?\PDO $pdo;
+    protected ?\PDO $pdo = null;
 
     public static function create($config = [])
     {
@@ -143,6 +143,7 @@ abstract class PdoDriver implements Driver
         }
 
         $this->pdo = $this->createPdoInstance();
+        $this->pdo->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
         $this->runMiddleware(self::STEP_OPEN, $this->pdo);
     }
 
@@ -150,6 +151,7 @@ abstract class PdoDriver implements Driver
 
     public function run(RawQuery $query)
     {
+
         $query = $this->runMiddleware(self::STEP_BEFORE_RUN, $query, 'run');
 
         $statement = $this->executeStatement($query);
@@ -162,6 +164,7 @@ abstract class PdoDriver implements Driver
     protected function executeStatement(RawQuery $query): \PDOStatement
     {
         $statement = $this->prepareStatement($query);
+
         $statement->execute();
 
         return $statement;
@@ -173,6 +176,7 @@ abstract class PdoDriver implements Driver
 
         $statement = $this->getPdo()->prepare($query->getQuery(), $query->getConfig() ?? []);
 
+        /** @var \PDOStatement $statement */
         $statement = $this->runMiddleware(self::STEP_BEFORE_PREPARE, $statement, $query);
 
         $params = $query->getParams() ?? [];
@@ -190,14 +194,18 @@ abstract class PdoDriver implements Driver
                 }
             }
 
-            $statement->bindParam($paramName, $value, $type);
+            if (!$statement->bindValue($paramName, $value, $type)) {
+                throw new \Exception('Cannot bind: ' . $paramName);
+            }
         }
+
 
         return $this->runMiddleware(self::STEP_AFTER_PREPARE, $statement, $query);
     }
 
     public function fetchFirst(RawQuery $query)
     {
+
         $query = $this->runMiddleware(self::STEP_BEFORE_RUN, $query, 'first');
 
         $statement = $this->executeStatement($query);
@@ -230,7 +238,7 @@ abstract class PdoDriver implements Driver
 
     protected function createResultReader(RawQuery $query)
     {
-        $result = PdoResultReader::createFromStatement($this->prepareStatement($query));
+        $result = PdoResultReader::create($this->prepareStatement($query));
         $result->fetchMode = $this->fetchMode;
 
         return $result;

@@ -22,8 +22,7 @@ class QueryResultBuilderTest extends \Codeception\Test\Unit
 
     protected function createResultBuilder(ResultReader $reader)
     {
-        $builder = new QueryResultBuilder();
-        return $builder->useReader($reader);
+        return QueryResultBuilder::create($reader);
     }
 
     public function testAll()

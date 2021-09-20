@@ -17,18 +17,46 @@
 
 namespace ArekX\PQL\Contracts;
 
+/**
+ * Interface for reading results.
+ */
 interface ResultReader
 {
-    public function reset();
+    /**
+     * Resets the result reader so that it can be used from the start.
+     */
+    public function reset(): void;
 
-    public function getAllRows();
+    /**
+     * Returns all rows in the result set.
+     * @return array
+     */
+    public function getAllRows(): array;
 
-    public function getAllColumns($columnIndex = 0);
+    /**
+     * Results an array of all columns.
+     *
+     * @param int $columnIndex Index of the column to return.
+     * @return array
+     */
+    public function getAllColumns($columnIndex = 0): array;
 
+    /**
+     * Returns next row or null if there is no row to be returned.
+     * @return mixed
+     */
     public function getNextRow();
 
+    /**
+     * Returns next column value.
+     * @param int $columnIndex Index of the column to return.
+     * @return mixed
+     */
     public function getNextColumn($columnIndex = 0);
 
-    public function finalize();
+    /**
+     * Finalizes result reader
+     */
+    public function finalize(): void;
 
 }

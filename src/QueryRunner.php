@@ -47,7 +47,7 @@ class QueryRunner implements StructuredQueryRunner
      * Creates a new instance of this runner
      *
      * @param Driver|null $driver Driver to be set to be used
-     * @param null $builder Builder to be used
+     * @param QueryBuilder|null $builder Builder to be used
      * @return static
      */
     public static function create($driver = null, $builder = null)

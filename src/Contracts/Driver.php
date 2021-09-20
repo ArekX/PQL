@@ -22,17 +22,66 @@ namespace ArekX\PQL\Contracts;
  */
 interface Driver
 {
+    /**
+     * Execute a query
+     *
+     * This function is used when result from the query is not needed
+     * or the result needed is affected row count.
+     *
+     * @param RawQuery $query Raw query to run.
+     * @return mixed
+     */
     public function run(RawQuery $query);
 
+    /**
+     * Set a list of middlewares to be used.
+     *
+     * @param string $step Driver specific step on which the middleware can be used.
+     * @param array $middlewareList List of middlewares to apply.
+     * @return $this
+     */
     public function useMiddleware(string $step, array $middlewareList): self;
 
+    /**
+     * Add a middleware to processing list.
+     *
+     * @param string $step Driver specific step on which the middleware can be used.
+     * @param callable $middleware Middleware function to be applied.
+     * @return $this
+     */
     public function appendMiddleware(string $step, callable $middleware): self;
 
+    /**
+     * Return the first result from the query.
+     *
+     * @param RawQuery $query Raw query to be used.
+     * @return mixed
+     */
     public function fetchFirst(RawQuery $query);
 
+    /**
+     * Fetch result set as a reader.
+     *
+     * @param RawQuery $query Raw query to be used.
+     * @return ResultReader
+     */
     public function fetchReader(RawQuery $query): ResultReader;
 
+    /**
+     * Fetch all results.
+     *
+     * @param RawQuery $query Raw query to be used.
+     * @return array
+     */
     public function fetchAll(RawQuery $query): array;
 
+    /**
+     * Fetch a result set and return a result builder for
+     * transforming the result.
+     *
+     * @param RawQuery $query Raw query to be used.
+     * @return ResultBuilder
+     * @see ResultBuilder
+     */
     public function fetch(RawQuery $query): ResultBuilder;
 }

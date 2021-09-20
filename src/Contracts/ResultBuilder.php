@@ -187,7 +187,7 @@ interface ResultBuilder
      * ```
      *
      * @param callable $reducer Reducer function which will be applied.
-     * @param null $initialValue Start value which will be set at the first reducer iteration.
+     * @param mixed $initialValue Start value which will be set at the first reducer iteration.
      * @return $this
      */
     public function pipeReduce(callable $reducer, $initialValue = null): self;

@@ -423,9 +423,9 @@ if (!function_exists('\ArekX\PQL\Sql\asFilters')) {
      * @return array
      * @see ConditionTrait::where()
      */
-    function asFilters(array $filters, string $op = 'AND'): array
+    function asFilters(array $filters, string $op = 'and'): array
     {
-        $results = [];
+        $results = [$op];
 
         foreach ($filters as [$check, $condition]) {
             if ($check === null || $check === '') {
