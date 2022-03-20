@@ -34,8 +34,7 @@ class MySqlDriver extends PdoDriver
         }
 
         if ($this->charset) {
-            $pdo = $this->getPdo();
-            $pdo->exec('SET NAMES ' . $pdo->quote($this->charset));
+            $instance->exec('SET NAMES ' . $instance->quote($this->charset));
         }
 
         return $instance;

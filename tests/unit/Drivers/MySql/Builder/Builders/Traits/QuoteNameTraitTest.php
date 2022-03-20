@@ -15,10 +15,10 @@
  * limitations under the License.
  */
 
-namespace tests\Drivers\MySql\Builder\Builders\Traits;
+namespace unit\Drivers\MySql\Builder\Builders\Traits;
 
 use Codeception\Test\Unit;
-use tests\Drivers\MySql\Builder\Builders\Traits\mock\QuoteTester;
+use unit\Drivers\MySql\Builder\Builders\Traits\mock\QuoteTester;
 
 class QuoteNameTraitTest extends Unit
 {

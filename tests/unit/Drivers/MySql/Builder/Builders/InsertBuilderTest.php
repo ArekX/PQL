@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-namespace tests\Drivers\MySql\Builder\Builders;
+namespace unit\Drivers\MySql\Builder\Builders;
 
 use ArekX\PQL\Sql\Query\Insert;
 use ArekX\PQL\Sql\Query\Raw;

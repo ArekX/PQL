@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-namespace tests\Sql;
+namespace unit\Sql;
 
 use ArekX\PQL\Sql\Query\Select;
 use ArekX\PQL\Sql\SqlQueryBuilderFactory;

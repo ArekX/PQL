@@ -15,13 +15,13 @@
  * limitations under the License.
  */
 
-namespace tests\Drivers\MySql\Builder\Builders\Traits;
+namespace unit\Drivers\MySql\Builder\Builders\Traits;
 
 use ArekX\PQL\Drivers\Pdo\MySql\MySqlQueryBuilder;
 use ArekX\PQL\Sql\Query\Delete;
 use ArekX\PQL\Sql\Query\Raw;
 use Codeception\Test\Unit;
-use tests\Drivers\MySql\Builder\Builders\Traits\mock\FromPartTester;
+use unit\Drivers\MySql\Builder\Builders\Traits\mock\FromPartTester;
 
 class FromPartTraitTest extends Unit
 {

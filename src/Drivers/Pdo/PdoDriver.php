@@ -194,9 +194,7 @@ abstract class PdoDriver implements Driver
                 }
             }
 
-            if (!$statement->bindValue($paramName, $value, $type)) {
-                throw new \Exception('Cannot bind: ' . $paramName);
-            }
+            $statement->bindValue($paramName, $value, $type);
         }
 
 
@@ -238,7 +236,7 @@ abstract class PdoDriver implements Driver
 
     protected function createResultReader(RawQuery $query)
     {
-        $result = PdoResultReader::create($this->prepareStatement($query));
+        $result = PdoResultReader::create($this->executeStatement($query));
         $result->fetchMode = $this->fetchMode;
 
         return $result;

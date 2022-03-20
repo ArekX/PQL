@@ -32,6 +32,7 @@ class MySqlTestCase extends \Codeception\Test\Unit
         $driver = $this->createDriver();
 
         $driver->run(RawQueryResult::create($query));
+
         $builder = $this->createQueryBuilder();
 
         foreach ($this->fixtures() as $fixture) {

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-namespace tests\Sql\Query;
+namespace unit\Sql\Query;
 
 use ArekX\PQL\Sql\Query\Delete;
 use ArekX\PQL\Sql\Query\Raw;

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-namespace tests\Sql\Query;
+namespace unit\Sql\Query;
 
 use ArekX\PQL\Contracts\StructuredQuery;
 use ArekX\PQL\Sql\Query\Select;

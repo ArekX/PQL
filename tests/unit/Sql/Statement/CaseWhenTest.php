@@ -19,7 +19,7 @@ namespace unit\Sql\Statement;
 
 use ArekX\PQL\Sql\Query\Raw;
 use ArekX\PQL\Sql\Statement\CaseWhen;
-use tests\Sql\Query\QueryTestCase;
+use unit\Sql\Query\QueryTestCase;
 
 class CaseWhenTest extends QueryTestCase
 {

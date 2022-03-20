@@ -16,7 +16,7 @@
  */
 
 
-namespace tests\Sql\Query;
+namespace unit\Sql\Query;
 
 use ArekX\PQL\Sql\Query\Select;
 use ArekX\PQL\Sql\Query\Union;

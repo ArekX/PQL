@@ -80,7 +80,13 @@ Generated API Reference is available at: https://pql.readthedocs.io/en/latest/ap
 
 ## Testing
 
-Run `composer install` and then run `composer test`
+Run `composer install` and then run `composer test`. This will run unit and integration tests.
+
+For integration tests, database docker containers must be running otherwise those tests will fail.
+
+To setup docker containers install docker and inside `tests` folder run `docker-compose up -d`.
+
+To just run unit tests run `composer test-unit`.
 
 For coverage report run `composer coverage` or you can take a look at
 it [here](https://scrutinizer-ci.com/g/ArekX/PQL/?branch=master).

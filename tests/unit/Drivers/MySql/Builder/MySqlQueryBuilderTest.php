@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-namespace tests\Drivers\MySql\Builder;
+namespace unit\Drivers\MySql\Builder;
 
 use ArekX\PQL\Drivers\Pdo\MySql\Builders\DeleteBuilder;
 use ArekX\PQL\Drivers\Pdo\MySql\MySqlQueryBuilder;
