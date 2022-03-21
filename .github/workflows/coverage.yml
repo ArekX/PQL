@@ -23,7 +23,7 @@ jobs:
       - name: Run tests
         run: |
           composer install
-          vendor/bin/codecept run unit
+          vendor/bin/codecept run unit --coverage-xml
 
       - uses: codecov/codecov-action@v2
         with:
