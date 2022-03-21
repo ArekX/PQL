@@ -1,0 +1,7 @@
+/tests export-ignore
+/docs export-ignore
+/.idea export-ignore
+.scrutinizer.yml export-ignore
+mkdocs.yml export-ignore
+phpunit.xml export-ignore
+.readthedocs.yml export-ignore

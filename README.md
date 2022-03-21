@@ -16,6 +16,7 @@ kinds of queries without having to rely on passing raw query data.
 
 Installing this library is done via composer `composer install arekxv/pql`
 
+
 ## Usage
 
 First you need to decide on which driver you will use. Following drivers are supported:
