@@ -1,0 +1,30 @@
+name: Unit Coverage
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  run_tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run tests
+        run: |
+          composer install
+          vendor/bin/codecept run unit
+
+      - uses: codecov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
+          files: ./tests/_output/coverage.xml
+          flags: unittests # optional
+          name: pql-unit-tests # optional
+          fail_ci_if_error: true # optional (default = false)
+          verbose: true # optional (default = false)
