@@ -33,7 +33,7 @@ class RawBuilderTest extends BuilderTestCase
 
     public function testRawParams()
     {
-        $result = $this->build(Raw::from("SELECT :val", [
+        $result = $this->build(Raw::from("SELECT sssssss:val", [
             ':val' => 1
         ]));
         expect($result->getQuery())->toBe('SELECT :val');
