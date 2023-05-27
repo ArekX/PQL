@@ -28,10 +28,11 @@ class SelectBuilderTest extends BuilderTestCase
     public function testBuildColumns()
     {
         $this->assertQueryResults([
+            [Select::create()->columns(['a', 'b', 'c']), 'SELECT `a`, `b`, `c`'],
             [Select::create()->columns('*'), 'SELECT *'],
             [Select::create()->columns('1'), 'SELECT 1'],
             [Select::create()->columns('name'), 'SELECT `name`'],
-            [Select::create()->columns(['alias' => 'name']), 'SELECT `name` AS `alias`'],
+            [Select::create()->columns(['alias' => 'name', 'd']), 'SELECT `name` AS `alias`, `d`'],
             [Select::create()->columns(Raw::from("RAW COLUMNS")), 'SELECT RAW COLUMNS'],
             [Select::create()->columns('name')->addColumns('value'), 'SELECT `name`, `value`'],
             [Select::create()->columns('name')->addColumns(['alias' => 'value']), 'SELECT `name`, `value` AS `alias`'],
