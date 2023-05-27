@@ -3,9 +3,9 @@ mkdocs:
   configuration: mkdocs.yml
 build:
   apt_packages:
-    - php8.2
-    - php8.2-xml
-    - php8.2-mbstring
+    - php8
+    - php8-xml
+    - php8-mbstring
 python:
   version: "3.7"
   install:
