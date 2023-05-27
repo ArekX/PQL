@@ -10,7 +10,6 @@ build:
     - php8.2-xml
     - php8.2-mbstring
 python:
-  version: "3.7"
   install:
     - requirements: readthedocs-reqs.txt
 formats: all
