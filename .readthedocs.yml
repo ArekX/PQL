@@ -6,9 +6,9 @@ build:
   tools:
     python: "3.7"
   apt_packages:
-    - php8.2
-    - php8.2-xml
-    - php8.2-mbstring
+    - php8
+    - php8-xml
+    - php8-mbstring
 python:
   install:
     - requirements: readthedocs-reqs.txt
