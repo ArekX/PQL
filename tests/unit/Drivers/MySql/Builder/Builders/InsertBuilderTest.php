@@ -26,15 +26,15 @@ class InsertBuilderTest extends BuilderTestCase
     {
         expect(function () {
             $this->build(Insert::create());
-        })->callableToThrow(\Exception::class);
+        })->callableToThrow(\UnexpectedValueException::class);
 
         expect(function () {
             $this->build(Insert::create()->into('test'));
-        })->callableToThrow(\Exception::class);
+        })->callableToThrow(\UnexpectedValueException::class);
 
         expect(function () {
             $this->build(Insert::create()->into('test')->columns(['a', 'b', 'c']));
-        })->callableToThrow(\Exception::class);
+        })->callableToThrow(\UnexpectedValueException::class);
 
         expect(function () {
             $this->build(Insert::create()->into('test')->columns(['a', 'b', 'c'])->values([1, 2, 3]));

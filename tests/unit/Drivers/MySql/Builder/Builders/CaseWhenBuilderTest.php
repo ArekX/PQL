@@ -58,7 +58,7 @@ class CaseWhenBuilderTest extends BuilderTestCase
     {
         expect(function () {
             $this->build(CaseWhen::create());
-        })->callableToThrow(\Exception::class);
+        })->callableToThrow(\UnexpectedValueException::class);
 
         expect(function () {
             $this->build(CaseWhen::create()->addWhen(['value', 1], ['value', 'b']));

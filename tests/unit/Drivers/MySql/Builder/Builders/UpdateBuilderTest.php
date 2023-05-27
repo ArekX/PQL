@@ -28,11 +28,11 @@ class UpdateBuilderTest extends BuilderTestCase
     {
         expect(function () {
             $this->build(Update::create());
-        })->callableToThrow(\Exception::class);
+        })->callableToThrow(\UnexpectedValueException::class);
 
         expect(function () {
             $this->build(Update::create()->to('test'));
-        })->callableToThrow(\Exception::class);
+        })->callableToThrow(\UnexpectedValueException::class);
 
         expect(function () {
             $this->build(Update::create()->to('test')->set(['a' => 2]));

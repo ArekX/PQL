@@ -26,7 +26,7 @@ class MethodBuilderTest extends BuilderTestCase
     {
         expect(function () {
             $this->build(Method::create());
-        })->callableToThrow(\Exception::class);
+        })->callableToThrow(\UnexpectedValueException::class);
 
         expect(function () {
             $this->build(Method::create()->name('name'));
@@ -61,11 +61,11 @@ class MethodBuilderTest extends BuilderTestCase
     {
         expect(function () {
             $this->build(Method::create()->name('name')->addParam(['invalid', 'value']));
-        })->callableToThrow(\Exception::class);
+        })->callableToThrow(\UnexpectedValueException::class);
 
         expect(function () {
             $this->build(Method::create()->name('name')->addParam('string'));
-        })->callableToThrow(\Exception::class);
+        })->callableToThrow(\InvalidArgumentException::class);
 
     }
 }

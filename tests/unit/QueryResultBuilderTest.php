@@ -245,6 +245,6 @@ class QueryResultBuilderTest extends \Codeception\Test\Unit
 
         expect(function () use ($builder) {
             $builder->pipeListBy('a', 'b')->result();
-        })->callableToThrow(\Exception::class);
+        })->callableToThrow(\InvalidArgumentException::class);
     }
 }
