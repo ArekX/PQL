@@ -112,7 +112,7 @@ trait ConditionTrait
 
         if (is_array($current) && ($current[0] ?? '') === $glue) {
             $current[] = $condition;
-        } else if ($current === null) {
+        } elseif ($current === null) {
             $current = $condition;
         } else {
             $current = [$glue, $current, $condition];

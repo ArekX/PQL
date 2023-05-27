@@ -48,7 +48,7 @@ trait ValueColumnTrait
         }
 
         if (!is_array($item)) {
-            throw new \Exception('Param can only be an array or an instance of StructuredQuery.');
+            throw new \InvalidArgumentException('Param can only be an array or an instance of StructuredQuery.');
         }
 
         [$type, $data] = $item;
@@ -61,6 +61,6 @@ trait ValueColumnTrait
             return $this->quoteName($data);
         }
 
-        throw new \Exception('Invalid type: ' . $type);
+        throw new \UnexpectedValueException('Invalid type: ' . $type);
     }
 }

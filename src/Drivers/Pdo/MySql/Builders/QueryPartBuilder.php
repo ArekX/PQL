@@ -37,7 +37,7 @@ abstract class QueryPartBuilder implements QueryBuilder
         /** @var MySqlQueryBuilderState $state */
 
         if ($state === null) {
-            throw new \Exception('Passed state cannot be null.');
+            throw new \InvalidArgumentException('Passed state cannot be null.');
         }
 
         $input = $query->toArray();
@@ -98,7 +98,7 @@ abstract class QueryPartBuilder implements QueryBuilder
             if (empty($parts[$partName])) {
 
                 if (in_array($partName, $requiredParts)) {
-                    throw new \Exception("Part '${partName}' is required.");
+                    throw new \UnexpectedValueException("Part '${partName}' is required.");
                 }
 
                 continue;
@@ -123,25 +123,25 @@ abstract class QueryPartBuilder implements QueryBuilder
      *
      * @return array
      */
-    protected abstract function getInitialParts(): array;
+    abstract protected function getInitialParts(): array;
 
     /**
      * Return parts which must be set in the query in order to be built.
      * @return array
      */
-    protected abstract function getRequiredParts(): array;
+    abstract protected function getRequiredParts(): array;
 
     /**
      * Return part builders for resolving the query parts to string.
      *
      * @return array
      */
-    protected abstract function getPartBuilders(): array;
+    abstract protected function getPartBuilders(): array;
 
     /**
      * Return last parts to be applied at the end of the query.
      *
      * @return array
      */
-    protected abstract function getLastParts(): array;
+    abstract protected function getLastParts(): array;
 }

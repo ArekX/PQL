@@ -46,9 +46,9 @@ trait JoinTrait
      *
      * @param string $type Type of the join, types depend on the types that driver supports.
      * @param array|StructuredQuery $withSource Source to join with.
-     * @param array|StructuredQuery|null $condition Condition to be set for the join part. See where for the condition format.
+     * @param array|StructuredQuery|null $condition Condition to be set for the join part.
      * @return $this
-     * @see ConditionTrait::where()
+     * @see ConditionTrait::where() for $condition format
      */
     public function join($type, $withSource, $condition = null)
     {
@@ -101,3 +101,4 @@ trait JoinTrait
         return $this->join('full outer', $withSource, $condition);
     }
 }
+

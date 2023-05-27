@@ -72,7 +72,7 @@ abstract class PdoDriver implements Driver
         return $this;
     }
 
-    protected abstract function extendConfigure(array $config);
+    abstract protected function extendConfigure(array $config);
 
     public function close()
     {
@@ -147,7 +147,7 @@ abstract class PdoDriver implements Driver
         $this->runMiddleware(self::STEP_OPEN, $this->pdo);
     }
 
-    protected abstract function createPdoInstance(): \PDO;
+    abstract protected function createPdoInstance(): \PDO;
 
     public function run(RawQuery $query)
     {
@@ -185,9 +185,9 @@ abstract class PdoDriver implements Driver
             if ($type === null) {
                 if (is_int($value)) {
                     $type = \PDO::PARAM_INT;
-                } else if (is_null($value)) {
+                } elseif (is_null($value)) {
                     $type = \PDO::PARAM_NULL;
-                } else if (is_bool($value)) {
+                } elseif (is_bool($value)) {
                     $type = \PDO::PARAM_BOOL;
                 } else {
                     $type = \PDO::PARAM_STR;

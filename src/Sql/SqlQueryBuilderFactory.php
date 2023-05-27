@@ -63,11 +63,11 @@ abstract class SqlQueryBuilderFactory implements QueryBuilderFactory, QueryBuild
      * @param string $queryClass Class of the query to be created.
      * @return QueryBuilder
      */
-    protected abstract function createBuilder(string $queryClass): QueryBuilder;
+    abstract protected function createBuilder(string $queryClass): QueryBuilder;
 
     /**
      * Create a new state for this query builder.
      * @return QueryBuilderState
      */
-    public abstract function createState(): QueryBuilderState;
+    abstract public function createState(): QueryBuilderState;
 }

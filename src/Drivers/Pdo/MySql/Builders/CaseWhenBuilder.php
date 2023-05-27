@@ -83,7 +83,8 @@ class CaseWhenBuilder extends QueryPartBuilder
         foreach ($whenList as $whenItem) {
             [$when, $then] = $whenItem;
 
-            $result[] = 'WHEN ' . $this->buildCondition($when, $state) . ' THEN ' . $this->buildValueColumn($then, $state);
+            $result[] = 'WHEN ' . $this->buildCondition($when, $state)
+                . ' THEN ' . $this->buildValueColumn($then, $state);
         }
 
         return implode(' ', $result);

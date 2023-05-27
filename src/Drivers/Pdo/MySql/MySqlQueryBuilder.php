@@ -82,7 +82,7 @@ class MySqlQueryBuilder extends SqlQueryBuilderFactory
     protected function createBuilder(string $queryClass): QueryBuilder
     {
         if (empty($this->builderMap[$queryClass])) {
-            throw new \Exception('No builder defined for: ' . $queryClass);
+            throw new \UnexpectedValueException('No builder defined for: ' . $queryClass);
         }
 
         /** @var QueryPartBuilder $builderClass */

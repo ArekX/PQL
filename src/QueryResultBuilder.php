@@ -197,7 +197,7 @@ class QueryResultBuilder implements ResultBuilder
         return $this->pipeReduce(function ($previous, $row) use ($keyColumn, $valueColumn) {
 
             if (!array_key_exists($keyColumn, $row) || !array_key_exists($valueColumn, $row)) {
-                throw new \Exception('$keyColumn and $valueColumn must exist in the result.');
+                throw new \InvalidArgumentException('$keyColumn and $valueColumn must exist in the result.');
             }
 
             $previous[$row[$keyColumn]] = $row[$valueColumn];

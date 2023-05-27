@@ -116,7 +116,7 @@ class InsertBuilder extends QueryPartBuilder
             $results[] = $this->buildValues($values, $state);
         }
 
-        return 'VALUES ' . implode(' ' , $results);
+        return 'VALUES ' . implode(' ', $results);
     }
 
     /**

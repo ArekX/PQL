@@ -34,6 +34,6 @@ trait QuoteNameTrait
             return $name;
         }
 
-        return preg_replace("/([a-zA-Z_][a-zA-Z0-9_]*)/", "`$1`", $name);
+        return preg_replace("/([a-zA-Z_]\w*)/", "`$1`", $name);
     }
 }

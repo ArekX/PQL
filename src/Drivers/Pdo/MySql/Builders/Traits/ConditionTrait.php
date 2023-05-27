@@ -72,13 +72,13 @@ trait ConditionTrait
 
         if (is_array($condition)) {
             if (empty($map[$condition[0]])) {
-                throw new \Exception('Unknown condition: ' . var_export($condition[0], true));
+                throw new \UnexpectedValueException('Unknown condition: ' . var_export($condition[0], true));
             }
 
             return $map[$condition[0]]($condition, $state);
         }
 
-        throw new \Exception('Condition must be an array.');
+        throw new \InvalidArgumentException('Condition must be an array.');
     }
 
     /**
@@ -254,9 +254,9 @@ trait ConditionTrait
         $column = $condition[1] ?? null;
 
         if (empty($column)) {
-            throw new \Exception('Column name must be set.');
-        } else if (!is_string($column)) {
-            throw new \Exception('Column name must be a string.');
+            throw new \UnexpectedValueException('Column name must be set.');
+        } elseif (!is_string($column)) {
+            throw new \UnexpectedValueException('Column name must be a string.');
         }
 
         return $this->quoteName($column);
