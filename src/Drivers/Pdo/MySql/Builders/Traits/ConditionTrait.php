@@ -181,7 +181,7 @@ trait ConditionTrait
      */
     protected function buildInCondition(array $condition, MySqlQueryBuilderState $state): string
     {
-        $left = $this->buildCondition($condition[1] ?? null, $state);
+        $left = $this->buildCondition(/** @scrutinizer ignore-type */$condition[1] ?? null, $state);
 
         $right = $condition[2] ?? null;
         if ($right instanceof StructuredQuery) {
