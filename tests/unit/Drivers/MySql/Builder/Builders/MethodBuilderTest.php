@@ -63,9 +63,5 @@ class MethodBuilderTest extends BuilderTestCase
             $this->build(Method::create()->name('name')->addParam(['invalid', 'value']));
         })->callableToThrow(\UnexpectedValueException::class);
 
-        expect(function () {
-            $this->build(Method::create()->name('name')->addParam('string'));
-        })->callableToThrow(\InvalidArgumentException::class);
-
     }
 }

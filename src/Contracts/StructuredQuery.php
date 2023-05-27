@@ -28,7 +28,7 @@ interface StructuredQuery
      *
      * @return static
      */
-    public static function create(): self;
+    public static function create(): static;
 
     /**
      * Return an array data representing the
@@ -42,9 +42,9 @@ interface StructuredQuery
      * Return part value or null if part is not defined.
      *
      * @param string $part
-     * @return mixed
+     * @return array|string|StructuredQuery|null
      */
-    public function get(string $part);
+    public function get(string $part): array|string|StructuredQuery|null;
 
     /**
      * Set a part to be used in the query.
@@ -52,10 +52,10 @@ interface StructuredQuery
      * Part name and value depend on the driver and builder used.
      *
      * @param string $part Part of the query to define.
-     * @param mixed $value Value of the part
+     * @param array|string|StructuredQuery|null $value Value of the part
      * @return $this
      */
-    public function use(string $part, $value): self;
+    public function use(string $part, array|string|StructuredQuery|null $value): static;
 
     /**
      * Append part to the query or set if not used.
@@ -65,8 +65,8 @@ interface StructuredQuery
      *
      * @see StructuredQuery::use()
      * @param string $part Part to use
-     * @param mixed $value Value of the part.
+     * @param array|string|StructuredQuery $value Value of the part.
      * @return $this
      */
-    public function append(string $part, $value): self;
+    public function append(string $part, array|string|StructuredQuery $value): static;
 }

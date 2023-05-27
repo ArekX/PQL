@@ -28,7 +28,7 @@ interface StructuredQueryRunner
      * @param Driver $driver Driver to be used.
      * @return $this
      */
-    public function useDriver(Driver $driver): self;
+    public function useDriver(Driver $driver): static;
 
     /**
      * Set query builder to be used.
@@ -36,7 +36,7 @@ interface StructuredQueryRunner
      * @param QueryBuilder $builder Builder to be used.
      * @return $this
      */
-    public function useBuilder(QueryBuilder $builder): self;
+    public function useBuilder(QueryBuilder $builder): static;
 
     /**
      * Execute a structured query and returns the result of the execution.
@@ -44,10 +44,10 @@ interface StructuredQueryRunner
      * This method is often to run queries for which you might only need affected
      * records.
      *
-     * @param StructuredQuery $query Query to be ran.
+     * @param StructuredQuery $query Query to be run.
      * @return mixed
      */
-    public function run(StructuredQuery $query);
+    public function run(StructuredQuery $query): mixed;
 
     /**
      * Execute a structured query and return only the first result.
@@ -55,7 +55,7 @@ interface StructuredQueryRunner
      * @param StructuredQuery $query Query to be run.
      * @return mixed
      */
-    public function fetchFirst(StructuredQuery $query);
+    public function fetchFirst(StructuredQuery $query): mixed;
 
     /**
      * Execute a structured query and return all results.

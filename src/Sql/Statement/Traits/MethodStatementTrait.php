@@ -28,7 +28,7 @@ trait MethodStatementTrait
      * @param array|StructuredQuery ...$params
      * @return $this
      */
-    public static function as($name, ...$params)
+    public static function as(StructuredQuery|string $name, ...$params): static
     {
         return static::create()->name($name)->params($params);
     }
@@ -39,7 +39,7 @@ trait MethodStatementTrait
      * @param string|StructuredQuery $name
      * @return $this
      */
-    public function name($name)
+    public function name(StructuredQuery|string $name): static
     {
         $this->use('name', $name);
         return $this;
@@ -48,10 +48,10 @@ trait MethodStatementTrait
     /**
      * Set params of the method.
      *
-     * @param array[]|StructuredQuery[] $params
+     * @param array[]|StructuredQuery|null $params
      * @return $this
      */
-    public function params($params)
+    public function params(array|StructuredQuery|null $params): static
     {
         $this->use('params', $params);
         return $this;
@@ -60,10 +60,10 @@ trait MethodStatementTrait
     /**
      * Add a parameter to the parameters list of the method.
      *
-     * @param $param
+     * @param array|StructuredQuery $param
      * @return $this
      */
-    public function addParam($param)
+    public function addParam(array|StructuredQuery $param): static
     {
         $this->append('params', $param);
         return $this;

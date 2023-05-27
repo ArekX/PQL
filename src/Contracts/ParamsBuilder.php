@@ -31,23 +31,23 @@ interface ParamsBuilder
      * @param mixed $type Driver specific type of the value to be added. If null, type will be inferred.
      * @return mixed Wrapped replacement for the value which is safe to be used in the query.
      */
-    public function wrapValue($value, $type = null);
+    public function wrapValue(mixed $value, mixed $type = null): mixed;
 
     /**
      * Add a specific parameter by key and value.
      *
-     * @param mixed $key Key of the parameter to be added
+     * @param string $key Key of the parameter to be added
      * @param mixed $value Value of the parameter to be added.
      * @param mixed $type Driver specific type of the value to be added. If null, type will be inferred.
      */
-    public function add($key, $value, $type = null): void;
+    public function add(string $key, mixed $value, mixed $type = null): void;
 
     /**
      * Returns an added parameter by key.
-     * @param mixed $key Key of the parameter.
+     * @param string $key Key of the parameter.
      * @return mixed Value of the parameter.
      */
-    public function get($key);
+    public function get(string $key): mixed;
 
     /**
      * Build and return the resulting parameter array.

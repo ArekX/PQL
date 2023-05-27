@@ -36,16 +36,16 @@ class Delete extends Query
     /**
      * Set the place from which to delete data.
      *
-     * SQL Injection Warning: Value in this function is not usually escaped in the driver
+     * **SQL Injection Warning**: Value in this function is not usually escaped in the driver
      * and should not be used to pass values from the user input to it. If you need to pass
      * and escape query use Raw query.
      *
-     * If a StructuredQuery is passed, it is parsed as is.
+     * If a StructuredQuery is passed, it will be additionally parsed according to that type.
      *
-     * @param string|StructuredQuery $from Table or other destination to delete data from.
+     * @param string|StructuredQuery|array $from Table or other destination to delete data from.
      * @return $this
      */
-    public function from($from)
+    public function from(StructuredQuery|string|array $from): static
     {
         $this->use('from', $from);
         return $this;

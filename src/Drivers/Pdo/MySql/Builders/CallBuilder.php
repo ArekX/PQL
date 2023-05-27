@@ -83,7 +83,7 @@ class CallBuilder extends QueryPartBuilder
      *
      * @throws \Exception
      */
-    protected function buildParamsPart($params, MySqlQueryBuilderState $state)
+    protected function buildParamsPart(array $params, MySqlQueryBuilderState $state): string
     {
         $result = [];
 

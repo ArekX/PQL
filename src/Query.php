@@ -30,12 +30,12 @@ class Query implements StructuredQuery
      *
      * @var array
      */
-    protected $parts = [];
+    protected array $parts = [];
 
     /**
      * @inheritDoc
      */
-    public static function create(): StructuredQuery
+    public static function create(): static
     {
         return new static();
     }
@@ -51,7 +51,7 @@ class Query implements StructuredQuery
     /**
      * @inheritDoc
      */
-    public function use(string $part, $value): StructuredQuery
+    public function use(string $part, array|string|StructuredQuery|null $value): static
     {
         $this->parts[$part] = $value;
         return $this;
@@ -60,7 +60,7 @@ class Query implements StructuredQuery
     /**
      * @inheritDoc
      */
-    public function append(string $part, $value): StructuredQuery
+    public function append(string $part, array|string|StructuredQuery $value): static
     {
         if (!empty($this->parts[$part]) && !is_array($this->parts[$part])) {
             $this->parts[$part] = [$this->parts[$part]];
@@ -73,7 +73,7 @@ class Query implements StructuredQuery
     /**
      * @inheritDoc
      */
-    public function get(string $part)
+    public function get(string $part): array|string|StructuredQuery|null
     {
         return $this->parts[$part] ?? null;
     }

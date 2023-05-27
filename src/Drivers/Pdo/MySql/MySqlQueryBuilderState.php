@@ -31,14 +31,14 @@ class MySqlQueryBuilderState implements QueryBuilderState
      *
      * @var array
      */
-    protected $state = [];
+    protected array $state = [];
 
     /**
      * Create new instance of this class
      *
      * @return static
      */
-    public static function create()
+    public static function create(): static
     {
         return new static();
     }
@@ -84,7 +84,7 @@ class MySqlQueryBuilderState implements QueryBuilderState
     /**
      * @inheritDoc
      */
-    public function get(string $name, $default = null)
+    public function get(string $name, mixed $default = null): mixed
     {
         if (!array_key_exists($name, $this->state)) {
             return $default;
@@ -107,7 +107,7 @@ class MySqlQueryBuilderState implements QueryBuilderState
      *
      * @param string $glue Glue string to be used
      */
-    public function setQueryPartGlue(string $glue)
+    public function setQueryPartGlue(string $glue): void
     {
         $this->set('queryPartGlue', $glue);
     }

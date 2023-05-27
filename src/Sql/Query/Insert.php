@@ -32,16 +32,16 @@ class Insert extends Query
     /**
      * Set the destination to insert data into.
      *
-     * SQL Injection Warning: Value in this function is not usually escaped in the driver
+     * **SQL Injection Warning**: Value in this function is not usually escaped in the driver
      * and should not be used to pass values from the user input to it. If you need to pass
      * and escape query use Raw query.
      *
-     * If a StructuredQuery is passed, it is parsed as is.
+     * If a StructuredQuery is passed, it will be additionally parsed according to that type.
      *
      * @param string|StructuredQuery $into Table or other destination to insert data into.
      * @return $this
      */
-    public function into($into)
+    public function into(string|StructuredQuery $into): static
     {
         $this->use('into', $into);
         return $this;
@@ -50,18 +50,18 @@ class Insert extends Query
     /**
      * Set columns to insert.
      *
-     * SQL Injection Warning: Value in this function is not usually escaped in the driver
+     * **SQL Injection Warning**: Value in this function is not usually escaped in the driver
      * and should not be used to pass values from the user input to it. If you need to pass
      * and escape query use Raw query.
      *
      * Column count should match the value count if an array is passed.
      *
-     * If a StructuredQuery is passed, it is parsed as is.
+     * If a StructuredQuery is passed, it will be additionally parsed according to that type.
      *
-     * @param array|StructuredQuery $columns Columns to set.
+     * @param array|StructuredQuery|null $columns Columns to set.
      * @return $this
      */
-    public function columns($columns)
+    public function columns(array|StructuredQuery|null $columns): static
     {
         $this->use('columns', $columns);
         return $this;
@@ -75,12 +75,12 @@ class Insert extends Query
      * Values are properly escaped making this method suitable to
      * accept user input.
      *
-     * If a StructuredQuery is passed, it is parsed as is.
+     * If a StructuredQuery is passed, it will be additionally parsed according to that type.
      *
-     * @param array|StructuredQuery $values
+     * @param array|StructuredQuery|null $values
      * @return $this
      */
-    public function values($values)
+    public function values(array|StructuredQuery|null $values): static
     {
         $this->append('values', $values);
         return $this;
@@ -95,7 +95,7 @@ class Insert extends Query
      * @param array $data Associative array containing keys and values to insert.
      * @return $this
      */
-    public function data(array $data)
+    public function data(array $data): static
     {
         $this->columns(array_keys($data));
         return $this->values(array_values($data));

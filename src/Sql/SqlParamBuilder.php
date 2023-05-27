@@ -32,13 +32,13 @@ class SqlParamBuilder implements ParamsBuilder
      * @see SqlParamBuilder::wrapValue()
      * @var string
      */
-    public $prefix = ':t';
+    public string $prefix = ':t';
 
     /**
      * List of parameters set.
      * @var array
      */
-    protected $parameters = [];
+    protected array $parameters = [];
 
     /**
      * Index of parameter used in wrapValue.
@@ -46,13 +46,13 @@ class SqlParamBuilder implements ParamsBuilder
      * @see SqlParamBuilder::wrapValue()
      * @var int
      */
-    protected $parameterIndex = 0;
+    protected int $parameterIndex = 0;
 
     /**
      * Create new intance of this class.
      * @return static
      */
-    public static function create()
+    public static function create(): static
     {
         return new static();
     }
@@ -60,10 +60,11 @@ class SqlParamBuilder implements ParamsBuilder
     /**
      * @inheritDoc
      */
-    public function wrapValue($value, $type = null)
+    public function wrapValue($value, $type = null): string
     {
         $key = $this->prefix . $this->parameterIndex++;
         $this->add($key, $value, $type);
+
         return $key;
     }
 
@@ -78,7 +79,7 @@ class SqlParamBuilder implements ParamsBuilder
     /**
      * @inheritDoc
      */
-    public function get($key)
+    public function get($key): mixed
     {
         if (!array_key_exists($key, $this->parameters)) {
             return null;

@@ -31,14 +31,14 @@ interface ResultBuilder
      * @param ResultReader $reader Reader to be used
      * @return $this
      */
-    public function useReader(ResultReader $reader): self;
+    public function useReader(ResultReader $reader): static;
 
     /**
      * Return all rows from the result reader.
      *
      * @return array
      */
-    public function all();
+    public function all(): array;
 
     /**
      * Return all rows from the result reader
@@ -48,14 +48,14 @@ interface ResultBuilder
      *
      * @return mixed
      */
-    public function result();
+    public function result(): mixed;
 
     /**
      * Return only the first result from result reader.
      *
      * @return mixed
      */
-    public function first();
+    public function first(): mixed;
 
     /**
      * Returns the value of the specified column in the first result.
@@ -65,7 +65,7 @@ interface ResultBuilder
      * @param int $index Index of the column to use.
      * @return mixed
      */
-    public function scalar($index = 0);
+    public function scalar(int $index = 0): mixed;
 
     /**
      * Returns an array containing all value from the specified column.
@@ -73,7 +73,7 @@ interface ResultBuilder
      * @param int $index Index of the column to use.
      * @return mixed
      */
-    public function column($index = 0): array;
+    public function column(int $index = 0): array;
 
     /**
      * Returns whether there is an actual result to be returned.
@@ -88,7 +88,7 @@ interface ResultBuilder
      * @see ResultBuilder::result()
      * @return $this
      */
-    public function clearPipeline(): self;
+    public function clearPipeline(): static;
 
     /**
      * Add an index by processor to the pipeline.
@@ -119,7 +119,7 @@ interface ResultBuilder
      * @param string $column Name of the column to index the results by
      * @return $this
      */
-    public function pipeIndexBy(string $column): self;
+    public function pipeIndexBy(string $column): static;
 
     /**
      * Add conversion of the result set to the list in the pipeline.
@@ -132,7 +132,7 @@ interface ResultBuilder
      * @param string $valueColumn
      * @return $this
      */
-    public function pipeListBy(string $keyColumn, string $valueColumn): self;
+    public function pipeListBy(string $keyColumn, string $valueColumn): static;
 
     /**
      * Add sorting to the pipeline processing.
@@ -153,7 +153,7 @@ interface ResultBuilder
      * @param callable $sorter Sort func
      * @return $this
      */
-    public function pipeSort(callable $sorter): self;
+    public function pipeSort(callable $sorter): static;
 
     /**
      * Add a mapper to pipeline processing.
@@ -173,7 +173,7 @@ interface ResultBuilder
      * @param callable $mapper Mapper function which will be applied.
      * @return $this
      */
-    public function pipeMap(callable $mapper): self;
+    public function pipeMap(callable $mapper): static;
 
     /**
      * Add a reducer function which changes the result.
@@ -190,7 +190,7 @@ interface ResultBuilder
      * @param mixed $initialValue Start value which will be set at the first reducer iteration.
      * @return $this
      */
-    public function pipeReduce(callable $reducer, $initialValue = null): self;
+    public function pipeReduce(callable $reducer, mixed $initialValue = null): static;
 
     /**
      * Add a filter function which filters the results.
@@ -205,6 +205,6 @@ interface ResultBuilder
      * @param callable $filter Filter function which will be used.
      * @return $this
      */
-    public function pipeFilter(callable $filter): self;
+    public function pipeFilter(callable $filter): static;
 
 }

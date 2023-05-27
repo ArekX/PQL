@@ -30,7 +30,7 @@ interface QueryBuilderState
      * @param mixed $default Default value to be returned of the item is not found.
      * @return mixed
      */
-    public function get(string $name, $default = null);
+    public function get(string $name, mixed $default = null): mixed;
 
     /**
      * Store the value in the state.
@@ -38,5 +38,5 @@ interface QueryBuilderState
      * @param string $name Name of the value
      * @param mixed $value Value to be stored
      */
-    public function set(string $name, $value): void;
+    public function set(string $name, mixed $value): void;
 }

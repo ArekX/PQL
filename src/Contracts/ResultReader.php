@@ -39,20 +39,20 @@ interface ResultReader
      * @param int $columnIndex Index of the column to return.
      * @return array
      */
-    public function getAllColumns($columnIndex = 0): array;
+    public function getAllColumns(int $columnIndex = 0): array;
 
     /**
      * Returns next row or null if there is no row to be returned.
      * @return mixed
      */
-    public function getNextRow();
+    public function getNextRow(): mixed;
 
     /**
      * Returns next column value.
      * @param int $columnIndex Index of the column to return.
      * @return mixed
      */
-    public function getNextColumn($columnIndex = 0);
+    public function getNextColumn(int $columnIndex = 0): mixed;
 
     /**
      * Finalizes result reader

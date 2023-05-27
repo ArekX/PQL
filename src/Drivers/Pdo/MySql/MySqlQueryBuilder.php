@@ -51,7 +51,7 @@ class MySqlQueryBuilder extends SqlQueryBuilderFactory
      *
      * @var string[]
      */
-    public $builderMap = [
+    public array $builderMap = [
         Raw::class => RawBuilder::class,
         Select::class => SelectBuilder::class,
         Union::class => UnionBuilder::class,

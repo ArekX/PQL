@@ -36,16 +36,16 @@ class Update extends Query
     /**
      * Set the destination to which to update data.
      *
-     * SQL Injection Warning: Value in this function is not usually escaped in the driver
+     * **SQL Injection Warning**: Value in this function is not usually escaped in the driver
      * and should not be used to pass values from the user input to it. If you need to pass
      * and escape query use Raw query.
      *
-     * If a StructuredQuery is passed, it is parsed as is.
+     * If a StructuredQuery is passed, it will be additionally parsed according to that type.
      *
      * @param string|StructuredQuery $to Table or other destination to update the data.
      * @return $this
      */
-    public function to($to)
+    public function to(StructuredQuery|string $to): static
     {
         $this->use('to', $to);
         return $this;
@@ -56,14 +56,14 @@ class Update extends Query
      *
      * Data accepted is an associative array where key is the column name and value is the value to update.
      *
-     * SQL Injection Warning: If an array is passed the keys in the array are not escaped
+     * **SQL Injection Warning**: If an array is passed the keys in the array are not escaped
      * meaning they should not be for user input, values are escaped properly and user input
      * can be used for them.
      *
-     * @param array $data
+     * @param array|StructuredQuery $data
      * @return $this
      */
-    public function set($data)
+    public function set(array|StructuredQuery $data): static
     {
         $this->use('set', $data);
         return $this;

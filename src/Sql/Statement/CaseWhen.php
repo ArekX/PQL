@@ -29,10 +29,10 @@ class CaseWhen extends Query implements GroupedSubQuery
     /**
      * Of value to be set for the CASE
      *
-     * @param array|StructuredQuery $of
+     * @param array|StructuredQuery|null $of
      * @return $this
      */
-    public function of($of)
+    public function of(StructuredQuery|array|null $of): static
     {
         $this->use('of', $of);
         return $this;
@@ -41,10 +41,10 @@ class CaseWhen extends Query implements GroupedSubQuery
     /**
      * When cases to be set
      *
-     * @param array|StructuredQuery[] $when
+     * @param array|StructuredQuery $when
      * @return $this
      */
-    public function when($when)
+    public function when(array|StructuredQuery $when): static
     {
         $this->use('when', $when);
         return $this;
@@ -57,7 +57,7 @@ class CaseWhen extends Query implements GroupedSubQuery
      * @param array|StructuredQuery $then Result
      * @return $this
      */
-    public function addWhen($when, $then)
+    public function addWhen(StructuredQuery|array $when, StructuredQuery|array $then): static
     {
         $this->append('when', [$when, $then]);
         return $this;
@@ -69,7 +69,7 @@ class CaseWhen extends Query implements GroupedSubQuery
      * @param array|StructuredQuery $else Else result.
      * @return $this
      */
-    public function else($else)
+    public function else(StructuredQuery|array $else): static
     {
         $this->use('else', $else);
         return $this;

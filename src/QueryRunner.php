@@ -50,7 +50,7 @@ class QueryRunner implements StructuredQueryRunner
      * @param QueryBuilder|null $builder Builder to be used
      * @return static
      */
-    public static function create($driver = null, $builder = null)
+    public static function create(?Driver $driver = null, ?QueryBuilder $builder = null): static
     {
         $instance = new static();
 
@@ -68,7 +68,7 @@ class QueryRunner implements StructuredQueryRunner
     /**
      * @inheritDoc
      */
-    public function useDriver(Driver $driver): StructuredQueryRunner
+    public function useDriver(Driver $driver): static
     {
         $this->driver = $driver;
         return $this;
@@ -77,7 +77,7 @@ class QueryRunner implements StructuredQueryRunner
     /**
      * @inheritDoc
      */
-    public function useBuilder(QueryBuilder $builder): StructuredQueryRunner
+    public function useBuilder(QueryBuilder $builder): static
     {
         $this->builder = $builder;
         return $this;
@@ -86,7 +86,7 @@ class QueryRunner implements StructuredQueryRunner
     /**
      * @inheritDoc
      */
-    public function run(StructuredQuery $query)
+    public function run(StructuredQuery $query): mixed
     {
         return $this->driver->run($this->builder->build($query));
     }
@@ -94,7 +94,7 @@ class QueryRunner implements StructuredQueryRunner
     /**
      * @inheritDoc
      */
-    public function fetchFirst(StructuredQuery $query)
+    public function fetchFirst(StructuredQuery $query): mixed
     {
         return $this->driver->fetchFirst($this->builder->build($query));
     }

@@ -6,11 +6,11 @@ use ArekX\PQL\Contracts\ResultReader;
 
 class ResultReaderMock implements ResultReader
 {
-    public $rows = [];
-    public $index = 0;
-    public $isFinalized = false;
+    public array $rows = [];
+    public int $index = 0;
+    public bool $isFinalized = false;
 
-    public static function create(array $rows)
+    public static function create(array $rows): static
     {
         $instance = new static();
         $instance->rows = $rows;
@@ -34,12 +34,12 @@ class ResultReaderMock implements ResultReader
         return array_map(fn($row) => $row[$columnIndex] ?? null, $this->rows);
     }
 
-    public function getNextRow()
+    public function getNextRow(): mixed
     {
         return $this->rows[$this->index++] ?? null;
     }
 
-    public function getNextColumn($columnIndex = 0)
+    public function getNextColumn($columnIndex = 0): mixed
     {
         $index = $this->index++;
         if (empty($this->rows[$index])) {

@@ -26,12 +26,15 @@ trait JoinTrait
      *
      * This function is a helper function for join with type set to `inner`.
      *
-     * @param array|StructuredQuery $withSource Source to join with
-     * @param array|StructuredQuery|null $condition Condition to join on
+     * @param array|StructuredQuery|string $withSource Source to join with
+     * @param array|StructuredQuery|string|null $condition Condition to join on
      * @return $this
      * @see JoinTrait::join()
      */
-    public function innerJoin($withSource, $condition = null)
+    public function innerJoin(
+        StructuredQuery|array|string $withSource,
+        StructuredQuery|array|string|null $condition = null
+    ): static
     {
         return $this->join('inner', $withSource, $condition);
     }
@@ -45,12 +48,16 @@ trait JoinTrait
      * or a sub-query if StructuredQuery is passed.
      *
      * @param string $type Type of the join, types depend on the types that driver supports.
-     * @param array|StructuredQuery $withSource Source to join with.
-     * @param array|StructuredQuery|null $condition Condition to be set for the join part.
+     * @param array|StructuredQuery|string $withSource Source to join with.
+     * @param StructuredQuery|array|string|null $condition Condition to be set for the join part.
      * @return $this
      * @see ConditionTrait::where() for $condition format
      */
-    public function join($type, $withSource, $condition = null)
+    public function join(
+        string $type,
+        StructuredQuery|array|string $withSource,
+        StructuredQuery|array|string|null $condition = null
+    ): static
     {
         $this->append('join', [$type, $withSource, $condition]);
         return $this;
@@ -61,12 +68,15 @@ trait JoinTrait
      *
      * This function is a helper function for join with type set to `left`.
      *
-     * @param array|StructuredQuery $withSource Source to join with
-     * @param array|StructuredQuery|null $condition Condition to join on
+     * @param array|StructuredQuery|string $withSource Source to join with
+     * @param array|StructuredQuery|string|null $condition Condition to join on
      * @return $this
      * @see JoinTrait::join()
      */
-    public function leftJoin($withSource, $condition)
+    public function leftJoin(
+        StructuredQuery|array|string $withSource,
+        StructuredQuery|array|string|null $condition
+    ): static
     {
         return $this->join('left', $withSource, $condition);
     }
@@ -76,12 +86,15 @@ trait JoinTrait
      *
      * This function is a helper function for join with type set to `right`.
      *
-     * @param array|StructuredQuery $withSource Source to join with
-     * @param array|StructuredQuery|null $condition Condition to join on
+     * @param array|StructuredQuery|string $withSource Source to join with
+     * @param array|StructuredQuery|string|null $condition Condition to join on
      * @return $this
      * @see JoinTrait::join()
      */
-    public function rightJoin($withSource, $condition)
+    public function rightJoin(
+        StructuredQuery|array|string $withSource,
+        StructuredQuery|array|string|null $condition
+    ): static
     {
         return $this->join('right', $withSource, $condition);
     }
@@ -91,12 +104,15 @@ trait JoinTrait
      *
      * This function is a helper function for join with type set to `full outer`.
      *
-     * @param array|StructuredQuery $withSource Source to join with
-     * @param array|StructuredQuery|null $condition Condition to join on
+     * @param array|StructuredQuery|string $withSource Source to join with
+     * @param array|StructuredQuery|string|null $condition Condition to join on
      * @return $this
      * @see JoinTrait::join()
      */
-    public function fullOuterJoin($withSource, $condition)
+    public function fullOuterJoin(
+        StructuredQuery|array|string $withSource,
+        StructuredQuery|array|string|null $condition
+    ): static
     {
         return $this->join('full outer', $withSource, $condition);
     }

@@ -33,11 +33,11 @@ if (!function_exists('\ArekX\PQL\Sql\select')) {
     /**
      * Create a SELECT query.
      *
-     * @param null|array|StructuredQuery $columns Columns to be selected
+     * @param array|StructuredQuery|string|null $columns Columns to be selected
      * @return Select
      * @see Select
      */
-    function select($columns = null): Select
+    function select(StructuredQuery|array|string|null $columns = null): Select
     {
         return Select::create()->columns($columns);
     }
@@ -51,7 +51,7 @@ if (!function_exists('\ArekX\PQL\Sql\insert')) {
      * @param array|null $data Associative array of data to be inserted.
      * @return Insert
      */
-    function insert($into, array $data = null): Insert
+    function insert(StructuredQuery|string $into, array $data = null): Insert
     {
         $query = Insert::create()->into($into);
 
@@ -68,10 +68,10 @@ if (!function_exists('\ArekX\PQL\Sql\delete')) {
      * Creates a DELETE query
      *
      * @param string|StructuredQuery $from From where to delete
-     * @param null|array|StructuredQuery $condition Filter for deletion
+     * @param array|StructuredQuery|null $condition Filter for deletion
      * @return Delete
      */
-    function delete($from, $condition = null): Delete
+    function delete(StructuredQuery|string $from, StructuredQuery|array $condition = null): Delete
     {
         return Delete::create()->from($from)->where($condition);
     }
@@ -83,10 +83,10 @@ if (!function_exists('\ArekX\PQL\Sql\update')) {
      *
      * @param string|StructuredQuery $to Destination which will be updated
      * @param array $data Data to be set.
-     * @param null|array|StructuredQuery $condition Filter for deletion
+     * @param array|StructuredQuery|null $condition Filter for deletion
      * @return Update
      */
-    function update($to, array $data, $condition = null): Update
+    function update(StructuredQuery|string $to, array $data, StructuredQuery|array $condition = null): Update
     {
         return Update::create()->to($to)->set($data)->where($condition);
     }
@@ -126,7 +126,7 @@ if (!function_exists('\ArekX\PQL\Sql\raw')) {
      * @param array|null $params Params for the query
      * @return Raw
      */
-    function raw($query, array $params = null): Raw
+    function raw(mixed $query, array $params = null): Raw
     {
         return Raw::from($query, $params);
     }
@@ -164,11 +164,11 @@ if (!function_exists('\ArekX\PQL\Sql\caseWhen')) {
     /**
      * Creates a CASE statement
      *
-     * @param mixed $of Of value to be used in start of CASE
+     * @param mixed|null $of Of value to be used in start of CASE
      * @param mixed ...$whenThen List of [$when, $then] statements.
      * @return CaseWhen
      */
-    function caseWhen($of = null, ...$whenThen): CaseWhen
+    function caseWhen(mixed $of = null, ...$whenThen): CaseWhen
     {
         return CaseWhen::create()
             ->of($of)
@@ -190,7 +190,7 @@ if (!function_exists('\ArekX\PQL\Sql\value')) {
      * @return array
      * @see ConditionTrait::where()
      */
-    function value($value): array
+    function value(mixed $value): array
     {
         return ['value', $value];
     }
@@ -202,13 +202,13 @@ if (!function_exists('\ArekX\PQL\Sql\column')) {
      *
      * This function is used as a helper for ['column', name].
      *
-     * SQL Injection Warning: This operation is not safe for user input.
+     * **SQL Injection Warning**: This operation is not safe for user input.
      *
      * @param mixed $column Column to be wrapped
      * @return array
      * @see ConditionTrait::where()
      */
-    function column($column): array
+    function column(mixed $column): array
     {
         return ['column', $column];
     }
@@ -220,7 +220,7 @@ if (!function_exists('\ArekX\PQL\Sql\any')) {
      *
      * This function is used as a helper for ['any', associativeArray].
      *
-     * SQL Injection Warning: Keys in the associative arrays
+     * **SQL Injection Warning**: Keys in the associative arrays
      * are not safe for user input, but values are properly escaped
      * and therefore are safe.
      *
@@ -240,7 +240,7 @@ if (!function_exists('\ArekX\PQL\Sql\all')) {
      *
      * This function is used as a helper for ['all', associativeArray].
      *
-     * SQL Injection Warning: Keys in the associative arrays
+     * **SQL Injection Warning**: Keys in the associative arrays
      * are not safe for user input, but values are properly escaped
      * and therefore are safe.
      *

@@ -66,7 +66,7 @@ abstract class PdoDriver implements Driver
         $this->extendConfigure($config);
     }
 
-    public function useMiddleware(string $step, array $middlewareList): Driver
+    public function useMiddleware(string $step, array $middlewareList): static
     {
         $this->middlewares[$step] = array_values($middlewareList);
         return $this;
@@ -74,7 +74,7 @@ abstract class PdoDriver implements Driver
 
     abstract protected function extendConfigure(array $config);
 
-    public function close()
+    public function close(): void
     {
         if ($this->pdo === null) {
             return;
@@ -125,7 +125,7 @@ abstract class PdoDriver implements Driver
         return PdoTransaction::create($this);
     }
 
-    public function getLastInsertedId($sequenceName = null)
+    public function getLastInsertedId($sequenceName = null): false|string
     {
         return $this->getPdo()->lastInsertId($sequenceName);
     }
@@ -149,7 +149,7 @@ abstract class PdoDriver implements Driver
 
     abstract protected function createPdoInstance(): \PDO;
 
-    public function run(RawQuery $query)
+    public function run(RawQuery $query): mixed
     {
 
         $query = $this->runMiddleware(self::STEP_BEFORE_RUN, $query, 'run');
@@ -201,7 +201,7 @@ abstract class PdoDriver implements Driver
         return $this->runMiddleware(self::STEP_AFTER_PREPARE, $statement, $query);
     }
 
-    public function fetchFirst(RawQuery $query)
+    public function fetchFirst(RawQuery $query): mixed
     {
 
         $query = $this->runMiddleware(self::STEP_BEFORE_RUN, $query, 'first');
@@ -251,7 +251,7 @@ abstract class PdoDriver implements Driver
         return $this->runMiddleware(self::STEP_AFTER_RUN, $result, $query, 'reader');
     }
 
-    public function appendMiddleware(string $step, callable $middleware): Driver
+    public function appendMiddleware(string $step, callable $middleware): static
     {
         $this->middlewares[$step][] = $middleware;
         return $this;

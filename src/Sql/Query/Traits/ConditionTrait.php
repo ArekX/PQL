@@ -73,7 +73,7 @@ trait ConditionTrait
      * @param array|StructuredQuery|null $where
      * @return $this
      */
-    public function where($where)
+    public function where(StructuredQuery|array|null $where): static
     {
         $this->use('where', $where);
         return $this;
@@ -92,7 +92,7 @@ trait ConditionTrait
      * @see ConditionTrait::appendConditionPart()
      * @see ConditionTrait::where()
      */
-    public function andWhere($where)
+    public function andWhere(StructuredQuery|array $where): static
     {
         return $this->appendConditionPart('where', 'and', $where);
     }
@@ -106,7 +106,7 @@ trait ConditionTrait
      * @return $this
      * @see ConditionTrait::where()
      */
-    protected function appendConditionPart($part, $glue, $condition)
+    protected function appendConditionPart(string $part, string $glue, StructuredQuery|array $condition): static
     {
         $current = $this->get($part);
 
@@ -135,7 +135,7 @@ trait ConditionTrait
      * @see ConditionTrait::appendConditionPart()
      * @see ConditionTrait::where()
      */
-    public function orWhere($where)
+    public function orWhere(StructuredQuery|array $where): static
     {
         return $this->appendConditionPart('where', 'or', $where);
     }
@@ -146,7 +146,7 @@ trait ConditionTrait
      * @param int $limit
      * @return $this
      */
-    public function limit($limit)
+    public function limit(int $limit): static
     {
         $this->use('limit', $limit);
         return $this;
@@ -158,7 +158,7 @@ trait ConditionTrait
      * @param int $offset
      * @return $this
      */
-    public function offset($offset)
+    public function offset(int $offset): static
     {
         $this->use('offset', $offset);
         return $this;

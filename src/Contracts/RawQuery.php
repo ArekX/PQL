@@ -29,7 +29,7 @@ interface RawQuery
      *
      * @return mixed
      */
-    public function getQuery();
+    public function getQuery(): mixed;
 
     /**
      * Return params to be bound to the query.

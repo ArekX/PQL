@@ -38,14 +38,14 @@ class QueryResultBuilder implements ResultBuilder
      * @see QueryResultBuilder::result()
      * @var array
      */
-    protected $pipelines = [];
+    protected array $pipelines = [];
 
     /**
      * Create new instance query result builder.
      * @param ResultReader|null $reader Reader to be used
      * @return static
      */
-    public static function create(ResultReader $reader = null)
+    public static function create(ResultReader $reader = null): static
     {
         $instance = new static();
 
@@ -59,7 +59,7 @@ class QueryResultBuilder implements ResultBuilder
     /**
      * @inheritDoc
      */
-    public function useReader(ResultReader $reader): ResultBuilder
+    public function useReader(ResultReader $reader): static
     {
         $this->reader = $reader;
         return $this;
@@ -68,7 +68,7 @@ class QueryResultBuilder implements ResultBuilder
     /**
      * @inheritDoc
      */
-    public function first()
+    public function first(): mixed
     {
         $result = $this->reader->getNextRow();
         $this->reader->finalize();
@@ -78,7 +78,7 @@ class QueryResultBuilder implements ResultBuilder
     /**
      * @inheritDoc
      */
-    public function scalar($index = 0)
+    public function scalar($index = 0): mixed
     {
         $result = $this->reader->getNextColumn($index);
         $this->reader->finalize();
@@ -108,7 +108,7 @@ class QueryResultBuilder implements ResultBuilder
     /**
      * @inheritDoc
      */
-    public function clearPipeline(): ResultBuilder
+    public function clearPipeline(): static
     {
         $this->pipelines = [];
         return $this;
@@ -117,7 +117,7 @@ class QueryResultBuilder implements ResultBuilder
     /**
      * @inheritDoc
      */
-    public function pipeIndexBy(string $column): ResultBuilder
+    public function pipeIndexBy(string $column): static
     {
         return $this->pipeReduce(function ($result, $row) use ($column) {
             $result[$row[$column]] = $row;
@@ -128,7 +128,7 @@ class QueryResultBuilder implements ResultBuilder
     /**
      * @inheritDoc
      */
-    public function pipeReduce(callable $reducer, $initialValue = null): ResultBuilder
+    public function pipeReduce(callable $reducer, $initialValue = null): static
     {
         $this->pipelines[] = fn($results) => array_reduce($results, $reducer, $initialValue);
         return $this;
@@ -137,7 +137,7 @@ class QueryResultBuilder implements ResultBuilder
     /**
      * @inheritDoc
      */
-    public function pipeSort(callable $sorter): ResultBuilder
+    public function pipeSort(callable $sorter): static
     {
         $this->pipelines[] = function ($results) use ($sorter) {
             usort($results, $sorter);
@@ -150,7 +150,7 @@ class QueryResultBuilder implements ResultBuilder
     /**
      * @inheritDoc
      */
-    public function pipeMap(callable $mapper): ResultBuilder
+    public function pipeMap(callable $mapper): static
     {
         $this->pipelines[] = fn($results) => array_map($mapper, $results);
         return $this;
@@ -159,7 +159,7 @@ class QueryResultBuilder implements ResultBuilder
     /**
      * @inheritDoc
      */
-    public function pipeFilter(callable $filter): ResultBuilder
+    public function pipeFilter(callable $filter): static
     {
         $this->pipelines[] = fn($results) => array_values(array_filter($results, $filter));
         return $this;
@@ -168,7 +168,7 @@ class QueryResultBuilder implements ResultBuilder
     /**
      * @inheritDoc
      */
-    public function result()
+    public function result(): mixed
     {
         $result = $this->all();
 
@@ -192,7 +192,7 @@ class QueryResultBuilder implements ResultBuilder
     /**
      * @inheritDoc
      */
-    public function pipeListBy(string $keyColumn, string $valueColumn): ResultBuilder
+    public function pipeListBy(string $keyColumn, string $valueColumn): static
     {
         return $this->pipeReduce(function ($previous, $row) use ($keyColumn, $valueColumn) {
 

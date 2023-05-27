@@ -46,12 +46,12 @@ class Select extends Query implements GroupedSubQuery
      * is used as an alias if the driver supports it and values is used
      * as the source name.
      *
-     * If null is passed it means that this query part is not to be used.
+     * If null, this query part is not to be used.
      *
-     * @param string|array|StructuredQuery|null $source Source to be passed
+     * @param array|string|StructuredQuery|null $source Source to be passed
      * @return $this
      */
-    public function from($source): self
+    public function from(StructuredQuery|array|string|null $source): self
     {
         $this->use('from', $source);
         return $this;
@@ -68,12 +68,12 @@ class Select extends Query implements GroupedSubQuery
      * is used as an alias if the driver supports it and values is used
      * as the column name.
      *
-     * If null is passed it means that this query part is not to be used.
+     * If null, this query part is not to be used.
      *
      * @param array|string|StructuredQuery|null $columns
      * @return $this
      */
-    public function columns($columns)
+    public function columns(StructuredQuery|array|string|null $columns): static
     {
         $this->use('columns', $columns);
         return $this;
@@ -93,7 +93,7 @@ class Select extends Query implements GroupedSubQuery
      * @return $this
      * @see Select::columns()
      */
-    public function addColumns($column)
+    public function addColumns(StructuredQuery|array|string $column): static
     {
         $columns = $this->get('columns');
 
@@ -122,13 +122,27 @@ class Select extends Query implements GroupedSubQuery
      *
      * If the array is passed this function expects an associative array where key is the
      * column to sort by and value is how to sort by.
+     * Format using strings is:
+     * ```php
+     * [
+     *   'ascending column' => 'asc',
+     *   'descending column' => 'desc'
+     * ]
+     * ```
+     * Format using constants is:
+     * ```php
+     * [
+     *   'ascending column' => SORT_ASC,
+     *   'descending column' => SORT_DESC
+     * ]
+     * ```
      *
      * If structured query is passed it is processed as is.
      *
      * @param array|StructuredQuery|null $orderBy
      * @return $this
      */
-    public function orderBy($orderBy)
+    public function orderBy(StructuredQuery|array|null $orderBy): static
     {
         $this->use('orderBy', $orderBy);
         return $this;
@@ -146,8 +160,9 @@ class Select extends Query implements GroupedSubQuery
      * If structured query is passed it is processed as is.
      *
      * @param array|StructuredQuery|null $groupBy
+     * @return $this
      */
-    public function groupBy($groupBy)
+    public function groupBy(StructuredQuery|array|null $groupBy): static
     {
         $this->use('groupBy', $groupBy);
         return $this;
@@ -159,11 +174,11 @@ class Select extends Query implements GroupedSubQuery
      *
      * Condition logic is the same as with where method.
      *
-     * @param array|StructuredQuery $having
+     * @param array|StructuredQuery|null $having
      * @return $this
      * @see ConditionTrait::where()
      */
-    public function having($having)
+    public function having(StructuredQuery|array|null $having): static
     {
         $this->use('having', $having);
         return $this;
@@ -184,7 +199,7 @@ class Select extends Query implements GroupedSubQuery
      * @see ConditionTrait::appendConditionPart()
      * @see ConditionTrait::where()
      */
-    public function andHaving($having)
+    public function andHaving(StructuredQuery|array $having): static
     {
         return $this->appendConditionPart('having', 'and', $having);
     }
@@ -204,7 +219,7 @@ class Select extends Query implements GroupedSubQuery
      * @see ConditionTrait::appendConditionPart()
      * @see ConditionTrait::where()
      */
-    public function orHaving($having)
+    public function orHaving(StructuredQuery|array $having): static
     {
         return $this->appendConditionPart('having', 'or', $having);
     }

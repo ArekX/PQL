@@ -28,6 +28,7 @@
     "codeception/verify": "^2.1"
   },
   "scripts": {
+    "codecept": "vendor/bin/codecept",
     "test": "vendor/bin/codecept run",
     "test-unit": "vendor/bin/codecept run unit",
     "coverage": "XDEBUG_MODE=coverage vendor/bin/codecept run --coverage-html",

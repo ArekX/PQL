@@ -38,24 +38,24 @@ class MockDriver implements Driver
         return $instance;
     }
 
-    public function run(RawQuery $query)
+    public function run(RawQuery $query): mixed
     {
         return $this->runResult;
     }
 
-    public function useMiddleware(string $step, array $middlewareList): Driver
+    public function useMiddleware(string $step, array $middlewareList): static
     {
         $this->addedMiddlewares[$step] = $middlewareList;
         return $this;
     }
 
-    public function appendMiddleware(string $step, callable $middleware): Driver
+    public function appendMiddleware(string $step, callable $middleware): static
     {
         $this->addedMiddlewares[$step][] = $middleware;
         return $this;
     }
 
-    public function fetchFirst(RawQuery $query)
+    public function fetchFirst(RawQuery $query): mixed
     {
         return $this->results[0] ?? null;
     }

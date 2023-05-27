@@ -28,7 +28,7 @@ trait ConfigureTrait
      * @param array $config
      * @return $this
      */
-    public function config(array $config)
+    public function config(array $config): static
     {
         $this->use('config', $config);
         return $this;

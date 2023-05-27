@@ -23,7 +23,7 @@ class QueryBuilderStateMock implements QueryBuilderState
 {
     public $state = [];
 
-    public function get(string $name, $default = null)
+    public function get(string $name, $default = null): mixed
     {
         return $this->state[$name] ?? $default;
     }

@@ -34,13 +34,13 @@ class PdoResultReader implements ResultReader
      * Current fetch mode.
      * @var int
      */
-    public $fetchMode = \PDO::FETCH_ASSOC;
+    public int $fetchMode = \PDO::FETCH_ASSOC;
 
     /**
      * Whether statement was executed.
      * @var bool
      */
-    protected $isExecuted = false;
+    protected bool $isExecuted = false;
 
     /**
      * Constructor for PDO Result reader
@@ -80,7 +80,7 @@ class PdoResultReader implements ResultReader
     /**
      * @inheritDoc
      */
-    public function getNextRow()
+    public function getNextRow(): mixed
     {
         return $this->statement->fetch($this->fetchMode);
     }
@@ -102,7 +102,7 @@ class PdoResultReader implements ResultReader
     /**
      * @inheritDoc
      */
-    public function getNextColumn($columnIndex = 0)
+    public function getNextColumn($columnIndex = 0): mixed
     {
         return $this->statement->fetchColumn($columnIndex);
     }

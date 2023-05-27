@@ -188,7 +188,7 @@ class SelectTest extends QueryTestCase
 
         $q->limit(10);
 
-        expect($q->toArray()['limit'])->toBe(10);
+        expect($q->toArray()['limit'])->toBe('10');
     }
 
     public function testOffset()
@@ -197,7 +197,7 @@ class SelectTest extends QueryTestCase
 
         $q->offset(10);
 
-        expect($q->toArray()['offset'])->toBe(10);
+        expect($q->toArray()['offset'])->toBe('10');
     }
 
     public function testJoin()

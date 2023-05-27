@@ -34,10 +34,10 @@ class Raw extends Query
      * depending on the driver in use.
      *
      * @param mixed $query Driver dependent query
-     * @param array $params Params to be bound to the query.
-     * @return Raw
+     * @param array|null $params Params to be bound to the query.
+     * @return static
      */
-    public static function from($query, $params = null)
+    public static function from(mixed $query, array $params = null): static
     {
         return static::create()->query($query)->params($params);
     }
@@ -45,14 +45,14 @@ class Raw extends Query
     /**
      * Set a query to be used.
      *
-     * SQL Injection Warning: Value in this function is not usually escaped in the driver
+     * **SQL Injection Warning**: Value in this function is not usually escaped in the driver
      * and should not be used to pass values from the user input to it. If you need to
      * pass user value then define the parameters in this query and use params() function.
      *
      * @param mixed $query Driver dependent query.
      * @return $this
      */
-    public function query($query)
+    public function query(mixed $query): static
     {
         $this->use('query', $query);
         return $this;
@@ -67,10 +67,10 @@ class Raw extends Query
      * Usual use case for these parameters are SQL parameters
      * when running an SQL query.
      *
-     * @param array $params
+     * @param ?array $params
      * @return $this
      */
-    public function params($params)
+    public function params(?array $params): static
     {
         $this->use('params', $params);
         return $this;

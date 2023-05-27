@@ -31,7 +31,7 @@ interface Driver
      * @param RawQuery $query Raw query to run.
      * @return mixed
      */
-    public function run(RawQuery $query);
+    public function run(RawQuery $query): mixed;
 
     /**
      * Set a list of middlewares to be used.
@@ -40,7 +40,7 @@ interface Driver
      * @param array $middlewareList List of middlewares to apply.
      * @return $this
      */
-    public function useMiddleware(string $step, array $middlewareList): self;
+    public function useMiddleware(string $step, array $middlewareList): static;
 
     /**
      * Add a middleware to processing list.
@@ -49,7 +49,7 @@ interface Driver
      * @param callable $middleware Middleware function to be applied.
      * @return $this
      */
-    public function appendMiddleware(string $step, callable $middleware): self;
+    public function appendMiddleware(string $step, callable $middleware): static;
 
     /**
      * Return the first result from the query.
@@ -57,7 +57,7 @@ interface Driver
      * @param RawQuery $query Raw query to be used.
      * @return mixed
      */
-    public function fetchFirst(RawQuery $query);
+    public function fetchFirst(RawQuery $query): mixed;
 
     /**
      * Fetch result set as a reader.

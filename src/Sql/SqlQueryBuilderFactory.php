@@ -33,7 +33,7 @@ abstract class SqlQueryBuilderFactory implements QueryBuilderFactory, QueryBuild
      * Created builder instances.
      * @var QueryBuilder[]
      */
-    protected $createdBuilders = [];
+    protected array $createdBuilders = [];
 
     /**
      * @inheritDoc

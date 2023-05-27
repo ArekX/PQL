@@ -37,7 +37,7 @@ class Union extends Query implements GroupedSubQuery
      * @param StructuredQuery $from Query to be used.
      * @return $this
      */
-    public function from(StructuredQuery $from)
+    public function from(StructuredQuery $from): static
     {
         $this->use('from', $from);
         return $this;
@@ -50,7 +50,7 @@ class Union extends Query implements GroupedSubQuery
      * @param string|null $type Type of the union. If null, means no specific type.
      * @return $this
      */
-    public function unionWith(StructuredQuery $query, $type = null)
+    public function unionWith(StructuredQuery $query, string $type = null): static
     {
         $this->append('union', [$query, $type]);
         return $this;

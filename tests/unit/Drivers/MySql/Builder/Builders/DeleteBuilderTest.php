@@ -38,7 +38,7 @@ class DeleteBuilderTest extends BuilderTestCase
 
     public function testExpectExceptionWhenStringIsPassed()
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(\TypeError::class);
         $this->assertQueryResults([
             [Delete::create()->from('table')->where('is_active = 1'), 'DELETE FROM `table` WHERE is_active = 1'],
         ]);
