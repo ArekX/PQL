@@ -12,11 +12,7 @@ Installation is done via composer `composer install arekxv/pql`
 
 ## Usage
 
-First you decide on a database/system to be used. 
-
-## API Reference
-
-API reference is available [here](api/index.html).
+First you decide on a database to be used. See Drivers for more information.
 
 ### Drivers
 
