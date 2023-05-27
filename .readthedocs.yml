@@ -5,10 +5,6 @@ build:
   os: ubuntu-22.04
   tools:
     python: "3.7"
-  apt_packages:
-    - php8
-    - php8-xml
-    - php8-mbstring
 python:
   install:
     - requirements: readthedocs-reqs.txt
