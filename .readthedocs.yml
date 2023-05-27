@@ -1,6 +1,12 @@
 version: 2
 mkdocs:
   configuration: mkdocs.yml
+build:
+  os: ubuntu-22.04
+  apt_packages:
+    - php8.2
+    - php8.2-xml
+    - php8.2-mbstring
 python:
   version: "3.7"
   install:
