@@ -14,7 +14,7 @@ kinds of queries without having to rely on passing raw query data.
 
 ## Installation
 
-Installing this library is done via composer `composer install arekxv/pql`
+Installing this library is done via composer `composer install arekxv/pql` (still WIP)
 
 ## Usage
 
@@ -76,7 +76,6 @@ Documentation is available in [here](docs/index.md) (in docs folder).
 
 HTML version of the docs is available at: https://pql.readthedocs.io/
 
-Generated API Reference is available at: https://pql.readthedocs.io/en/latest/api/
 
 ## Testing
 
@@ -92,8 +91,6 @@ For coverage report run `composer coverage` or you can take a look at
 it [here](https://scrutinizer-ci.com/g/ArekX/PQL/?branch=master).
 
 ## License
-
-Copyright 2021 Aleksandar Panic
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the
 License. You may obtain a copy of the License at
