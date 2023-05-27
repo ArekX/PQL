@@ -4,7 +4,7 @@ return [
     'to' => 'users',
     'data' => [
         [
-            'id' => '1',
+            'id' => 1,
             'name' => 'John Doe',
             'username' => 'john',
             'password' => 'doe',
@@ -12,7 +12,7 @@ return [
             'updated_at' => NULL
         ],
         [
-            'id' => '2',
+            'id' => 2,
             'name' => 'Jane Doe',
             'username' => 'jane',
             'password' => 'doe',
@@ -20,7 +20,7 @@ return [
             'updated_at' => NULL
         ],
         [
-            'id' => '3',
+            'id' => 3,
             'name' => 'Mark Twain',
             'username' => 'mark',
             'password' => 'twain',
@@ -28,7 +28,7 @@ return [
             'updated_at' => '2021-09-22 16:53:12'
         ],
         [
-            'id' => '4',
+            'id' => 4,
             'name' => 'Peter Park',
             'username' => 'peter',
             'password' => 'park',
@@ -36,7 +36,7 @@ return [
             'updated_at' => NULL
         ],
         [
-            'id' => '5',
+            'id' => 5,
             'name' => 'Wall Ey',
             'username' => 'wall',
             'password' => 'ey',

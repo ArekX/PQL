@@ -215,7 +215,7 @@ class MySqlDriverTest extends MySqlTestCase
         $lastInserted = $driver->getLastInsertedId();
         $lastFoundId = $runner->fetch(select(raw('MAX(id)'))->from('users'))->scalar();
 
-        expect($lastFoundId)->toBe($lastInserted);
+        expect($lastFoundId)->toBe((int)$lastInserted);
     }
 
     public function testFetchByIntId()
@@ -225,7 +225,7 @@ class MySqlDriverTest extends MySqlTestCase
         ]);
         $id = $this->createRunner()->fetch($query)->scalar();
 
-        expect($id)->toBe('1');
+        expect($id)->toBe(1);
     }
 
     public function testFetchByBoolId()
@@ -235,6 +235,6 @@ class MySqlDriverTest extends MySqlTestCase
         ]);
         $id = $this->createRunner()->fetch($query)->scalar();
 
-        expect($id)->toBe('1');
+        expect($id)->toBe(1);
     }
 }
