@@ -19,6 +19,7 @@ namespace ArekX\PQL\Drivers\Pdo\MySql\Builders\Traits;
 
 use ArekX\PQL\Contracts\StructuredQuery;
 use ArekX\PQL\Drivers\Pdo\MySql\MySqlQueryBuilderState;
+use Exception;
 
 trait WhereTrait
 {
@@ -30,8 +31,9 @@ trait WhereTrait
      * @param array|StructuredQuery $condition Condition to be built
      * @param MySqlQueryBuilderState $state Query builder state
      * @return string
+     * @throws Exception
      */
-    protected function buildWhere($condition, MySqlQueryBuilderState $state)
+    protected function buildWhere(StructuredQuery|array $condition, MySqlQueryBuilderState $state): string
     {
         return 'WHERE ' . $this->buildCondition($condition, $state);
     }

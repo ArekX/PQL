@@ -23,6 +23,7 @@ use ArekX\PQL\Contracts\RawQuery;
 use ArekX\PQL\Contracts\StructuredQuery;
 use ArekX\PQL\Drivers\Pdo\MySql\MySqlQueryBuilderState;
 use ArekX\PQL\RawQueryResult;
+use Exception;
 
 /**
  * Represents a base builder for query parts.
@@ -31,6 +32,7 @@ abstract class QueryPartBuilder implements QueryBuilder
 {
     /**
      * @inheritDoc
+     * @throws Exception
      */
     public function build(StructuredQuery $query, QueryBuilderState $state = null): RawQuery
     {
@@ -64,7 +66,7 @@ abstract class QueryPartBuilder implements QueryBuilder
      *
      * @return string
      */
-    protected function joinParts($stringGlue, array $builtParts): string
+    protected function joinParts(string $stringGlue, array $builtParts): string
     {
         $result = '';
 
@@ -87,7 +89,7 @@ abstract class QueryPartBuilder implements QueryBuilder
      * @param array $parts Parts from the structured query
      * @param MySqlQueryBuilderState $state Builder state
      * @return array Resulting array for each built part.
-     * @throws \Exception
+     * @throws Exception
      */
     protected function buildQueryParts(array $parts, MySqlQueryBuilderState $state): array
     {

@@ -32,7 +32,7 @@ trait JoinTrait
      * @return string Resulting join string
      * @throws \Exception
      */
-    protected function buildJoin($joins, MySqlQueryBuilderState $state)
+    protected function buildJoin(array $joins, MySqlQueryBuilderState $state): string
     {
         $results = [];
         foreach ($joins as [$type, $tables, $on]) {
@@ -43,7 +43,7 @@ trait JoinTrait
             }
 
             $names = $this->buildAliasedNames($tables, $state);
-            $results[] = strtoupper($type) . ' JOIN ' .  $names . ($onResult ? ' ON ' . $onResult : '');
+            $results[] = strtoupper($type) . ' JOIN ' . $names . ($onResult ? ' ON ' . $onResult : '');
         }
 
         return implode($state->getQueryPartGlue(), $results);

@@ -95,21 +95,21 @@ class Select extends Query implements GroupedSubQuery
      */
     public function addColumns(StructuredQuery|array|string $column): static
     {
-        $columns = $this->get('columns');
+        $previousColumns = $this->get('columns') ?? [];
 
-        if (!is_array($columns)) {
-            $columns = [$columns];
+        if (!is_array($previousColumns)) {
+            $previousColumns = [$previousColumns];
         }
 
         if (is_array($column)) {
             foreach ($column as $key => $value) {
-                $columns[$key] = $value;
+                $previousColumns[$key] = $value;
             }
         } else {
-            $columns[] = $column;
+            $previousColumns[] = $column;
         }
 
-        $this->use('columns', $columns);
+        $this->use('columns', $previousColumns);
         return $this;
     }
 

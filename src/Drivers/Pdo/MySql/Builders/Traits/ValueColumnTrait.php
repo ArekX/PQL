@@ -19,6 +19,7 @@ namespace ArekX\PQL\Drivers\Pdo\MySql\Builders\Traits;
 
 use ArekX\PQL\Contracts\StructuredQuery;
 use ArekX\PQL\Drivers\Pdo\MySql\MySqlQueryBuilderState;
+use Exception;
 
 trait ValueColumnTrait
 {
@@ -39,16 +40,12 @@ trait ValueColumnTrait
      * @param array|StructuredQuery $item Item to be built.
      * @param MySqlQueryBuilderState $state Current query builder state
      * @return mixed|string
-     * @throws \Exception
+     * @throws Exception
      */
-    protected function buildValueColumn($item, MySqlQueryBuilderState $state)
+    protected function buildValueColumn(StructuredQuery|array $item, MySqlQueryBuilderState $state): mixed
     {
         if ($item instanceof StructuredQuery) {
             return $this->buildSubQuery($item, $state);
-        }
-
-        if (!is_array($item)) {
-            throw new \InvalidArgumentException('Param can only be an array or an instance of StructuredQuery.');
         }
 
         [$type, $data] = $item;

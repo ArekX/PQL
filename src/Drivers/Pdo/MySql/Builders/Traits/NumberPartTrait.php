@@ -29,9 +29,9 @@ trait NumberPartTrait
      * @param int $number Number of the part
      * @return string
      */
-    protected function buildNumberPart($part, $number)
+    protected function buildNumberPart(string $part, int $number): string
     {
-        return $part . (int)$number;
+        return $part . $number;
     }
 
     /**
@@ -40,7 +40,7 @@ trait NumberPartTrait
      * @param int $number Max rows to get
      * @return string
      */
-    protected function buildLimit($number)
+    protected function buildLimit(int $number): string
     {
         return $this->buildNumberPart('LIMIT ', $number);
     }
@@ -51,7 +51,7 @@ trait NumberPartTrait
      * @param int $number Rows to skip
      * @return string
      */
-    protected function buildOffset($number)
+    protected function buildOffset(int $number): string
     {
         return $this->buildNumberPart('OFFSET ', $number);
     }

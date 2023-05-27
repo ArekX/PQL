@@ -26,10 +26,10 @@ trait WrapValueTrait
      *
      * @param mixed $value Value to be wrapped
      * @param MySqlQueryBuilderState $state Query builder state
-     * @param mixed $type Type of the value to be passed to the driver.
+     * @param mixed|null $type Type of the value to be passed to the driver.
      * @return mixed|string
      */
-    protected function buildWrapValue($value, MySqlQueryBuilderState $state, $type = null)
+    protected function buildWrapValue(mixed $value, MySqlQueryBuilderState $state, mixed $type = null): mixed
     {
         $builder = $state->getParamsBuilder();
 

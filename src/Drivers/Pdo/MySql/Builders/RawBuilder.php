@@ -62,7 +62,7 @@ class RawBuilder extends QueryPartBuilder
      * @param MySqlQueryBuilderState $state Query builder state.
      * @return null Null is always returned as this function only parses the parameters.
      */
-    protected function mergeParams($params, MySqlQueryBuilderState $state)
+    protected function mergeParams(array $params, MySqlQueryBuilderState $state): null
     {
         $paramsBuilder = $state->getParamsBuilder();
 

@@ -30,9 +30,9 @@ trait SubQueryTrait
      *
      * @param StructuredQuery $item Sub query to be built
      * @param MySqlQueryBuilderState $state Query builder state.
-     * @return mixed|string
+     * @return string
      */
-    protected function buildSubQuery(StructuredQuery $item, MySqlQueryBuilderState $state)
+    protected function buildSubQuery(StructuredQuery $item, MySqlQueryBuilderState $state): string
     {
         $result = $this->buildQuery($item, $state);
         return $item instanceof GroupedSubQuery ? "({$result})" : $result;
@@ -45,7 +45,7 @@ trait SubQueryTrait
      * @param MySqlQueryBuilderState $state State to be used
      * @return string
      */
-    protected function buildQuery(StructuredQuery $item, MySqlQueryBuilderState $state)
+    protected function buildQuery(StructuredQuery $item, MySqlQueryBuilderState $state): string
     {
         return $state->getParentBuilder()->build($item)->getQuery();
     }

@@ -22,6 +22,7 @@ use ArekX\PQL\Drivers\Pdo\MySql\Builders\Traits\ConditionTrait;
 use ArekX\PQL\Drivers\Pdo\MySql\Builders\Traits\ValueColumnTrait;
 use ArekX\PQL\Drivers\Pdo\MySql\MySqlQueryBuilderState;
 use ArekX\PQL\Sql\Statement\CaseWhen;
+use Exception;
 
 /**
  * Represents a query builder for building a CASE statement
@@ -74,9 +75,9 @@ class CaseWhenBuilder extends QueryPartBuilder
      * @param array $whenList List of [when, then] values to be built.
      * @param MySqlQueryBuilderState $state
      * @return string
-     * @throws \Exception
+     * @throws Exception
      */
-    protected function buildWhen($whenList, MySqlQueryBuilderState $state)
+    protected function buildWhen(array $whenList, MySqlQueryBuilderState $state): string
     {
         $result = [];
 
@@ -96,9 +97,9 @@ class CaseWhenBuilder extends QueryPartBuilder
      * @param array|StructuredQuery $else Value to be built
      * @param MySqlQueryBuilderState $state Current query builder state
      * @return string
-     * @throws \Exception
+     * @throws Exception
      */
-    protected function buildElse($else, MySqlQueryBuilderState $state)
+    protected function buildElse(StructuredQuery|array $else, MySqlQueryBuilderState $state): string
     {
         return 'ELSE ' . $this->buildValueColumn($else, $state);
     }

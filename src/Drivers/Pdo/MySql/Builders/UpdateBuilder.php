@@ -79,7 +79,7 @@ class UpdateBuilder extends QueryPartBuilder
      * @param MySqlQueryBuilderState $state Query builder state.
      * @return string
      */
-    protected function buildTo($parts, MySqlQueryBuilderState $state)
+    protected function buildTo(StructuredQuery|string $parts, MySqlQueryBuilderState $state): string
     {
         if ($parts instanceof StructuredQuery) {
             return $this->buildQuery($parts, $state);
@@ -95,7 +95,7 @@ class UpdateBuilder extends QueryPartBuilder
      * @param MySqlQueryBuilderState $state Query builder state
      * @return string
      */
-    protected function buildSet($parts, MySqlQueryBuilderState $state)
+    protected function buildSet(StructuredQuery|array $parts, MySqlQueryBuilderState $state): string
     {
         if ($parts instanceof StructuredQuery) {
             return 'SET ' . $this->buildQuery($parts, $state);

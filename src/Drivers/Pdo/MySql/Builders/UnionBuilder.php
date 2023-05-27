@@ -64,7 +64,7 @@ class UnionBuilder extends QueryPartBuilder
      * @param MySqlQueryBuilderState $state Query builder state
      * @return string
      */
-    protected function buildUnions($unions, $state)
+    protected function buildUnions(array $unions, MySqlQueryBuilderState $state): string
     {
         $result = [];
         foreach ($unions as [$query, $type]) {

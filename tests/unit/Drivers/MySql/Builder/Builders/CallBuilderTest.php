@@ -62,7 +62,7 @@ class CallBuilderTest extends BuilderTestCase
         expect(function () {
             $this->build(Call::create()->name('name')->addParam(['invalid', 'value']));
         })->callableToThrow(\UnexpectedValueException::class);
-        
+
 
     }
 }

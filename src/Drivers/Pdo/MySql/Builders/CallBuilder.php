@@ -65,7 +65,7 @@ class CallBuilder extends QueryPartBuilder
      * @param MySqlQueryBuilderState $state Current query builder state.
      * @return string
      */
-    protected function buildNamePart($name, MySqlQueryBuilderState $state)
+    protected function buildNamePart(StructuredQuery|string $name, MySqlQueryBuilderState $state): StructuredQuery|string
     {
         if ($name instanceof StructuredQuery) {
             return $this->buildQuery($name, $state);

@@ -82,11 +82,11 @@ class InsertBuilder extends QueryPartBuilder
     /**
      * Build specific columns which will be inserted.
      *
-     * @param StructuredQuery|array $columns Columns to be inserted
+     * @param array|StructuredQuery $columns Columns to be inserted
      * @param MySqlQueryBuilderState $state Query builder state
      * @return string
      */
-    protected function buildColumns($columns, $state)
+    protected function buildColumns(StructuredQuery|array $columns, MySqlQueryBuilderState $state): string
     {
         if ($columns instanceof StructuredQuery) {
             return $this->buildQuery($columns, $state);
@@ -108,7 +108,7 @@ class InsertBuilder extends QueryPartBuilder
      * @param MySqlQueryBuilderState $state Query builder state
      * @return string
      */
-    protected function buildValueItems($valuesList, $state)
+    protected function buildValueItems(array $valuesList, MySqlQueryBuilderState $state): string
     {
         $results = [];
 
@@ -122,11 +122,11 @@ class InsertBuilder extends QueryPartBuilder
     /**
      * Build specific values which will be inserted.
      *
-     * @param StructuredQuery|array $values Values to be inserted
+     * @param array|StructuredQuery $values Values to be inserted
      * @param MySqlQueryBuilderState $state Query builder state
      * @return string
      */
-    protected function buildValues($values, $state)
+    protected function buildValues(StructuredQuery|array $values, MySqlQueryBuilderState $state): string
     {
         if ($values instanceof StructuredQuery) {
             return $this->buildQuery($values, $state);

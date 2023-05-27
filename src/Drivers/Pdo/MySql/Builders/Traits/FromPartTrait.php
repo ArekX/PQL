@@ -29,12 +29,12 @@ trait FromPartTrait
      *
      * Names, sub queries and aliases are supported.
      *
-     * @param string|array|StructuredQuery $part Part to be built
+     * @param array|string|StructuredQuery $part Part to be built
      * @param MySqlQueryBuilderState $state Query builder state
      * @return string Resulting query part.
      * @see AliasTrait::buildAliasedNames()
      */
-    protected function buildFrom($part, MySqlQueryBuilderState $state)
+    protected function buildFrom(StructuredQuery|array|string $part, MySqlQueryBuilderState $state): string
     {
         return "FROM " . $this->buildAliasedNames($part, $state);
     }

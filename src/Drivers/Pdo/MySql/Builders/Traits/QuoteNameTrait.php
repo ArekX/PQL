@@ -28,9 +28,9 @@ trait QuoteNameTrait
      * @param string $name Name to be quoted.
      * @return string
      */
-    protected function quoteName($name): string
+    protected function quoteName(string $name): string
     {
-        if (strpos($name, '`') !== false) {
+        if (str_contains($name, '`')) {
             return $name;
         }
 

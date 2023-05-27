@@ -80,7 +80,7 @@ class SelectBuilder extends QueryPartBuilder
      * @param MySqlQueryBuilderState $state Query builder state
      * @return string
      */
-    protected function buildGroupBy($groupBy, MySqlQueryBuilderState $state)
+    protected function buildGroupBy(StructuredQuery|array $groupBy, MySqlQueryBuilderState $state): string
     {
         if ($groupBy instanceof StructuredQuery) {
             return 'GROUP BY ' . $this->buildQuery($groupBy, $state);
@@ -102,7 +102,7 @@ class SelectBuilder extends QueryPartBuilder
      * @return string
      * @throws \Exception
      */
-    protected function buildHaving($condition, MySqlQueryBuilderState $state)
+    protected function buildHaving(StructuredQuery|array $condition, MySqlQueryBuilderState $state): string
     {
         return 'HAVING ' . $this->buildCondition($condition, $state);
     }
@@ -114,7 +114,7 @@ class SelectBuilder extends QueryPartBuilder
      * @param MySqlQueryBuilderState $state Query builder state
      * @return string
      */
-    protected function buildOrderBy($orders, $state)
+    protected function buildOrderBy(StructuredQuery|array $orders, MySqlQueryBuilderState $state): string
     {
         if ($orders instanceof StructuredQuery) {
             return 'ORDER BY '. $this->buildQuery($orders, $state);
