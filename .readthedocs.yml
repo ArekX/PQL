@@ -4,7 +4,7 @@ mkdocs:
 build:
   os: ubuntu-22.04
   tools:
-    python: 3.7
+    python: "3.7"
   apt_packages:
     - php8.2
     - php8.2-xml
