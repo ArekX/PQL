@@ -17,19 +17,9 @@ jobs:
       - uses: shivammathur/setup-php@v2
         with:
           php-version: '8.2'
-          coverage: xdebug
 
       - uses: actions/checkout@v2
       - name: Run tests
         run: |
           composer install
-          vendor/bin/codecept run unit --coverage-xml
-
-      - uses: codecov/codecov-action@v2
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
-          files: ./tests/_output/coverage.xml
-          flags: unittests # optional
-          name: pql-unit-tests # optional
-          fail_ci_if_error: true # optional (default = false)
-          verbose: true # optional (default = false)
+          composer test-unit
