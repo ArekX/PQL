@@ -113,6 +113,12 @@ class SelectTest extends QueryTestCase
         ]);
     }
 
+    public function testInvalidWhere()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        Select::create()->where(['id' => 1]);
+    }
+
     public function testAndWhere()
     {
         $q = Select::create();

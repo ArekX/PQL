@@ -18,6 +18,7 @@
 namespace ArekX\PQL\Sql\Query\Traits;
 
 use ArekX\PQL\Contracts\StructuredQuery;
+use http\Exception\InvalidArgumentException;
 
 trait ConditionTrait
 {
@@ -75,6 +76,10 @@ trait ConditionTrait
      */
     public function where(StructuredQuery|array|null $where): static
     {
+        if (is_array($where) && empty($where[0])) {
+            throw new \InvalidArgumentException("First parameter of where array must be an operation.");
+        }
+
         $this->use('where', $where);
         return $this;
     }
