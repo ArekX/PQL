@@ -21,6 +21,7 @@ use Exception;
 
 /**
  * Transaction for handling PDO connections.
+ *
  */
 class PdoTransaction
 {
@@ -79,10 +80,17 @@ class PdoTransaction
      * Commits all queries executed on the driver since this
      * transaction started.
      *
+     * If this or rollback method is called before this method, subsequent
+     * calls are ignored.
+     *
      * @return void
      */
     public function commit(): void
     {
+        if ($this->isFinalized) {
+            return;
+        }
+
         $this->driver->getPdo()->commit();
         $this->isFinalized = true;
     }
@@ -91,10 +99,17 @@ class PdoTransaction
      * Rollbacks all queries executed on this driver since
      * this transaction started.
      *
+     * If this or rollback method is called before this method, subsequent
+     * calls are ignored.
+     *
      * @return void
      */
     public function rollback(): void
     {
+        if ($this->isFinalized) {
+            return;
+        }
+
         $this->driver->getPdo()->rollBack();
         $this->isFinalized = true;
     }

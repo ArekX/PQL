@@ -133,6 +133,78 @@ class MySqlDriverTest extends MySqlTestCase
         expect($countAfter)->toBe($countBefore + 1);
     }
 
+    public function testTransactionMultipleCommitIsIgnored()
+    {
+        $query = select(raw('COUNT(*)'))->from('users');
+
+        $driver = $this->createDriver();
+        $runner = QueryRunner::create($driver, $this->createQueryBuilder());
+
+        $countBefore = $runner->fetch($query)->scalar();
+
+        $transaction = $driver->beginTransaction();
+
+        $runner->run(insert("users", [
+            'name' => 'Record 1',
+            'username' => 'user',
+            'password' => 'pass',
+            'created_at' => '2021-09-20 16:51:56',
+        ]));
+
+        $transaction->commit();
+
+        $runner->run(insert("users", [
+            'name' => 'Record 1',
+            'username' => 'user',
+            'password' => 'pass',
+            'created_at' => '2021-09-20 16:51:56',
+        ]));
+
+        $countAfter = $runner->fetch($query)->scalar();
+
+        expect($countAfter)->toBe($countBefore + 2);
+
+        $transaction->commit();
+
+        $countAfter = $runner->fetch($query)->scalar();
+
+        expect($countAfter)->toBe($countBefore + 2);
+    }
+
+    public function testTransactionMultipleRollbackIsIgnored()
+    {
+        $query = select(raw('COUNT(*)'))->from('users');
+
+        $driver = $this->createDriver();
+        $runner = QueryRunner::create($driver, $this->createQueryBuilder());
+
+        $countBefore = $runner->fetch($query)->scalar();
+
+        $transaction = $driver->beginTransaction();
+
+        $runner->run(insert("users", [
+            'name' => 'Record 1',
+            'username' => 'user',
+            'password' => 'pass',
+            'created_at' => '2021-09-20 16:51:56',
+        ]));
+
+        $transaction->rollback();
+
+        $runner->run(insert("users", [
+            'name' => 'Record 1',
+            'username' => 'user',
+            'password' => 'pass',
+            'created_at' => '2021-09-20 16:51:56',
+        ]));
+
+        $transaction->rollback();
+
+        $countAfter = $runner->fetch($query)->scalar();
+
+        expect($countAfter)->toBe($countBefore + 1);
+    }
+
     public function testTransactionRollback()
     {
         $query = select(raw('COUNT(*)'))->from('users');
