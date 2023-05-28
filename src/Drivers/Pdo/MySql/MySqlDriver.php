@@ -19,17 +19,34 @@ namespace ArekX\PQL\Drivers\Pdo\MySql;
 
 use ArekX\PQL\Drivers\Pdo\PdoDriver;
 
+/**
+ * Driver for handling connections for
+ * a MySQL driver.
+ */
 class MySqlDriver extends PdoDriver
 {
-    public $emulatePrepare;
+    /**
+     * Whether to emulate prepare statement.
+     *
+     * @var bool
+     */
+    public bool $emulatePrepare = false;
 
-    public $charset;
+    /**
+     * What character set to use during the connection.
+     *
+     * @var string|null
+     */
+    public ?string $charset = null;
 
+    /**
+     * @inheritDoc
+     */
     protected function createPdoInstance(): \PDO
     {
         $instance = new \PDO($this->dsn, $this->username, $this->password, $this->options);
 
-        if ($this->emulatePrepare !== null) {
+        if ($this->emulatePrepare) {
             $instance->setAttribute(\PDO::ATTR_EMULATE_PREPARES, $this->emulatePrepare);
         }
 
@@ -40,7 +57,22 @@ class MySqlDriver extends PdoDriver
         return $instance;
     }
 
-    protected function extendConfigure(array $config)
+
+    /**
+     * Extends with additional config
+     *
+     * Format is:
+     * ```php
+     * [
+     *    'emulatePrepare' => false,
+     *    'charset' => 'utf8mb4'
+     * ]
+     * ```
+     *
+     * @param array $config
+     * @return void
+     */
+    protected function extendConfigure(array $config): void
     {
         $this->emulatePrepare = $config['emulatePrepare'] ?? $this->emulatePrepare;
         $this->charset = $config['charset'] ?? $this->charset;

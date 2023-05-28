@@ -90,7 +90,7 @@ class QueryResultBuilder implements ResultBuilder
      */
     public function column($index = 0): array
     {
-        $result = $this->reader->getAllColumns($index);
+        $result = $this->reader->getColumnRows($index);
         $this->reader->finalize();
         return $result;
     }

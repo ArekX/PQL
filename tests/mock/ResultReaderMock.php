@@ -29,7 +29,7 @@ class ResultReaderMock implements ResultReader
         return $this->rows;
     }
 
-    public function getAllColumns($columnIndex = 0): array
+    public function getColumnRows($columnIndex = 0): array
     {
         return array_map(fn($row) => $row[$columnIndex] ?? null, $this->rows);
     }

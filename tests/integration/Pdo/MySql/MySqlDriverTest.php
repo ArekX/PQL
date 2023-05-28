@@ -19,6 +19,7 @@ namespace integration\Pdo\MySql;
 
 use ArekX\PQL\Drivers\Pdo\PdoDriver;
 use ArekX\PQL\QueryRunner;
+use function ArekX\PQL\Sql\all;
 use function ArekX\PQL\Sql\column;
 use function ArekX\PQL\Sql\compare;
 use function ArekX\PQL\Sql\equal;
@@ -29,7 +30,7 @@ use function ArekX\PQL\Sql\value;
 
 class MySqlDriverTest extends MySqlTestCase
 {
-    public function fixtures()
+    public function fixtures(): array
     {
         return [
             'users' => __DIR__ . '/fixtures/users.php'
@@ -79,6 +80,93 @@ class MySqlDriverTest extends MySqlTestCase
         $users = $this->getFixture('users');
 
         expect($reader->getAllRows())->toBe($users['data']);
+    }
+
+    public function testFetchAllColumnRows()
+    {
+        $query = select('*')->from('users');
+        $reader = $this->createRunner()->fetchReader($query);
+
+        $users = $this->getFixture('users');
+
+        $ids = array_map(fn($r) => $r['id'], $users['data']);
+
+        expect($reader->getColumnRows())->toBe($ids);
+    }
+
+    public function testFetchWithReset()
+    {
+        $query = select('*')->from('users')->where(all(['id' => 1]));
+        $reader = $this->createRunner()->fetchReader($query);
+
+        $users = $this->getFixture('users');
+
+        expect($reader->getNextRow())->toBe($users['data'][0]);
+        expect($reader->getNextRow())->toBe(false);
+        $reader->reset();
+        expect($reader->getNextRow())->toBe($users['data'][0]);
+        $reader->reset();
+        expect($reader->getNextRow())->toBe($users['data'][0]);
+        expect($reader->getNextRow())->toBe(false);
+    }
+
+    public function testTransactionCommit()
+    {
+        $query = select(raw('COUNT(*)'))->from('users');
+
+        $driver = $this->createDriver();
+        $runner = QueryRunner::create($driver, $this->createQueryBuilder());
+
+        $countBefore = $runner->fetch($query)->scalar();
+
+        $driver->beginTransaction()->execute(function() use ($runner) {
+           $runner->run(insert("users", [
+                'name' => 'Record 1',
+                'username' => 'user',
+                'password' => 'pass',
+                'created_at' => '2021-09-20 16:51:56',
+            ]));
+        });
+
+        $countAfter = $runner->fetch($query)->scalar();
+
+        expect($countAfter)->toBe($countBefore + 1);
+    }
+
+    public function testTransactionRollback()
+    {
+        $query = select(raw('COUNT(*)'))->from('users');
+
+        $driver = $this->createDriver();
+        $runner = QueryRunner::create($driver, $this->createQueryBuilder());
+
+        $countBefore = $runner->fetch($query)->scalar();
+
+        $transaction = $driver->beginTransaction();
+
+        $runner->run(insert("users", [
+            'name' => 'Record 1',
+            'username' => 'user',
+            'password' => 'pass',
+            'created_at' => '2021-09-20 16:51:56',
+        ]));
+
+        $transaction->rollback();
+
+        $countAfter = $runner->fetch($query)->scalar();
+
+        expect($countAfter)->toBe($countBefore);
+    }
+
+    public function testTransactionException()
+    {
+        $driver = $this->createDriver();
+
+        $this->expectException(\Exception::class);
+
+        $driver->beginTransaction()->execute(function() {
+           throw new \Exception('Exception test.');
+        });
     }
 
     public function testFetch()

@@ -39,7 +39,7 @@ interface ResultReader
      * @param int $columnIndex Index of the column to return.
      * @return array
      */
-    public function getAllColumns(int $columnIndex = 0): array;
+    public function getColumnRows(int $columnIndex = 0): array;
 
     /**
      * Returns next row or null if there is no row to be returned.

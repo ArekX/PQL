@@ -58,7 +58,7 @@ class PdoResultReader implements ResultReader
      * @param \PDOStatement $statement
      * @return static
      */
-    public static function create(\PDOStatement $statement)
+    public static function create(\PDOStatement $statement): static
     {
         return new static($statement);
     }
@@ -88,7 +88,7 @@ class PdoResultReader implements ResultReader
     /**
      * @inheritDoc
      */
-    public function getAllColumns($columnIndex = 0): array
+    public function getColumnRows($columnIndex = 0): array
     {
         $results = [];
 

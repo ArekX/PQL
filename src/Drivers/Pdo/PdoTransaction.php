@@ -17,20 +17,85 @@
 
 namespace ArekX\PQL\Drivers\Pdo;
 
+use Exception;
+
+/**
+ * Transaction for handling PDO connections.
+ */
 class PdoTransaction
 {
-    public static function create(PdoDriver $driver)
+    /**
+     * Driver to be used for transaction.
+     *
+     * @var PdoDriver
+     */
+    protected PdoDriver $driver;
+
+    /**
+     * Whether the transaction is finalized.
+     * @var bool
+     */
+    protected bool $isFinalized = false;
+
+    /**
+     * Creates a new transaction from the driver.
+     *
+     * @param PdoDriver $driver Driver to be used
+     * @return static
+     */
+    public static function create(PdoDriver $driver): static
     {
-        return new static();
+        $instance = new static();
+        $instance->driver = $driver;
+
+        $instance->driver->getPdo()->beginTransaction();
+
+        return $instance;
     }
 
-    public function commit()
-    {
 
+    /**
+     * Executes a method and commits the result
+     * if method throws an exception, transaction
+     * is rolled back.
+     *
+     * @param callable $method Method to be executed.
+     * @return mixed Result from the methods
+     * @throws Exception
+     */
+    public function execute(callable $method): mixed
+    {
+        try {
+            $result = $method($this);
+            $this->commit();
+            return $result;
+        } catch (Exception $e) {
+            $this->rollback();
+            throw $e;
+        }
     }
 
-    public function rollback()
+    /**
+     * Commits all queries executed on the driver since this
+     * transaction started.
+     *
+     * @return void
+     */
+    public function commit(): void
     {
+        $this->driver->getPdo()->commit();
+        $this->isFinalized = true;
+    }
 
+    /**
+     * Rollbacks all queries executed on this driver since
+     * this transaction started.
+     *
+     * @return void
+     */
+    public function rollback(): void
+    {
+        $this->driver->getPdo()->rollBack();
+        $this->isFinalized = true;
     }
 }

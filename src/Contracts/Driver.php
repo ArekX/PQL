@@ -62,6 +62,9 @@ interface Driver
     /**
      * Fetch result set as a reader.
      *
+     * Result Reader allows the user to read one record
+     * a ta time from a source which supports it.
+     *
      * @param RawQuery $query Raw query to be used.
      * @return ResultReader
      */
