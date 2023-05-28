@@ -52,17 +52,24 @@ class QueryRunner implements StructuredQueryRunner
      */
     public static function create(?Driver $driver = null, ?QueryBuilder $builder = null): static
     {
-        $instance = new static();
+        return new static($driver, $builder);
+    }
 
+    /**
+     * Creates new instance of this runner
+     *
+     * @param Driver|null $driver Driver to be set to be used
+     * @param QueryBuilder|null $builder Builder to be used
+     */
+    public function __construct(?Driver $driver = null, ?QueryBuilder $builder = null)
+    {
         if ($driver) {
-            $instance->useDriver($driver);
+            $this->useDriver($driver);
         }
 
         if ($builder) {
-            $instance->useBuilder($builder);
+            $this->useBuilder($builder);
         }
-
-        return $instance;
     }
 
     /**
