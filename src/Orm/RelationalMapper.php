@@ -4,10 +4,6 @@ namespace ArekX\PQL\Orm;
 
 use ArekX\PQL\Contracts\Driver;
 use ArekX\PQL\Contracts\QueryBuilder;
-use ArekX\PQL\Orm\Attributes\Column;
-use ArekX\PQL\Orm\Attributes\MultiRelation;
-use ArekX\PQL\Orm\Attributes\Table;
-use ReflectionClass;
 
 /**
  * Relational Mapper for mapping
@@ -94,6 +90,12 @@ class RelationalMapper
 
     public function toModelStructure(string $modelClass): array
     {
+        // Relational handler for complex models
+        // Relational handler should have find, save, delete implemented for the model class
+        // and the model class should not have any attributes.
+        // relational handler needs to be registered in this mapper to be used
+        // models are missing multi primary keys relations
+        // columns are missing a primary key flag (for insert/update check)
         return $this->compiler->resolve($modelClass);
     }
 
@@ -108,21 +110,6 @@ class RelationalMapper
     }
 
     public function delete($model)
-    {
-
-    }
-
-    public function insertMany(string $modelClass)
-    {
-
-    }
-
-    public function updateMany(string $modelClass)
-    {
-
-    }
-
-    public function deleteMany(string $modelClass)
     {
 
     }
