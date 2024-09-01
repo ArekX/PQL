@@ -22,7 +22,6 @@ use ArekX\PQL\Contracts\RawQuery;
 use ArekX\PQL\Contracts\ResultBuilder;
 use ArekX\PQL\Contracts\ResultReader;
 use ArekX\PQL\QueryResultBuilder;
-use Exception;
 use PDO;
 use PDOStatement;
 
@@ -433,6 +432,7 @@ abstract class PdoDriver implements Driver
 
         /** @var PDOStatement $statement */
         $statement = $this->runMiddleware(self::STEP_BEFORE_PREPARE, $statement, $query);
+
 
         $params = $query->getParams() ?? [];
 
