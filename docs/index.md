@@ -20,13 +20,6 @@ Following systems are supported:
 
 * [MySQL](drivers/mysql.md) - MySQL database via PDO
 
-### Custom drivers
-
-Drivers which are implemented are not limited to Relational Database Systems meaning other drivers
-can be easily implemented for non-database or no-sql database systems like Redis, ElasticSearch, MongoDB, etc.
-
-For implementing a custom driver see [here](custom-drivers.md).
-
 ## Testing
 
 After installing the dependencies run `composer test`
