@@ -1,10 +1,10 @@
 # PostgreSQL Driver
 
-PostgreSQL driver is a driver for the PostgreSQL database. It uses PDO to connect to the database and execute queries.
+PostgreSQL driver is a driver for PostgreSQL database. It uses PDO to connect to the database and execute queries.
 
 # Usage
 
-To use the PostgreSQL driver you need to create a new instance of `PgsqlDriver` and pass it into `QueryRunner`:
+To use PostgreSQL driver you need to create a new instance of `PgsqlDriver` and pass it into `QueryRunner`:
 
 ```php
 use ArekX\PQL\Drivers\Pdo\Pgsql\PgsqlDriver;
@@ -28,8 +28,7 @@ Driver handles the PDO connection to the database and executes the compiled quer
 Builder is used to compile the queries into a format that the driver can understand.
 Runner is used to execute the queries and fetch the results.
 
-Identifiers (table and column names) are quoted using double quotes (`"name"`), as is
-standard for PostgreSQL.
+Identifiers like table and column names are quoted using double quotes (`"name"`), as is standard for PostgreSQL.
 
 # Running a query
 
@@ -46,9 +45,8 @@ $results = $runner->fetchAll($query); // Results are returned here.
 
 # Last inserted id
 
-PostgreSQL resolves the last inserted id from a sequence. Pass the sequence name
-(for a `serial`/`GENERATED` column it defaults to `<table>_<column>_seq`) to
-`getLastInsertedId()`:
+PostgreSQL resolves the last inserted id from a sequence, so you need to pass the sequence name
+to `getLastInsertedId()`. For a `serial` column the sequence name defaults to `<table>_<column>_seq`:
 
 ```php
 $runner->run(insert('users', ['name' => 'New User']));
@@ -59,6 +57,6 @@ $id = $driver->getLastInsertedId('users_id_seq');
 # Differences from MySQL
 
 * Identifiers are quoted with double quotes (`"name"`) instead of backticks.
-* PostgreSQL does not support `LIMIT`/`OFFSET` on `UPDATE` and `DELETE` statements,
-  so they are not generated for those queries. Limit the affected rows with a
+* PostgreSQL does not support `LIMIT`/`OFFSET` on `UPDATE` and `DELETE` queries, so they are
+  not generated for those queries. If you need to limit the affected rows, do it with a
   sub-query in the `WHERE` condition instead.

@@ -12,13 +12,41 @@ Installation is done via composer `composer install arekxv/pql`
 
 ## Usage
 
-First you decide on a database to be used. See Drivers for more information.
+The easiest way to start is to let `PdoDatabase` resolve the driver and the builder for you from
+the DSN and give you a ready to use runner:
 
-### Drivers
+```php
+use ArekX\PQL\Drivers\Pdo\PdoDatabase;
+
+$runner = PdoDatabase::resolve([
+    'dsn' => 'mysql:host=127.0.0.1;dbname=your_database',
+    'username' => 'username',
+    'password' => 'password',
+]);
+```
+
+See [Getting Started](getting-started.md) for a full walkthrough.
+
+## Guides
+
+* [Getting Started](getting-started.md) - From installation to your first query.
+* [Writing Queries](writing-queries.md) - All query types and helper functions for building queries.
+* [Statements](statements.md) - Calling procedures, functions and using CASE statements.
+* [Result Builder](result-builder.md) - Processing results after they are returned from the database.
+* [Transactions](transactions.md) - Running multiple queries in an atomic way.
+* [Middleware](middleware.md) - Hooking into the driver for logging, profiling and more.
+* [Security and User Input](security.md) - What is safe for user input and what is not.
+* [Extending PQL](extending.md) - Custom DSN schemes, drivers and query builders.
+* [Architecture](architecture.md) - How the library is put together.
+
+## Drivers
 
 Following systems are supported:
 
 * [MySQL](drivers/mysql.md) - MySQL database via PDO
+* [PostgreSQL](drivers/pgsql.md) - PostgreSQL database via PDO
+* [SQLite](drivers/sqlite.md) - SQLite database via PDO
+* [SQL Server](drivers/sqlsrv.md) - Microsoft SQL Server database via PDO
 
 ## Testing
 

@@ -1,10 +1,10 @@
 # SQLite Driver
 
-SQLite driver is a driver for the SQLite database. It uses PDO to connect to the database and execute queries.
+SQLite driver is a driver for SQLite database. It uses PDO to connect to the database and execute queries.
 
 # Usage
 
-To use the SQLite driver you need to create a new instance of `SqliteDriver` and pass it into `QueryRunner`:
+To use SQLite driver you need to create a new instance of `SqliteDriver` and pass it into `QueryRunner`:
 
 ```php
 use ArekX\PQL\Drivers\Pdo\Sqlite\SqliteDriver;
@@ -22,19 +22,18 @@ $builder = new SqliteQueryBuilder();
 $runner = QueryRunner::create($driver, $builder);
 ```
 
-SQLite has no authentication, so no username or password is required.
+SQLite has no authentication, so no username or password is needed.
 
 Driver handles the PDO connection to the database and executes the compiled queries.
 Builder is used to compile the queries into a format that the driver can understand.
 Runner is used to execute the queries and fetch the results.
 
-Identifiers (table and column names) are quoted using double quotes (`"name"`), as is
-standard for SQLite.
+Identifiers like table and column names are quoted using double quotes (`"name"`), as is standard for SQLite.
 
 # Foreign keys
 
-SQLite has foreign key enforcement turned off by default. To enable it for the
-connection set the `foreignKeys` option:
+SQLite has foreign key enforcement turned off by default. To turn it on for the connection set
+the `foreignKeys` option:
 
 ```php
 $driver = SqliteDriver::create([
@@ -59,8 +58,8 @@ $results = $runner->fetchAll($query); // Results are returned here.
 # Differences from MySQL
 
 * Identifiers are quoted with double quotes (`"name"`) instead of backticks.
-* Standard SQLite builds do not support `LIMIT`/`OFFSET` on `UPDATE` and `DELETE`
-  statements (that requires the `SQLITE_ENABLE_UPDATE_DELETE_LIMIT` compile option),
-  so they are not generated for those queries. Limit the affected rows with a
-  sub-query in the `WHERE` condition instead.
-* There are no stored procedures, so the `Call` query is not applicable.
+* Standard SQLite builds do not support `LIMIT`/`OFFSET` on `UPDATE` and `DELETE` queries (that
+  needs the `SQLITE_ENABLE_UPDATE_DELETE_LIMIT` compile option), so they are not generated for
+  those queries. If you need to limit the affected rows, do it with a sub-query in the `WHERE`
+  condition instead.
+* There are no stored procedures, so the `call` statement is not used.

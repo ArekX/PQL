@@ -1,5 +1,18 @@
 site_name: PQL
 nav:
   - Home: index.md
+  - Getting Started: getting-started.md
+  - Writing Queries: writing-queries.md
+  - Statements: statements.md
+  - Result Builder: result-builder.md
+  - Transactions: transactions.md
+  - Middleware: middleware.md
+  - Security and User Input: security.md
+  - Extending PQL: extending.md
   - Architecture: architecture.md
+  - Drivers:
+      - MySQL: drivers/mysql.md
+      - PostgreSQL: drivers/pgsql.md
+      - SQLite: drivers/sqlite.md
+      - SQL Server: drivers/sqlsrv.md
 theme: readthedocs

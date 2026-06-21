@@ -1,12 +1,12 @@
 # SQL Server Driver
 
-SQL Server driver is a driver for the Microsoft SQL Server database. It uses PDO to connect to
-the database and execute queries. It works with either the `sqlsrv` PDO driver (Microsoft) or
-the `dblib` PDO driver (FreeTDS).
+SQL Server driver is a driver for Microsoft SQL Server database. It uses PDO to connect to the
+database and execute queries. It works with either the `sqlsrv` PDO driver (Microsoft) or the
+`dblib` PDO driver (FreeTDS).
 
 # Usage
 
-To use the SQL Server driver you need to create a new instance of `SqlSrvDriver` and pass it into `QueryRunner`:
+To use SQL Server driver you need to create a new instance of `SqlSrvDriver` and pass it into `QueryRunner`:
 
 ```php
 use ArekX\PQL\Drivers\Pdo\SqlSrv\SqlSrvDriver;
@@ -33,8 +33,7 @@ Driver handles the PDO connection to the database and executes the compiled quer
 Builder is used to compile the queries into a format that the driver can understand.
 Runner is used to execute the queries and fetch the results.
 
-Identifiers (table and column names) are quoted using square brackets (`[name]`), as is
-standard for SQL Server.
+Identifiers like table and column names are quoted using square brackets (`[name]`), as is standard for SQL Server.
 
 # Running a query
 
@@ -51,26 +50,26 @@ $results = $runner->fetchAll($query); // Results are returned here.
 
 # Limiting results
 
-SQL Server does not use the `LIMIT`/`OFFSET` syntax. The builder translates `limit()`
-and `offset()` to the SQL Server equivalents:
+SQL Server does not use the `LIMIT`/`OFFSET` syntax, so the builder translates `limit()` and
+`offset()` into the SQL Server equivalents.
 
-* When only a limit is set, `SELECT TOP (n) ...` is generated:
+When you only set a limit, `SELECT TOP (n) ...` is generated:
 
-  ```php
-  select('*')->from('user')->limit(10);
-  // SELECT TOP (10) * FROM [user]
-  ```
+```php
+select('*')->from('user')->limit(10);
+// SELECT TOP (10) * FROM [user]
+```
 
-* When an offset is set, `OFFSET m ROWS FETCH NEXT n ROWS ONLY` is generated. SQL Server
-  requires an `ORDER BY` clause for this form, so make sure to add one:
+When you set an offset, `OFFSET m ROWS FETCH NEXT n ROWS ONLY` is generated. SQL Server needs an
+`ORDER BY` clause for this, so make sure to add one:
 
-  ```php
-  select('*')->from('user')->orderBy(['id' => 'asc'])->offset(20)->limit(10);
-  // SELECT * FROM [user] ORDER BY [id] ASC OFFSET 20 ROWS FETCH NEXT 10 ROWS ONLY
-  ```
+```php
+select('*')->from('user')->orderBy(['id' => 'asc'])->offset(20)->limit(10);
+// SELECT * FROM [user] ORDER BY [id] ASC OFFSET 20 ROWS FETCH NEXT 10 ROWS ONLY
+```
 
 # Differences from MySQL
 
 * Identifiers are quoted with square brackets (`[name]`) instead of backticks.
 * `LIMIT`/`OFFSET` are replaced with `TOP` and `OFFSET ... FETCH` (see above).
-* `LIMIT`/`OFFSET` are not generated for `UPDATE` and `DELETE` statements.
+* `LIMIT`/`OFFSET` are not generated for `UPDATE` and `DELETE` queries.

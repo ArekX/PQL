@@ -28,6 +28,23 @@ Driver handles the PDO connection to the database and executes the compiled quer
 Builder is used to compile the queries into a format that the driver can understand.
 Runner is used to execute the queries and fetch the results.
 
+# Options
+
+The MySQL driver supports two additional options:
+
+* `charset` - character set to use for the connection, for example `utf8mb4`.
+* `emulatePrepare` - whether to emulate prepared statements (`PDO::ATTR_EMULATE_PREPARES`).
+
+```php
+$driver = MySqlDriver::create([
+    'dsn' => 'mysql:host=127.0.0.1;dbname=your_database',
+    'username' => 'username',
+    'password' => 'password',
+    'charset' => 'utf8mb4',
+    'emulatePrepare' => true,
+]);
+```
+
 # Running a query
 
 To run a query you need to create a query object and pass it into the runner.
