@@ -17,77 +17,24 @@
 
 namespace ArekX\PQL\Drivers\Pdo\MySql;
 
-use ArekX\PQL\Contracts\QueryBuilder;
-use ArekX\PQL\Contracts\QueryBuilderState;
-use ArekX\PQL\Drivers\Pdo\MySql\Builders\CallBuilder;
-use ArekX\PQL\Drivers\Pdo\MySql\Builders\CaseWhenBuilder;
-use ArekX\PQL\Drivers\Pdo\MySql\Builders\DeleteBuilder;
-use ArekX\PQL\Drivers\Pdo\MySql\Builders\InsertBuilder;
-use ArekX\PQL\Drivers\Pdo\MySql\Builders\MethodBuilder;
-use ArekX\PQL\Drivers\Pdo\MySql\Builders\QueryPartBuilder;
-use ArekX\PQL\Drivers\Pdo\MySql\Builders\RawBuilder;
-use ArekX\PQL\Drivers\Pdo\MySql\Builders\SelectBuilder;
-use ArekX\PQL\Drivers\Pdo\MySql\Builders\UnionBuilder;
-use ArekX\PQL\Drivers\Pdo\MySql\Builders\UpdateBuilder;
-use ArekX\PQL\Sql\Query\Delete;
-use ArekX\PQL\Sql\Query\Insert;
-use ArekX\PQL\Sql\Query\Raw;
-use ArekX\PQL\Sql\Query\Select;
-use ArekX\PQL\Sql\Query\Union;
-use ArekX\PQL\Sql\Query\Update;
-use ArekX\PQL\Sql\SqlParamBuilder;
-use ArekX\PQL\Sql\SqlQueryBuilderFactory;
-use ArekX\PQL\Sql\Statement\Call;
-use ArekX\PQL\Sql\Statement\CaseWhen;
-use ArekX\PQL\Sql\Statement\Method;
+use ArekX\PQL\Drivers\Pdo\Common\CommonQueryBuilder;
 
 /**
- * Represents a query builder for MySQL
+ * Represents a query builder for MySQL.
+ *
+ * It reuses the shared builders from the Common namespace configured for the
+ * MySQL dialect: identifiers are quoted with backticks and LIMIT/OFFSET are
+ * allowed on UPDATE and DELETE statements.
  */
-class MySqlQueryBuilder extends SqlQueryBuilderFactory
+class MySqlQueryBuilder extends CommonQueryBuilder
 {
     /**
-     * Builder map representing how each query will be built.
-     *
-     * @var string[]
+     * @inheritDoc
      */
-    public array $builderMap = [
-        Raw::class => RawBuilder::class,
-        Select::class => SelectBuilder::class,
-        Union::class => UnionBuilder::class,
-        Delete::class => DeleteBuilder::class,
-        Insert::class => InsertBuilder::class,
-        Update::class => UpdateBuilder::class,
-        Call::class => CallBuilder::class,
-        Method::class => MethodBuilder::class,
-        CaseWhen::class => CaseWhenBuilder::class,
-    ];
+    protected const QUOTE_CHARACTER = '`';
 
     /**
      * @inheritDoc
      */
-    public function createState(): QueryBuilderState
-    {
-        $state = MySqlQueryBuilderState::create();
-
-        $state->setParamsBuilder(SqlParamBuilder::create());
-        $state->setParentBuilder($this);
-
-        return $state;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    protected function createBuilder(string $queryClass): QueryBuilder
-    {
-        if (empty($this->builderMap[$queryClass])) {
-            throw new \UnexpectedValueException('No builder defined for: ' . $queryClass);
-        }
-
-        /** @var QueryPartBuilder $builderClass */
-        $builderClass = $this->builderMap[$queryClass];
-
-        return new $builderClass();
-    }
+    protected const SUPPORTS_MODIFY_LIMIT = true;
 }

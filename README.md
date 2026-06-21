@@ -21,6 +21,7 @@ Installing this library is done via composer `composer install arekxv/pql` (stil
 First you need to decide on which driver you will use. Following drivers are supported:
 
 * [MySQL](docs/drivers/mysql.md)
+* [PostgreSQL](docs/drivers/pgsql.md)
 
 After you decide on the driver, writing a query is as simple as:
 

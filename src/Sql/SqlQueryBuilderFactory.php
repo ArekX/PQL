@@ -38,7 +38,7 @@ abstract class SqlQueryBuilderFactory implements QueryBuilderFactory, QueryBuild
     /**
      * @inheritDoc
      */
-    public function build(StructuredQuery $query, QueryBuilderState $state = null): RawQuery
+    public function build(StructuredQuery $query, ?QueryBuilderState $state = null): RawQuery
     {
         return $this->getBuilder($query)->build($query, $state ?: $this->createState());
     }

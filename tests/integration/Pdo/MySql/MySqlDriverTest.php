@@ -49,7 +49,7 @@ class MySqlDriverTest extends MySqlTestCase
 
         $users = $this->getFixture('users');
         expect($result)->toBe($users['data'][0]);
-        expect($driver->getPdo()->getAttribute(\PDO::ATTR_EMULATE_PREPARES))->toBe(1);
+        expect((int)$driver->getPdo()->getAttribute(\PDO::ATTR_EMULATE_PREPARES))->toBe(1);
     }
 
     public function testFetchFirst()

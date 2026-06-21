@@ -50,7 +50,7 @@ class Union extends Query implements GroupedSubQuery
      * @param string|null $type Type of the union. If null, means no specific type.
      * @return $this
      */
-    public function unionWith(StructuredQuery $query, string $type = null): static
+    public function unionWith(StructuredQuery $query, ?string $type = null): static
     {
         $this->append('union', [$query, $type]);
         return $this;

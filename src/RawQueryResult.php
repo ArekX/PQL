@@ -50,7 +50,7 @@ class RawQueryResult implements Contracts\RawQuery
      * @param array|null $config Configuration to be bound to the query
      * @return static
      */
-    public static function create(mixed $query, array $params = null, array $config = null): static
+    public static function create(mixed $query, ?array $params = null, ?array $config = null): static
     {
         return new static($query, $params, $config);
     }
@@ -62,7 +62,7 @@ class RawQueryResult implements Contracts\RawQuery
      * @param array|null $params Parameters to be bound to the query
      * @param array|null $config Configuration to be bound to the query
      */
-    public function __construct(mixed $query, array $params = null, array $config = null)
+    public function __construct(mixed $query, ?array $params = null, ?array $config = null)
     {
         $this->query = $query;
         $this->params = $params;

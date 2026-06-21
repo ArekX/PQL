@@ -31,5 +31,5 @@ interface QueryBuilder
      * @param QueryBuilderState|null $state State to be used for building the query.
      * @return RawQuery Resulting query
      */
-    public function build(StructuredQuery $query, QueryBuilderState $state = null): RawQuery;
+    public function build(StructuredQuery $query, ?QueryBuilderState $state = null): RawQuery;
 }

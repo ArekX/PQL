@@ -37,7 +37,7 @@ class Raw extends Query
      * @param array|null $params Params to be bound to the query.
      * @return static
      */
-    public static function from(mixed $query, array $params = null): static
+    public static function from(mixed $query, ?array $params = null): static
     {
         return static::create()->query($query)->params($params);
     }

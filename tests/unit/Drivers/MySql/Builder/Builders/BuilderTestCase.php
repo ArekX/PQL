@@ -23,7 +23,7 @@ use Codeception\Test\Unit;
 
 class BuilderTestCase extends Unit
 {
-    protected function assertQueryResults(array $queries, MySqlQueryBuilder $state = null)
+    protected function assertQueryResults(array $queries, ?MySqlQueryBuilder $state = null)
     {
         foreach ($queries as $query) {
             [$query, $expectedResult, $params] = $query + [
@@ -38,7 +38,7 @@ class BuilderTestCase extends Unit
         }
     }
 
-    protected function build(StructuredQuery $query, MySqlQueryBuilder $state = null)
+    protected function build(StructuredQuery $query, ?MySqlQueryBuilder $state = null)
     {
         $builder = new MySqlQueryBuilder();
         return $builder->build($query, $state);

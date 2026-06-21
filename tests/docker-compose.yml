@@ -10,3 +10,12 @@ services:
       MYSQL_DATABASE: mysql_test
     ports:
       - "3306:3306"
+  pgsql:
+    image: postgres:latest
+    container_name: pql-pgsql-database
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: pgsql_test
+    ports:
+      - "5432:5432"

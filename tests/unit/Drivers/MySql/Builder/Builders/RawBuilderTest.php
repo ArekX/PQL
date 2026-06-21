@@ -17,9 +17,8 @@
 
 namespace unit\Drivers\MySql\Builder\Builders;
 
+use ArekX\PQL\Drivers\Pdo\Common\CommonQueryBuilderState;
 use ArekX\PQL\Drivers\Pdo\MySql\MySqlQueryBuilder;
-use ArekX\PQL\Drivers\Pdo\MySql\MySqlQueryBuilderState;
-use ArekX\PQL\Sql\Query\Delete;
 use ArekX\PQL\Sql\Query\Raw;
 
 class RawBuilderTest extends BuilderTestCase
@@ -57,7 +56,7 @@ class RawBuilderTest extends BuilderTestCase
     {
         $builder = new MySqlQueryBuilder();
 
-        /** @var MySqlQueryBuilderState $state */
+        /** @var CommonQueryBuilderState $state */
         $state = $builder->createState();
         $builder->build(Raw::from("SELECT :val1", [
             ':val1' => [1, 'string']

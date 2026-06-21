@@ -45,7 +45,7 @@ class QueryResultBuilder implements ResultBuilder
      * @param ResultReader|null $reader Reader to be used
      * @return static
      */
-    public static function create(ResultReader $reader = null): static
+    public static function create(?ResultReader $reader = null): static
     {
         return new static($reader);
     }
@@ -54,7 +54,7 @@ class QueryResultBuilder implements ResultBuilder
      * Create new instance query result builder.
      * @param ResultReader|null $reader Reader to be used
      */
-    public function __construct(ResultReader $reader = null)
+    public function __construct(?ResultReader $reader = null)
     {
         if ($reader) {
             $this->useReader($reader);

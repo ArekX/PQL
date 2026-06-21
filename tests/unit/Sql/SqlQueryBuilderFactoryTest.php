@@ -18,10 +18,10 @@
 namespace unit\Sql;
 
 use ArekX\PQL\Sql\Query\Select;
-use ArekX\PQL\Sql\SqlQueryBuilderFactory;
 use Codeception\Stub\Expected;
 use mock\QueryBuilderMock;
 use mock\QueryBuilderStateMock;
+use mock\SqlQueryBuilderFactoryMock;
 
 class SqlQueryBuilderFactoryTest extends \Codeception\Test\Unit
 {
@@ -35,7 +35,7 @@ class SqlQueryBuilderFactoryTest extends \Codeception\Test\Unit
         ];
 
         $state = new QueryBuilderStateMock();
-        $s = $this->make(SqlQueryBuilderFactory::class, [
+        $s = $this->make(SqlQueryBuilderFactoryMock::class, [
             'createBuilder' => fn() => $mock,
             'createState' => fn() => $state
         ]);
@@ -58,7 +58,7 @@ class SqlQueryBuilderFactoryTest extends \Codeception\Test\Unit
         ];
 
         $state = new QueryBuilderStateMock();
-        $s = $this->make(SqlQueryBuilderFactory::class, [
+        $s = $this->make(SqlQueryBuilderFactoryMock::class, [
             'createBuilder' => Expected::once($mock),
             'createState' => fn() => $state
         ]);
@@ -80,7 +80,7 @@ class SqlQueryBuilderFactoryTest extends \Codeception\Test\Unit
             ':key' => 'Value'
         ];
 
-        $s = $this->make(SqlQueryBuilderFactory::class, [
+        $s = $this->make(SqlQueryBuilderFactoryMock::class, [
             'createBuilder' => Expected::once($mock),
             'createState' => Expected::never()
         ]);

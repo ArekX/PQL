@@ -51,7 +51,7 @@ if (!function_exists('\ArekX\PQL\Sql\insert')) {
      * @param array|null $data Associative array of data to be inserted.
      * @return Insert
      */
-    function insert(StructuredQuery|string $into, array $data = null): Insert
+    function insert(StructuredQuery|string $into, ?array $data = null): Insert
     {
         $query = Insert::create()->into($into);
 
@@ -71,7 +71,7 @@ if (!function_exists('\ArekX\PQL\Sql\delete')) {
      * @param array|StructuredQuery|null $condition Filter for deletion
      * @return Delete
      */
-    function delete(StructuredQuery|string $from, StructuredQuery|array $condition = null): Delete
+    function delete(StructuredQuery|string $from, StructuredQuery|array|null $condition = null): Delete
     {
         return Delete::create()->from($from)->where($condition);
     }
@@ -86,7 +86,7 @@ if (!function_exists('\ArekX\PQL\Sql\update')) {
      * @param array|StructuredQuery|null $condition Filter for deletion
      * @return Update
      */
-    function update(StructuredQuery|string $to, array $data, StructuredQuery|array $condition = null): Update
+    function update(StructuredQuery|string $to, array $data, StructuredQuery|array|null $condition = null): Update
     {
         return Update::create()->to($to)->set($data)->where($condition);
     }
@@ -126,7 +126,7 @@ if (!function_exists('\ArekX\PQL\Sql\raw')) {
      * @param array|null $params Params for the query
      * @return Raw
      */
-    function raw(mixed $query, array $params = null): Raw
+    function raw(mixed $query, ?array $params = null): Raw
     {
         return Raw::from($query, $params);
     }

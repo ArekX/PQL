@@ -17,9 +17,9 @@
 
 namespace unit\Drivers\MySql\Builder;
 
-use ArekX\PQL\Drivers\Pdo\MySql\Builders\DeleteBuilder;
+use ArekX\PQL\Drivers\Pdo\Common\Builders\DeleteBuilder;
+use ArekX\PQL\Drivers\Pdo\Common\CommonQueryBuilderState;
 use ArekX\PQL\Drivers\Pdo\MySql\MySqlQueryBuilder;
-use ArekX\PQL\Drivers\Pdo\MySql\MySqlQueryBuilderState;
 use ArekX\PQL\Sql\Query\Delete;
 use ArekX\PQL\Sql\SqlParamBuilder;
 use mock\QueryBuilderMock;
@@ -57,11 +57,19 @@ class MySqlQueryBuilderTest extends \Codeception\Test\Unit
 
         $s->build(Delete::create());
 
-        /** @var MySqlQueryBuilderState $state */
+        /** @var CommonQueryBuilderState $state */
         $state = $mock->lastState;
 
-        expect($state)->toBeInstanceOf(MySqlQueryBuilderState::class);
+        expect($state)->toBeInstanceOf(CommonQueryBuilderState::class);
         expect($state->getParentBuilder())->toBe($s);
         expect($state->getParamsBuilder())->toBeInstanceOf(SqlParamBuilder::class);
+    }
+
+    public function testStateIsConfiguredForMySqlDialect()
+    {
+        $state = (new MySqlQueryBuilder())->createState();
+
+        expect($state->getQuoteCharacter())->toBe('`');
+        expect($state->supportsModifyLimit())->toBe(true);
     }
 }
