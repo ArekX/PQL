@@ -1,6 +1,7 @@
 <?php
+
 /**
- * Copyright 2021 Aleksandar Panic
+ * Copyright 2026 Aleksandar Panic
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,7 +55,7 @@ class CallTest extends QueryTestCase
     public function testParams()
     {
         $this->assertQueryPartValues(Call::create(), 'params', [
-            [ ['value', 'param'], ['column', 'param'] ],
+            [['value', 'param'], ['column', 'param']],
             Raw::create()
         ]);
     }
@@ -62,10 +63,10 @@ class CallTest extends QueryTestCase
     public function testAddParam()
     {
         $q = Call::create()
-                ->params([['value', 'paramx']])
-                ->addParam(['value', 'param1'])
-                ->addParam(['value', 'param2'])
-                ->addParam(['value', 'param3']);
+            ->params([['value', 'paramx']])
+            ->addParam(['value', 'param1'])
+            ->addParam(['value', 'param2'])
+            ->addParam(['value', 'param3']);
 
         expect($q->toArray()['params'])->toBe([
             ['value', 'paramx'],

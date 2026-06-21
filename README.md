@@ -18,59 +18,59 @@ Installing this library is done via composer `composer install arekxv/pql` (stil
 
 ## Usage
 
-First you need to decide on which driver you will use. Following drivers are supported:
+Create a runner with `PdoDatabase::resolve()`. It picks the driver and query builder
+automatically from the DSN scheme (`mysql:`, `pgsql:`, `sqlite:`, `sqlsrv:`):
 
-* [MySQL](docs/drivers/mysql.md)
-* [PostgreSQL](docs/drivers/pgsql.md)
-* [SQLite](docs/drivers/sqlite.md)
-* [SQL Server](docs/drivers/sqlsrv.md)
+```php
+use ArekX\PQL\Drivers\Pdo\PdoDatabase;
 
-After you decide on the driver, writing a query is as simple as:
+$runner = PdoDatabase::resolve([
+    'dsn' => 'mysql:host=127.0.0.1;dbname=your_database',
+    'username' => 'username',
+    'password' => 'password',
+]);
+```
+
+See the driver pages for the supported DSNs and driver specific options:
+[MySQL](docs/drivers/mysql.md) · [PostgreSQL](docs/drivers/pgsql.md) ·
+[SQLite](docs/drivers/sqlite.md) · [SQL Server](docs/drivers/sqlsrv.md). You can also wire the
+driver and builder up by hand if you prefer (each driver page shows how).
+
+Then write and run queries:
 
 ```php
 use function \ArekX\PQL\Sql\{select, all, equal, column, value};
 
-// ... driver and builder initialization left out for brevity.
-
-/** @var \ArekX\PQL\Contracts\Driver $driver */
-/** @var \ArekX\PQL\Contracts\QueryBuilder $builder */
-
-$runner = QueryRunner::create($driver, $builder);
-
-// Fetching all results
-
-$query = select('*') // or Select::create()->columns('*') if you do not want to use functions.
+// Simple select
+$query = select('*')
     ->from('user')
     ->where(all(['is_active' => 1]));
 
-// Built query equals to: SELECT * FROM `user` WHERE `is_active` = 1;
-$runner->fetchAll($query); // Returns all data for user table
+// SELECT * FROM `user` WHERE `is_active` = 1
+$runner->fetchAll($query);
 
 
-// Complex select query:
+// Complex select with a sub-query
 $query = select('*')
     ->from(['u' => 'user'])
     ->innerJoin(['r' => 'user_role'], 'u.role_id = r.id')
     ->where(['all', [
-         'u.is_active' => 1,
-         'r.id' => select('role_id')
-                    ->from('application_roles')
-                    ->where(equal(column('application_id'), value(2)))
-      ]);
-/* 
-Built query equals to:
-SELECT 
-    * 
+        'u.is_active' => 1,
+        'r.id' => select('role_id')
+            ->from('application_roles')
+            ->where(equal(column('application_id'), value(2)))
+    ]]);
+/*
+SELECT *
 FROM `user` AS `u`
 INNER JOIN `user_role` AS `r` ON u.role_id = r.id
 WHERE
- `u`.`is_active` = 1
- AND `r`.`id` IN (
+  `u`.`is_active` = 1
+  AND `r`.`id` IN (
     SELECT `role_id` FROM `application_roles` WHERE `application_id` = 2
- )
+  )
 */
-$runner->fetchAll($query); // Returns all data for this query
-
+$runner->fetchAll($query);
 ```
 
 ## Documentation

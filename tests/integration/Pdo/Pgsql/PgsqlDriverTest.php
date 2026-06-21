@@ -1,6 +1,7 @@
 <?php
+
 /**
- * Copyright 2021 Aleksandar Panic
+ * Copyright 2026 Aleksandar Panic
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -122,8 +123,8 @@ class PgsqlDriverTest extends PgsqlTestCase
 
         $countBefore = $runner->fetch($query)->scalar();
 
-        $driver->beginTransaction()->execute(function() use ($runner) {
-           $runner->run(insert("users", [
+        $driver->beginTransaction()->execute(function () use ($runner) {
+            $runner->run(insert("users", [
                 'name' => 'Record 1',
                 'username' => 'user',
                 'password' => 'pass',
@@ -239,8 +240,8 @@ class PgsqlDriverTest extends PgsqlTestCase
 
         $this->expectException(\Exception::class);
 
-        $driver->beginTransaction()->execute(function() {
-           throw new \Exception('Exception test.');
+        $driver->beginTransaction()->execute(function () {
+            throw new \Exception('Exception test.');
         });
     }
 

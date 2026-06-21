@@ -1,6 +1,7 @@
 <?php
+
 /**
- * Copyright 2021 Aleksandar Panic
+ * Copyright 2026 Aleksandar Panic
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -117,7 +118,7 @@ class SelectBuilder extends QueryPartBuilder
     protected function buildOrderBy(StructuredQuery|array $orders, CommonQueryBuilderState $state): string
     {
         if ($orders instanceof StructuredQuery) {
-            return 'ORDER BY '. $this->buildQuery($orders, $state);
+            return 'ORDER BY ' . $this->buildQuery($orders, $state);
         }
 
         $result = [];

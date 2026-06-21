@@ -1,6 +1,7 @@
 <?php
+
 /**
- * Copyright 2021 Aleksandar Panic
+ * Copyright 2026 Aleksandar Panic
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,11 +45,11 @@ class QueryPartBuilderTest extends Unit
     protected function createBuilder(array $override = [])
     {
         return $this->make(QueryPartBuilderTester::class, $override + [
-                'getInitialParts' => fn() => [],
-                'getLastParts' => fn() => [],
-                'getPartBuilders' => fn() => [],
-                'getRequiredParts' => fn() => [],
-            ]);
+            'getInitialParts' => fn() => [],
+            'getLastParts' => fn() => [],
+            'getPartBuilders' => fn() => [],
+            'getRequiredParts' => fn() => [],
+        ]);
     }
 
     public function testPartsBuilder()
@@ -129,5 +130,4 @@ class QueryPartBuilderTest extends Unit
         $this->expectException(\Exception::class);
         $builder->build($query, $state);
     }
-
 }

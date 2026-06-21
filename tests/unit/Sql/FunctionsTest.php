@@ -1,6 +1,7 @@
 <?php
+
 /**
- * Copyright 2021 Aleksandar Panic
+ * Copyright 2026 Aleksandar Panic
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +28,8 @@ use ArekX\PQL\Sql\Statement\Call;
 use ArekX\PQL\Sql\Statement\CaseWhen;
 use ArekX\PQL\Sql\Statement\Method;
 use PHPUnit\Framework\TestCase;
-use function ArekX\PQL\Sql\{all,
+use function ArekX\PQL\Sql\{
+    all,
     andWith,
     any,
     asFilters,
@@ -283,7 +285,8 @@ class FunctionsTest extends TestCase
             ['', equal(value('c'), value('d'))],
             [null, equal(value('e'), value('f'))],
         ]))->toBe([
-            'and', ['=', ['value', 'a'], ['value', 'b']]
+            'and',
+            ['=', ['value', 'a'], ['value', 'b']]
         ]);
 
         expect(asFilters([

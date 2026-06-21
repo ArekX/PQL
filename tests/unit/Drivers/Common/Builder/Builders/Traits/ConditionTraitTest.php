@@ -1,6 +1,7 @@
 <?php
+
 /**
- * Copyright 2021 Aleksandar Panic
+ * Copyright 2026 Aleksandar Panic
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -79,7 +80,7 @@ class ConditionTraitTest extends Unit
 
     public function testBuildAnd()
     {
-        $this->assertCondition(['and', ['value', 1], ['value', 2] ], '(:t0) AND (:t1)', [
+        $this->assertCondition(['and', ['value', 1], ['value', 2]], '(:t0) AND (:t1)', [
             ':t0' => [1, null],
             ':t1' => [2, null]
         ]);
@@ -87,7 +88,7 @@ class ConditionTraitTest extends Unit
 
     public function testBuildOr()
     {
-        $this->assertCondition(['or', ['value', 1], ['value', 2], ['column', 'col'] ], '(:t0) OR (:t1) OR ("col")', [
+        $this->assertCondition(['or', ['value', 1], ['value', 2], ['column', 'col']], '(:t0) OR (:t1) OR ("col")', [
             ':t0' => [1, null],
             ':t1' => [2, null]
         ]);
@@ -182,7 +183,7 @@ class ConditionTraitTest extends Unit
             ':t1' => [22, null]
         ]);
 
-        $this->assertCondition(['between', ['value', 1], ['value', -5],Raw::from('DATE()')], ':t0 BETWEEN :t1 AND DATE()', [
+        $this->assertCondition(['between', ['value', 1], ['value', -5], Raw::from('DATE()')], ':t0 BETWEEN :t1 AND DATE()', [
             ':t0' => [1, null],
             ':t1' => [-5, null]
         ]);

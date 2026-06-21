@@ -1,6 +1,7 @@
 <?php
+
 /**
- * Copyright 2021 Aleksandar Panic
+ * Copyright 2026 Aleksandar Panic
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,8 +35,7 @@ trait JoinTrait
     public function innerJoin(
         StructuredQuery|array|string $withSource,
         StructuredQuery|array|string|null $condition = null
-    ): static
-    {
+    ): static {
         return $this->join('inner', $withSource, $condition);
     }
 
@@ -57,8 +57,7 @@ trait JoinTrait
         string $type,
         StructuredQuery|array|string $withSource,
         StructuredQuery|array|string|null $condition = null
-    ): static
-    {
+    ): static {
         $this->append('join', [$type, $withSource, $condition]);
         return $this;
     }
@@ -76,8 +75,7 @@ trait JoinTrait
     public function leftJoin(
         StructuredQuery|array|string $withSource,
         StructuredQuery|array|string|null $condition
-    ): static
-    {
+    ): static {
         return $this->join('left', $withSource, $condition);
     }
 
@@ -94,8 +92,7 @@ trait JoinTrait
     public function rightJoin(
         StructuredQuery|array|string $withSource,
         StructuredQuery|array|string|null $condition
-    ): static
-    {
+    ): static {
         return $this->join('right', $withSource, $condition);
     }
 
@@ -112,9 +109,7 @@ trait JoinTrait
     public function fullOuterJoin(
         StructuredQuery|array|string $withSource,
         StructuredQuery|array|string|null $condition
-    ): static
-    {
+    ): static {
         return $this->join('full outer', $withSource, $condition);
     }
 }
-

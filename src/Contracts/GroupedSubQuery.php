@@ -1,6 +1,7 @@
 <?php
+
 /**
- * Copyright 2021 Aleksandar Panic
+ * Copyright 2026 Aleksandar Panic
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,6 +25,4 @@ namespace ArekX\PQL\Contracts;
  * Driver's builder will decide whether to actually
  * add the parentheses to this query.
  */
-interface GroupedSubQuery
-{
-}
+interface GroupedSubQuery {}
