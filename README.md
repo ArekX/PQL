@@ -9,12 +9,12 @@
 PHP Database Query Library
 
 This library is a database abstraction layer which abstracts the query commands (Select, Delete, Update, etc.) out from
-the drivers (MySQL, Postgres, SQL Server, etc.). Queries are defined in an eloquent way allowing you to write almost all
+the drivers (MySQL, Postgres, Microsoft SQL Server, etc.). Queries are defined in an eloquent way allowing you to write almost all
 kinds of queries without having to rely on passing raw query data.
 
 ## Installation
 
-Installing this library is done via composer `composer install arekxv/pql` (still WIP)
+Installing this library is done via composer `composer install arekxv/pql`
 
 ## Usage
 
@@ -33,7 +33,7 @@ $runner = PdoDatabase::resolve([
 
 See the driver pages for the supported DSNs and driver specific options:
 [MySQL](docs/drivers/mysql.md) · [PostgreSQL](docs/drivers/pgsql.md) ·
-[SQLite](docs/drivers/sqlite.md) · [SQL Server](docs/drivers/sqlsrv.md). You can also wire the
+[SQLite](docs/drivers/sqlite.md) · [Microsoft SQL Server](docs/drivers/sqlsrv.md). You can also wire the
 driver and builder up by hand if you prefer (each driver page shows how).
 
 Then write and run queries:
