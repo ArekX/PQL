@@ -36,8 +36,10 @@
     "codecept": "vendor/bin/codecept",
     "test": "vendor/bin/codecept run",
     "test-unit": "vendor/bin/codecept run unit",
+    "test-ci": "vendor/bin/codecept run --skip-group db-server",
     "coverage": "XDEBUG_MODE=coverage vendor/bin/codecept run --coverage-html",
     "coverage-clover": "XDEBUG_MODE=coverage vendor/bin/codecept run --coverage-xml",
+    "coverage-ci-clover": "XDEBUG_MODE=coverage vendor/bin/codecept run --skip-group db-server --coverage-xml",
     "coverage-unit-clover": "XDEBUG_MODE=coverage vendor/bin/codecept run unit --coverage-xml",
     "coverage-integration-clover": "XDEBUG_MODE=coverage vendor/bin/codecept run integration --coverage-xml"
   }

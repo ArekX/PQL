@@ -19,3 +19,13 @@ services:
       POSTGRES_DB: pgsql_test
     ports:
       - "5432:5432"
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    platform: linux/amd64
+    container_name: pql-mssql-database
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "Str0ngP@ssw0rd!"
+      MSSQL_PID: "Developer"
+    ports:
+      - "1433:1433"

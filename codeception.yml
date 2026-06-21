@@ -9,6 +9,13 @@ suites:
 settings:
     shuffle: true
     lint: true
+groups:
+    # Integration tests that require an external database server. They can be
+    # excluded with: codecept run --skip-group db-server
+    db-server:
+        - tests/integration/Pdo/MySql/MySqlDriverTest.php
+        - tests/integration/Pdo/Pgsql/PgsqlDriverTest.php
+        - tests/integration/Pdo/SqlSrv/SqlSrvDriverTest.php
 paths:
     tests: tests
     output: tests/_output

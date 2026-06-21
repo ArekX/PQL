@@ -8,13 +8,13 @@ build:
         override:
           - php-scrutinizer-run
     tests-coverage:
-      services:
-        mysql: 5.7
       tests:
-        before:
-          - 'mysql -u root -e "CREATE DATABASE mysql_test"'
+        # Runs the unit tests plus the SQLite integration tests (SQLite is
+        # embedded, so it needs no service). The integration tests that require
+        # an external database server (MySQL/PostgreSQL/SQL Server) are excluded
+        # via the "db-server" group since Scrutinizer cannot provide all of them.
         override:
-          - command: composer coverage-clover
+          - command: composer coverage-ci-clover
             coverage:
               file: tests/_output/coverage.xml
               format: clover
