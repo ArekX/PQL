@@ -22,6 +22,8 @@ First you need to decide on which driver you will use. Following drivers are sup
 
 * [MySQL](docs/drivers/mysql.md)
 * [PostgreSQL](docs/drivers/pgsql.md)
+* [SQLite](docs/drivers/sqlite.md)
+* [SQL Server](docs/drivers/sqlsrv.md)
 
 After you decide on the driver, writing a query is as simple as:
 

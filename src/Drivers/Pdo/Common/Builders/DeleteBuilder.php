@@ -28,8 +28,7 @@ use ArekX\PQL\Sql\Query\Delete;
  * Represents a query builder for building a DELETE query.
  *
  * LIMIT/OFFSET are only emitted when the dialect supports them on a DELETE
- * statement (see CommonQueryBuilderState::supportsModifyLimit()). MySQL allows
- * them; PostgreSQL does not.
+ * statement (see CommonQueryBuilderState::supportsModifyLimit()).
  *
  * @see Delete
  */

@@ -31,8 +31,7 @@ use ArekX\PQL\Sql\Query\Update;
  * Represents a query builder for building UPDATE query.
  *
  * LIMIT/OFFSET are only emitted when the dialect supports them on an UPDATE
- * statement (see CommonQueryBuilderState::supportsModifyLimit()). MySQL allows
- * them; PostgreSQL does not.
+ * statement (see CommonQueryBuilderState::supportsModifyLimit()).
  *
  * @see Update
  */

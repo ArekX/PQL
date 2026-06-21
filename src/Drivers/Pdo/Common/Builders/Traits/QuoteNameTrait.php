@@ -22,26 +22,27 @@ use ArekX\PQL\Drivers\Pdo\Common\CommonQueryBuilderState;
 trait QuoteNameTrait
 {
     /**
-     * Quotes a name using the quote character configured on the state.
+     * Quotes a name using the quote characters configured on the state.
      *
-     * The quote character is dialect specific (backticks for MySQL, double
-     * quotes for PostgreSQL) and is read from the query builder state.
+     * The quote characters are dialect specific and are read from the query
+     * builder state.
      *
-     * If a name already contains the quote character this method will
+     * If a name already contains a quote character this method will
      * not perform any transformations.
      *
      * @param string $name Name to be quoted.
-     * @param CommonQueryBuilderState $state Query builder state holding the quote character.
+     * @param CommonQueryBuilderState $state Query builder state holding the quote characters.
      * @return string
      */
     protected function quoteName(string $name, CommonQueryBuilderState $state): string
     {
-        $quote = $state->getQuoteCharacter();
+        $opening = $state->getQuoteCharacter();
+        $closing = $state->getClosingQuoteCharacter();
 
-        if (str_contains($name, $quote)) {
+        if (str_contains($name, $opening) || str_contains($name, $closing)) {
             return $name;
         }
 
-        return preg_replace('/([a-zA-Z_]\w*)/', $quote . '$1' . $quote, $name);
+        return preg_replace('/([a-zA-Z_]\w*)/', $opening . '$1' . $closing, $name);
     }
 }

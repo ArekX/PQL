@@ -127,17 +127,23 @@ class CommonQueryBuilderState implements QueryBuilderState
     }
 
     /**
-     * Set the character used to quote identifiers (table and column names).
+     * Set the characters used to quote identifiers (table and column names).
      *
-     * @param string $quoteCharacter Quote character, e.g. backtick for MySQL or double quote for PostgreSQL.
+     * Dialects that quote symmetrically use the same character on both sides, so
+     * the closing character defaults to the opening one. Dialects that quote
+     * asymmetrically can supply a different closing character.
+     *
+     * @param string $opening Opening quote character.
+     * @param string|null $closing Closing quote character. Defaults to the opening one.
      */
-    public function setQuoteCharacter(string $quoteCharacter): void
+    public function setQuoteCharacter(string $opening, ?string $closing = null): void
     {
-        $this->set('quoteCharacter', $quoteCharacter);
+        $this->set('quoteCharacter', $opening);
+        $this->set('closingQuoteCharacter', $closing ?? $opening);
     }
 
     /**
-     * Return the character used to quote identifiers.
+     * Return the opening character used to quote identifiers.
      *
      * Defaults to a double quote which is the SQL standard identifier quote.
      *
@@ -149,9 +155,22 @@ class CommonQueryBuilderState implements QueryBuilderState
     }
 
     /**
+     * Return the closing character used to quote identifiers.
+     *
+     * Defaults to the opening quote character for dialects that quote
+     * symmetrically.
+     *
+     * @return string
+     */
+    public function getClosingQuoteCharacter(): string
+    {
+        return $this->get('closingQuoteCharacter', $this->getQuoteCharacter());
+    }
+
+    /**
      * Set whether the dialect supports LIMIT/OFFSET on UPDATE and DELETE statements.
      *
-     * @param bool $supports True for dialects like MySQL, false for dialects like PostgreSQL.
+     * @param bool $supports Whether the dialect allows LIMIT/OFFSET on UPDATE and DELETE statements.
      */
     public function setSupportsModifyLimit(bool $supports): void
     {

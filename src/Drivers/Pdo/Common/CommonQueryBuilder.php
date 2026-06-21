@@ -60,6 +60,14 @@ class CommonQueryBuilder extends SqlQueryBuilderFactory
     protected const QUOTE_CHARACTER = '"';
 
     /**
+     * Closing character used to quote identifiers, for dialects that quote
+     * asymmetrically.
+     *
+     * Null means the closing character is the same as the opening one.
+     */
+    protected const CLOSING_QUOTE_CHARACTER = null;
+
+    /**
      * Whether the dialect supports LIMIT/OFFSET on UPDATE and DELETE statements.
      *
      * Defaults to false which is the SQL standard behavior. Dialect specific
@@ -93,7 +101,7 @@ class CommonQueryBuilder extends SqlQueryBuilderFactory
 
         $state->setParamsBuilder(SqlParamBuilder::create());
         $state->setParentBuilder($this);
-        $state->setQuoteCharacter(static::QUOTE_CHARACTER);
+        $state->setQuoteCharacter(static::QUOTE_CHARACTER, static::CLOSING_QUOTE_CHARACTER);
         $state->setSupportsModifyLimit(static::SUPPORTS_MODIFY_LIMIT);
 
         return $state;
