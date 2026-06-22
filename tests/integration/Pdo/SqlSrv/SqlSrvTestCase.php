@@ -55,27 +55,31 @@ class SqlSrvTestCase extends \Codeception\Test\Unit
         return require $path;
     }
 
-    protected function createDriver(): SqlSrvDriver
+    protected function createDriver(array $config = []): SqlSrvDriver
     {
+        // The official sqlsrv driver returns numeric columns as strings by
+        // default; this makes it return native numeric types so results match
+        // across transports (FreeTDS already returns native types). The constant
+        // only exists when the sqlsrv driver is loaded. Any options passed in are
+        // merged on top.
+        $options = [];
+        if (defined('PDO::SQLSRV_ATTR_FETCHES_NUMERIC_TYPE')) {
+            $options[constant('PDO::SQLSRV_ATTR_FETCHES_NUMERIC_TYPE')] = true;
+        }
+
+        if (!empty($config['options'])) {
+            $options = $config['options'] + $options;
+        }
+
         // The connection can be overridden via environment variables so the same
         // tests can run against either the FreeTDS (dblib) or the official
         // Microsoft (sqlsrv) PDO driver, e.g.:
         //   PQL_MSSQL_DSN='sqlsrv:Server=127.0.0.1,1433;Database=master;TrustServerCertificate=1'
-        $driver = SqlSrvDriver::create([
+        return SqlSrvDriver::create(array_merge([
             'dsn' => getenv('PQL_MSSQL_DSN') ?: 'dblib:host=127.0.0.1:1433;dbname=master',
             'username' => getenv('PQL_MSSQL_USERNAME') ?: 'sa',
             'password' => getenv('PQL_MSSQL_PASSWORD') ?: 'Str0ngP@ssw0rd!',
-        ]);
-
-        // The official sqlsrv driver returns numeric columns as strings by
-        // default; this makes it return native numeric types so results match
-        // across transports (FreeTDS already returns native types). The constant
-        // only exists when the sqlsrv driver is loaded.
-        if (defined('PDO::SQLSRV_ATTR_FETCHES_NUMERIC_TYPE')) {
-            $driver->options = [constant('PDO::SQLSRV_ATTR_FETCHES_NUMERIC_TYPE') => true];
-        }
-
-        return $driver;
+        ], $config, ['options' => $options]));
     }
 
     protected function createQueryBuilder(): SqlSrvQueryBuilder

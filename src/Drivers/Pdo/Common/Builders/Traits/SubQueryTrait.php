@@ -42,12 +42,17 @@ trait SubQueryTrait
     /**
      * Builds a structured query using parent builder from state.
      *
+     * The current state is passed through so the sub query shares the outer
+     * query's parameter builder. Without this the sub query would get a fresh
+     * parameter builder, its placeholders would restart at :t0 and collide with
+     * the outer query, and its bound values would be lost.
+     *
      * @param StructuredQuery $item Query to be built
      * @param CommonQueryBuilderState $state State to be used
      * @return string
      */
     protected function buildQuery(StructuredQuery $item, CommonQueryBuilderState $state): string
     {
-        return $state->getParentBuilder()->build($item)->getQuery();
+        return $state->getParentBuilder()->build($item, $state)->getQuery();
     }
 }

@@ -31,6 +31,8 @@ use function ArekX\PQL\Sql\value;
 
 class PgsqlDriverTest extends PgsqlTestCase
 {
+    use \integration\Pdo\SecurityFixesTrait;
+
     public function fixtures(): array
     {
         return [

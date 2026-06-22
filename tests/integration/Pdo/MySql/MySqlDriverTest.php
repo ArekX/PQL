@@ -31,6 +31,8 @@ use function ArekX\PQL\Sql\value;
 
 class MySqlDriverTest extends MySqlTestCase
 {
+    use \integration\Pdo\SecurityFixesTrait;
+
     public function fixtures(): array
     {
         return [

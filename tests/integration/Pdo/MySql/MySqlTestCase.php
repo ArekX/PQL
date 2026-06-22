@@ -51,13 +51,13 @@ class MySqlTestCase extends \Codeception\Test\Unit
         return require $path;
     }
 
-    protected function createDriver(): MySqlDriver
+    protected function createDriver(array $config = []): MySqlDriver
     {
-        return MySqlDriver::create([
+        return MySqlDriver::create(array_merge([
             'dsn' => 'mysql:host=127.0.0.1;dbname=mysql_test',
             'username' => 'root',
             'password' => '',
-        ]);
+        ], $config));
     }
 
     protected function createQueryBuilder(): MySqlQueryBuilder

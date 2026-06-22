@@ -59,11 +59,11 @@ class SqliteTestCase extends \Codeception\Test\Unit
         return require $path;
     }
 
-    protected function createDriver(): SqliteDriver
+    protected function createDriver(array $config = []): SqliteDriver
     {
-        return SqliteDriver::create([
+        return SqliteDriver::create(array_merge([
             'dsn' => 'sqlite:' . $this->databasePath(),
-        ]);
+        ], $config));
     }
 
     protected function createQueryBuilder(): SqliteQueryBuilder

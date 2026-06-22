@@ -3,9 +3,17 @@
 This page explains which parts of a query are safe for user input and which are not. Getting
 this right is the difference between a safe query and an SQL injection, so it is worth a read.
 
-The rule of thumb is simple: **values are escaped, identifiers are not.** Values are passed to
-the database as bound parameters, so they are safe for user input. Identifiers like table and
-column names are written into the query as is, so they should never come from user input.
+The rule of thumb is simple: values are passed to the database as bound parameters, so they are
+safe for user input. Table and column names are quoted before they go into the query, so a user
+can no longer use them to inject SQL.
+
+Quoting keeps the query safe, but it does not pick which table or column a name points to. A user
+could still ask for a column they should not see, such as sorting by `password`. So when a name
+comes from the user, you should still check it against a list of names you allow (shown below).
+
+A few parts of a query are written in as is, with no quoting. These must never come from the
+user: the query string of a `raw()` query, join conditions you pass as a plain string, and the
+function name in `method()` and `call()`.
 
 ## Safe for user input
 
@@ -26,19 +34,20 @@ $name = $_GET['name'] ?? '';
 select('*')->from('users')->where(search(column('name'), $name));
 ```
 
-## Not safe for user input
+## Quoted, but still check the name
 
-These are written into the query without escaping, so they must never contain user input:
+These are quoted before they go into the query, so a user-supplied name cannot inject SQL. But it
+can still point at any table or column, so check it against a list of allowed names when it comes
+from the user:
 
 * Table and source names (`from()`, `into()`, `to()`).
 * Column names (`columns()`, `column()`, and the **keys** in `all()`/`any()` and in `update()`'s
   data).
-* Raw join conditions passed as strings.
-* The query string of a `raw()` query.
+* The column and the direction in `orderBy()`. The direction can only be `asc` or `desc` (or
+  `SORT_ASC`/`SORT_DESC`); anything else throws an error.
 
 If you need to use a value coming from the user as a column or table name (for example a sort
-column chosen in a UI), do not pass it through directly. Validate it against a list of allowed
-values first:
+column chosen in a UI), check it against a list of allowed values first:
 
 ```php
 $allowed = ['name', 'created_at', 'id'];
@@ -46,6 +55,15 @@ $sortColumn = in_array($_GET['sort'] ?? '', $allowed, true) ? $_GET['sort'] : 'i
 
 select('*')->from('users')->orderBy([$sortColumn => 'asc']);
 ```
+
+## Never safe for user input
+
+These go into the query exactly as you write them, with no quoting, so they must never contain
+user input:
+
+* The query string of a `raw()` query (the **params** are safe, see below).
+* Join conditions you pass as a plain string.
+* The function name in `method()` and `call()`.
 
 ## Raw queries
 
@@ -65,5 +83,7 @@ raw('SELECT * FROM users WHERE name = :name', [
 raw('SELECT * FROM users WHERE name = ' . $userName);
 ```
 
-When in doubt, treat anything that selects *what* to query (tables, columns) as unsafe, and
-anything that is *data* as safe once it goes through a value or a parameter.
+When in doubt: data is safe once it goes through a value or a parameter. Table and column names
+are quoted, so they cannot inject SQL, but still check them against a list of allowed names when
+they come from the user. And the parts in the "never safe" list above must not contain user input
+at all.

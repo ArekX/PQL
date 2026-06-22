@@ -55,10 +55,71 @@ class QuoteNameTraitTest extends Unit
         expect($tester->quote('item1.item_2.item3'))->toBe('"item1"."item_2"."item3"');
     }
 
-    public function testDoNothingIfDoubleQuotesArePresent()
+    public function testEscapesClosingQuoteByDoubling()
     {
         $tester = new QuoteTester();
 
-        expect($tester->quote('item1.item2."item3"'))->toBe('item1.item2."item3"');
+        // A double quote inside a default-dialect identifier is escaped, not passed through.
+        expect($tester->quote('it"em'))->toBe('"it""em"');
+    }
+
+    public function testEscapesDialectClosingQuoteByDoubling()
+    {
+        $tester = new QuoteTester();
+
+        $state = CommonQueryBuilderState::create();
+        $state->setQuoteCharacter('`');
+
+        expect($tester->quote('it`em', $state))->toBe('`it``em`');
+    }
+
+    public function testEscapesAsymmetricClosingQuoteByDoubling()
+    {
+        $tester = new QuoteTester();
+
+        // SQL Server style brackets: only the closing bracket needs escaping.
+        $state = CommonQueryBuilderState::create();
+        $state->setQuoteCharacter('[', ']');
+
+        expect($tester->quote('a]b', $state))->toBe('[a]]b]');
+    }
+
+    public function testPreservesStar()
+    {
+        $tester = new QuoteTester();
+
+        expect($tester->quote('*'))->toBe('*');
+        expect($tester->quote('table.*'))->toBe('"table".*');
+    }
+
+    public function testTrimsSurroundingWhitespacePerSegment()
+    {
+        $tester = new QuoteTester();
+
+        expect($tester->quote(' item1 . item2 '))->toBe('"item1"."item2"');
+    }
+
+    public function testInjectionPayloadBecomesInertIdentifier()
+    {
+        $tester = new QuoteTester();
+
+        // Structural tokens cannot survive: the whole thing is one quoted identifier.
+        expect($tester->quote('id) OR (1=1'))->toBe('"id) OR (1=1"');
+    }
+
+    public function testRejectsEmptySegment()
+    {
+        $tester = new QuoteTester();
+
+        $this->expectException(\InvalidArgumentException::class);
+        $tester->quote('item1..item2');
+    }
+
+    public function testRejectsControlCharacters()
+    {
+        $tester = new QuoteTester();
+
+        $this->expectException(\InvalidArgumentException::class);
+        $tester->quote("item\x00");
     }
 }

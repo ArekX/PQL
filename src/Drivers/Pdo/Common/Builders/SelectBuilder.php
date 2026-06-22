@@ -123,14 +123,39 @@ class SelectBuilder extends QueryPartBuilder
 
         $result = [];
         foreach ($orders as $by => $order) {
-            if (!is_string($order)) {
-                $order = $order === SORT_ASC ? 'asc' : 'desc';
-            }
-
-            $result[] = $this->quoteName($by, $state) . ' ' . strtoupper($order);
+            $result[] = $this->quoteName($by, $state) . ' ' . $this->normalizeOrderDirection($order);
         }
 
         return 'ORDER BY ' . implode(', ', $result);
+    }
+
+    /**
+     * Normalize an ORDER BY direction to an allow-listed `ASC`/`DESC` keyword.
+     *
+     * The direction is a structural SQL token, not a bound value, so it can
+     * never be concatenated raw. Integer `SORT_ASC`/`SORT_DESC` constants and
+     * the case-insensitive strings `asc`/`desc` are the only accepted inputs;
+     * anything else is rejected rather than passed through.
+     *
+     * @param mixed $order Direction as a SORT_* constant or an `asc`/`desc` string.
+     * @return string The keyword `ASC` or `DESC`.
+     * @throws \InvalidArgumentException If the direction is not a recognized value.
+     */
+    protected function normalizeOrderDirection(mixed $order): string
+    {
+        if (!is_string($order)) {
+            return $order === SORT_DESC ? 'DESC' : 'ASC';
+        }
+
+        $normalized = trim(strtolower($order));
+
+        if ($normalized !== 'asc' && $normalized !== 'desc') {
+            throw new \InvalidArgumentException(
+                'ORDER BY direction must be "asc" or "desc", got: ' . var_export($order, true)
+            );
+        }
+
+        return strtoupper($normalized);
     }
 
     /**

@@ -209,6 +209,19 @@ class ConditionTraitTest extends Unit
         $this->assertCondition(['like', ['column', 'name'], Raw::from('QUERY')], '"name" LIKE QUERY');
     }
 
+    public function testBuildLikeWithEscapeCharacter()
+    {
+        $this->assertCondition(['like', ['column', 'name'], ['value', '%100~%%'], '~'], '"name" LIKE :t0 ESCAPE \'~\'', [
+            ':t0' => ['%100~%%', null],
+        ]);
+    }
+
+    public function testBuildLikeRejectsUnsafeEscapeCharacter()
+    {
+        $this->expectException(\UnexpectedValueException::class);
+        $this->assertCondition(['like', ['column', 'name'], ['value', '%x%'], "' OR '1'='1"]);
+    }
+
     public function testBuildEquals()
     {
         $this->assertCondition(['=', ['column', 'name'], ['value', 'test']], '"name" = :t0', [

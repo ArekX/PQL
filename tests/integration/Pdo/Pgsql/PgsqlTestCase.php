@@ -74,13 +74,13 @@ class PgsqlTestCase extends \Codeception\Test\Unit
         return require $path;
     }
 
-    protected function createDriver(): PgsqlDriver
+    protected function createDriver(array $config = []): PgsqlDriver
     {
-        return PgsqlDriver::create([
+        return PgsqlDriver::create(array_merge([
             'dsn' => 'pgsql:host=127.0.0.1;port=5432;dbname=pgsql_test',
             'username' => 'postgres',
             'password' => 'postgres',
-        ]);
+        ], $config));
     }
 
     protected function createQueryBuilder(): PgsqlQueryBuilder

@@ -40,6 +40,7 @@ use function ArekX\PQL\Sql\{
     compare,
     delete,
     equal,
+    escapeLike,
     exists,
     insert,
     method,
@@ -260,8 +261,29 @@ class FunctionsTest extends TestCase
         ))->toBe([
             'like',
             ['value', 1],
-            ['value', '%value%']
+            ['value', '%value%'],
+            '~'
         ]);
+    }
+
+    public function testSearchEscapesWildcards()
+    {
+        // The user's own % and _ are escaped so they match literally, while the
+        // surrounding % stay active. The escape character is passed along.
+        expect(search(
+            ['column', 'name'],
+            '100%_x'
+        ))->toBe([
+            'like',
+            ['column', 'name'],
+            ['value', '%100~%~_x%'],
+            '~'
+        ]);
+    }
+
+    public function testEscapeLike()
+    {
+        expect(escapeLike('a%b_c~d'))->toBe('a~%b~_c~~d');
     }
 
     public function testBetween()

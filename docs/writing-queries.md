@@ -102,12 +102,16 @@ select('*')->from('users')->join('cross', 'logs');
 ### Order by
 
 `orderBy()` accepts an associative array where the key is the column and the value is the
-direction (`asc`/`desc` or `SORT_ASC`/`SORT_DESC`):
+direction (`asc`/`desc`, case-insensitive, or `SORT_ASC`/`SORT_DESC`):
 
 ```php
 select('*')->from('users')->orderBy(['name' => 'asc', 'id' => 'desc']);
 // SELECT * FROM `users` ORDER BY `name` ASC, `id` DESC
 ```
+
+The column is quoted like any other name. The direction can only be one of the values above;
+anything else throws an error instead of going into the query. If the sort column comes from the
+user, read [Security and User Input](security.md) first.
 
 ### Group by and having
 
@@ -171,8 +175,8 @@ update('users', ['is_active' => 0], all(['id' => 5]));
 
 You can also build it up with method chaining. `to()` sets the destination, `set()` sets the
 data and `where()` (along with `andWhere()`/`orWhere()`) sets the condition. The keys in the
-data are not escaped, so they should not contain user input, but the values are escaped and
-can be user input.
+data are column names. They are quoted, but if they come from the user you should still check
+them (see [Security and User Input](security.md)). The values are safe for user input.
 
 ```php
 update('users')
@@ -242,7 +246,9 @@ namespace.
 
 The two basic building blocks are `value()` and `column()`. `value()` wraps a value so it is
 properly parametrized and escaped, which means it is safe for user input. `column()`
-represents a column name or a `table.column` name and is **not** safe for user input:
+represents a column name or a `table.column` name. It is quoted, so it cannot inject SQL, but you
+should still check it when the name comes from the user (see
+[Security and User Input](security.md)):
 
 ```php
 use function \ArekX\PQL\Sql\{value, column};
@@ -255,7 +261,8 @@ column('users.id'); // a column reference
 
 `all()` and `any()` accept an associative array where the key is the column and the value is
 a value to compare against. `all()` joins the conditions with AND and `any()` joins them with
-OR. The keys are not escaped (so no user input there), but the values are properly escaped:
+OR. The keys are column names (quoted, but check them if they come from the user), and the
+values are safe for user input:
 
 ```php
 use function \ArekX\PQL\Sql\{all, any};
@@ -308,15 +315,20 @@ between(column('age'), value(18), value(65));
 
 ### search (LIKE)
 
-`search()` builds a LIKE expression and wraps the value in `%...%` for you. The value is
-properly escaped:
+`search()` builds a LIKE expression and wraps the value in `%...%` for you:
 
 ```php
 use function \ArekX\PQL\Sql\{search, column};
 
 search(column('name'), 'john');
-// `name` LIKE '%john%'
+// `name` LIKE :t0 ESCAPE '~'   (with :t0 bound to '%john%')
 ```
+
+The value is bound as a parameter, so it is safe for user input. On top of that, any `%` or `_`
+the user typed are escaped so they are matched as plain characters instead of acting as
+wildcards. For example searching for `100%` matches the text `100%`, not anything that starts
+with `100`. If you build a LIKE by hand and want the same behaviour, run the value through
+`escapeLike()` first.
 
 ### exists
 

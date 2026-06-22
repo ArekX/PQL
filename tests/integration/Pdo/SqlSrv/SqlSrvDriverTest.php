@@ -28,6 +28,8 @@ use function ArekX\PQL\Sql\select;
 
 class SqlSrvDriverTest extends SqlSrvTestCase
 {
+    use \integration\Pdo\SecurityFixesTrait;
+
     public function fixtures(): array
     {
         return [

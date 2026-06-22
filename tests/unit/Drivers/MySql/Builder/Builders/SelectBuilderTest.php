@@ -31,7 +31,8 @@ class SelectBuilderTest extends BuilderTestCase
         $this->assertQueryResults([
             [Select::create()->columns(['a', 'b', 'c']), 'SELECT `a`, `b`, `c`'],
             [Select::create()->columns('*'), 'SELECT *'],
-            [Select::create()->columns('1'), 'SELECT 1'],
+            [Select::create()->columns(Raw::from('1')), 'SELECT 1'],
+            [Select::create()->columns('1'), 'SELECT `1`'],
             [Select::create()->columns('name'), 'SELECT `name`'],
             [Select::create()->columns(['alias' => 'name', 'd']), 'SELECT `name` AS `alias`, `d`'],
             [Select::create()->columns(Raw::from("RAW COLUMNS")), 'SELECT RAW COLUMNS'],
@@ -129,6 +130,74 @@ class SelectBuilderTest extends BuilderTestCase
             [Select::create()->columns('*')->from('table')->orderBy(Raw::from('RAW')), 'SELECT * FROM `table` ORDER BY RAW'],
             [Select::create()->columns('*')->from('table')->orderBy(['a' => 'asc', 'b' => 'desc']), 'SELECT * FROM `table` ORDER BY `a` ASC, `b` DESC'],
             [Select::create()->columns('*')->from('table')->orderBy(['a' => SORT_ASC, 'b' => SORT_DESC]), 'SELECT * FROM `table` ORDER BY `a` ASC, `b` DESC'],
+            // Direction matching is case-insensitive.
+            [Select::create()->columns('*')->from('table')->orderBy(['a' => 'ASC', 'b' => 'Desc']), 'SELECT * FROM `table` ORDER BY `a` ASC, `b` DESC'],
+        ]);
+    }
+
+    public function testOrderByRejectsInjectedDirection()
+    {
+        $query = Select::create()->columns('*')->from('table')->orderBy(['id' => 'ASC, (SELECT password FROM users LIMIT 1)']);
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->build($query);
+    }
+
+    public function testOrderByRejectsUnknownDirection()
+    {
+        $query = Select::create()->columns('*')->from('table')->orderBy(['id' => 'ascending']);
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->build($query);
+    }
+
+    public function testSubQueryParamsShareTheOuterQueryNumbering()
+    {
+        $sub = Select::create()
+            ->columns('id')
+            ->from('roles')
+            ->where(['=', ['column', 'level'], ['value', 5]]);
+
+        $query = Select::create()
+            ->columns('*')
+            ->from('users')
+            ->where(['all', ['is_active' => 1]])
+            ->andWhere(['in', ['column', 'role_id'], $sub]);
+
+        // The outer value and the sub query value must both be bound, with
+        // different placeholder names (the sub query must not restart at :t0).
+        $this->assertQueryResults([
+            [
+                $query,
+                'SELECT * FROM `users` WHERE (`is_active` = :t0) AND (`role_id` IN (SELECT `id` FROM `roles` WHERE `level` = :t1))',
+                [
+                    ':t0' => [1, null],
+                    ':t1' => [5, null],
+                ],
+            ],
+        ]);
+    }
+
+    public function testSubQueryValueIsKeptInExists()
+    {
+        $sub = Select::create()
+            ->columns('id')
+            ->from('roles')
+            ->where(['=', ['column', 'user_id'], ['value', 7]]);
+
+        $query = Select::create()
+            ->columns('*')
+            ->from('users')
+            ->where(['exists', $sub]);
+
+        $this->assertQueryResults([
+            [
+                $query,
+                'SELECT * FROM `users` WHERE EXISTS (SELECT `id` FROM `roles` WHERE `user_id` = :t0)',
+                [
+                    ':t0' => [7, null],
+                ],
+            ],
         ]);
     }
 }

@@ -27,6 +27,8 @@ use function ArekX\PQL\Sql\select;
 
 class SqliteDriverTest extends SqliteTestCase
 {
+    use \integration\Pdo\SecurityFixesTrait;
+
     public function fixtures(): array
     {
         return [

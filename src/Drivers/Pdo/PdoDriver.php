@@ -233,11 +233,11 @@ abstract class PdoDriver implements Driver
      */
     public function configure(array $config): void
     {
-        $this->fetchMode ??= $config['fetchMode'];
-        $this->dsn ??= $config['dsn'];
-        $this->username ??= $config['username'];
-        $this->password ??= $config['password'];
-        $this->options ??= $config['options'];
+        $this->fetchMode = $config['fetchMode'] ?? $this->fetchMode;
+        $this->dsn = $config['dsn'] ?? $this->dsn;
+        $this->username = $config['username'] ?? $this->username;
+        $this->password = $config['password'] ?? $this->password;
+        $this->options = $config['options'] ?? $this->options;
 
         $middlewares = $config['middleware'] ?? [];
 

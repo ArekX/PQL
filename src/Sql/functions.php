@@ -378,20 +378,53 @@ if (!function_exists('\ArekX\PQL\Sql\between')) {
     }
 }
 
+if (!function_exists('\ArekX\PQL\Sql\escapeLike')) {
+    /**
+     * Escapes LIKE wildcards in a value.
+     *
+     * In a LIKE pattern `%` matches any number of characters and `_` matches a
+     * single one. This function escapes those (and the escape character itself)
+     * so they are matched literally instead of acting as wildcards.
+     *
+     * The same escape character must be given to the LIKE condition so the
+     * database knows how to read the pattern. `search()` does this for you.
+     *
+     * @param string $value Value to escape.
+     * @param string $escapeChar Single character used to escape the wildcards.
+     * @return string
+     * @see search()
+     */
+    function escapeLike(string $value, string $escapeChar = '~'): string
+    {
+        return str_replace(
+            [$escapeChar, '%', '_'],
+            [$escapeChar . $escapeChar, $escapeChar . '%', $escapeChar . '_'],
+            $value
+        );
+    }
+}
+
 if (!function_exists('\ArekX\PQL\Sql\search')) {
     /**
-     * Creates a LIKE operation
+     * Creates a LIKE operation that searches for the value anywhere in a column.
      *
-     * This is a helper function for ['like', expression, '%' . $value . '%']
+     * This is a helper for ['like', expression, '%' . $value . '%', escapeChar].
+     *
+     * The value is bound as a parameter, and any LIKE wildcards (`%` and `_`)
+     * inside it are escaped so they are matched literally. The surrounding `%`
+     * added here stay active so the search still matches anywhere in the value.
      *
      * @param array $what What to search on
-     * @param string $value Value to be searched. This value will be properly escaped.
+     * @param string $value Value to be searched.
      * @return array
      * @see ConditionTrait::where()
+     * @see escapeLike()
      */
     function search(array $what, string $value): array
     {
-        return ['like', $what, ['value', '%' . $value . '%']];
+        $escapeChar = '~';
+
+        return ['like', $what, ['value', '%' . escapeLike($value, $escapeChar) . '%'], $escapeChar];
     }
 }
 

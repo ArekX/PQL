@@ -56,7 +56,7 @@ trait ConditionTrait
                 'exists' => fn($condition, $state) => $this->buildUnaryCondition('EXISTS', $condition, $state),
                 'in' => fn($condition, $state) => $this->buildInCondition($condition, $state),
                 'between' => fn($condition, $state) => $this->buildBetweenCondition($condition, $state),
-                'like' => fn($condition, $state) => $this->buildBinaryCondition(' LIKE ', $condition, $state),
+                'like' => fn($condition, $state) => $this->buildLikeCondition($condition, $state),
                 '=' => fn($condition, $state) => $this->buildBinaryCondition(' = ', $condition, $state),
                 '>' => fn($condition, $state) => $this->buildBinaryCondition(' > ', $condition, $state),
                 '>=' => fn($condition, $state) => $this->buildBinaryCondition(' >= ', $condition, $state),
@@ -240,6 +240,44 @@ trait ConditionTrait
         $right = $this->buildCondition($condition[2] ?? null, $state);
 
         return $left . $operation . $right;
+    }
+
+    /**
+     * Builder for LIKE condition
+     *
+     * Builds:
+     * ```
+     * ['like', leftExpression, rightExpression]
+     * ['like', leftExpression, rightExpression, escapeChar]
+     * ```
+     *
+     * When an escape character is given it is added as an `ESCAPE 'x'` clause so
+     * the database treats escaped `%`/`_` in the pattern as literal characters.
+     * The character is validated to a single, safe character so it cannot be
+     * used to break out of the clause. `search()` sets this up automatically.
+     *
+     * @param array $condition Condition to be parsed
+     * @param CommonQueryBuilderState $state Query builder state
+     * @return string
+     * @throws Exception
+     */
+    protected function buildLikeCondition(array $condition, CommonQueryBuilderState $state): string
+    {
+        $result = $this->buildBinaryCondition(' LIKE ', $condition, $state);
+
+        $escape = $condition[3] ?? null;
+
+        if ($escape === null) {
+            return $result;
+        }
+
+        if (!is_string($escape) || mb_strlen($escape) !== 1 || in_array($escape, ["'", '"', '`', '\\'], true)) {
+            throw new UnexpectedValueException(
+                'LIKE ESCAPE must be a single character and cannot be a quote or backslash, got: ' . var_export($escape, true)
+            );
+        }
+
+        return $result . " ESCAPE '" . $escape . "'";
     }
 
     /**

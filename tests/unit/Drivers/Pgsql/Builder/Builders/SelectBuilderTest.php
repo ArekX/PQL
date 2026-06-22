@@ -31,7 +31,8 @@ class SelectBuilderTest extends BuilderTestCase
         $this->assertQueryResults([
             [Select::create()->columns(['a', 'b', 'c']), 'SELECT "a", "b", "c"'],
             [Select::create()->columns('*'), 'SELECT *'],
-            [Select::create()->columns('1'), 'SELECT 1'],
+            [Select::create()->columns(Raw::from('1')), 'SELECT 1'],
+            [Select::create()->columns('1'), 'SELECT "1"'],
             [Select::create()->columns('name'), 'SELECT "name"'],
             [Select::create()->columns(['alias' => 'name', 'd']), 'SELECT "name" AS "alias", "d"'],
             [Select::create()->columns(Raw::from("RAW COLUMNS")), 'SELECT RAW COLUMNS'],
