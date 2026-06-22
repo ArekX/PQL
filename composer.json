@@ -1,7 +1,7 @@
 {
   "name": "arekx/pql",
-  "description": "PHP Query Builder",
-  "license": "MIT",
+  "description": "A simple and highly extensible query Builder for easily building queries of any kind.",
+  "license": "Apache-2.0",
   "authors": [
     {
       "name": "Aleksandar Panic",

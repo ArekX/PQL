@@ -37,6 +37,9 @@ trait MethodStatementTrait
     /**
      * Name of the method.
      *
+     * **SQL Injection Warning**: The name is written into the query as is and is
+     * not safe for user input. Only the params are escaped.
+     *
      * @param string|StructuredQuery $name
      * @return $this
      */

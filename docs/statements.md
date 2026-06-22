@@ -25,7 +25,8 @@ $runner->run($query);
 ```
 
 Parameters are passed using the value helpers, so `value()` makes them properly escaped and
-safe for user input.
+safe for user input. The procedure name, on the other hand, is written into the query as is, so
+it must never come from the user. Treat it the same as a table or column name.
 
 ## Method
 
@@ -43,7 +44,8 @@ $query = select([
 ```
 
 Because a method is a structured query, it can be nested inside other methods, conditions or
-queries.
+queries. As with `call()`, the function name is written into the query as is and must never come
+from the user. Only the params are escaped.
 
 ## Case When
 

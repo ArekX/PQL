@@ -137,6 +137,9 @@ if (!function_exists('\ArekX\PQL\Sql\call')) {
     /**
      * Creates a CALL statement
      *
+     * **SQL Injection Warning**: The procedure name is written into the query
+     * as is and is not safe for user input. Only the params are escaped.
+     *
      * @param string $name Name of the procedure to call.
      * @param mixed ...$params Params to be passed.
      * @return Call
@@ -150,6 +153,9 @@ if (!function_exists('\ArekX\PQL\Sql\call')) {
 if (!function_exists('\ArekX\PQL\Sql\method')) {
     /**
      * Creates a method statement
+     *
+     * **SQL Injection Warning**: The function name is written into the query as
+     * is and is not safe for user input. Only the params are escaped.
      *
      * @param string $name Name of the procedure to call.
      * @param mixed ...$params Params to be passed.

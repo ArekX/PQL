@@ -27,11 +27,14 @@ use ArekX\PQL\Drivers\Pdo\PdoDriver;
 class MySqlDriver extends PdoDriver
 {
     /**
-     * Whether to emulate prepare statement.
+     * Whether to emulate prepared statements.
      *
-     * @var bool
+     * Null (the default) leaves the PDO driver on its own default, which for
+     * MySQL is emulation on. Set it to true or false to force that setting.
+     *
+     * @var bool|null
      */
-    public bool $emulatePrepare = false;
+    public ?bool $emulatePrepare = null;
 
     /**
      * What character set to use during the connection.
@@ -47,7 +50,10 @@ class MySqlDriver extends PdoDriver
     {
         $instance = new \PDO($this->dsn, $this->username, $this->password, $this->options);
 
-        if ($this->emulatePrepare) {
+        // Only apply when explicitly set. Comparing against null (instead of a
+        // truthy check) is what lets emulatePrepare = false actually disable
+        // emulation; leaving it null keeps PDO on its own default.
+        if ($this->emulatePrepare !== null) {
             $instance->setAttribute(\PDO::ATTR_EMULATE_PREPARES, $this->emulatePrepare);
         }
 

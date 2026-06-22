@@ -55,6 +55,22 @@ class MySqlDriverTest extends MySqlTestCase
         expect((int)$driver->getPdo()->getAttribute(\PDO::ATTR_EMULATE_PREPARES))->toBe(1);
     }
 
+    public function testEmulatePrepareDefaultsToOn()
+    {
+        // MySQL's PDO driver emulates prepares by default, and our default matches it.
+        $driver = $this->createDriver();
+
+        expect((bool)$driver->getPdo()->getAttribute(\PDO::ATTR_EMULATE_PREPARES))->toBe(true);
+    }
+
+    public function testEmulatePrepareCanBeDisabled()
+    {
+        // The fix: emulatePrepare = false is now actually applied to PDO.
+        $driver = $this->createDriver(['emulatePrepare' => false]);
+
+        expect((bool)$driver->getPdo()->getAttribute(\PDO::ATTR_EMULATE_PREPARES))->toBe(false);
+    }
+
     public function testFetchFirst()
     {
         $query = select('*')->from('users');

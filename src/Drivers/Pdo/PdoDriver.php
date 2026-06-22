@@ -290,6 +290,57 @@ abstract class PdoDriver implements Driver
     }
 
     /**
+     * Hide the password when the driver is dumped with var_dump()/print_r().
+     *
+     * Visibility alone does not help here: var_dump() shows protected and
+     * private properties too, so the value is redacted explicitly.
+     *
+     * @return array
+     */
+    public function __debugInfo(): array
+    {
+        $info = get_object_vars($this);
+
+        if (array_key_exists('password', $info)) {
+            $info['password'] = '********';
+        }
+
+        return $info;
+    }
+
+    /**
+     * Keep the password out of the serialized form.
+     *
+     * The live PDO connection is dropped as well, both because it cannot be
+     * serialized and because it should be reopened from configuration rather
+     * than restored. A driver restored from this form must be reconfigured with
+     * its password before it can connect again.
+     *
+     * @return array
+     */
+    public function __serialize(): array
+    {
+        $data = get_object_vars($this);
+
+        unset($data['password'], $data['pdo']);
+
+        return $data;
+    }
+
+    /**
+     * Restore the driver from its serialized form.
+     *
+     * @param array $data
+     * @return void
+     */
+    public function __unserialize(array $data): void
+    {
+        foreach ($data as $key => $value) {
+            $this->{$key} = $value;
+        }
+    }
+
+    /**
      * Runs a specific middleware methods based on a step passed.
      *
      * See STEP_ for available steps and method signatures.

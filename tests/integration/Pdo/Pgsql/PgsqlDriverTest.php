@@ -40,6 +40,23 @@ class PgsqlDriverTest extends PgsqlTestCase
         ];
     }
 
+    public function testEmulatePrepareDefaultsToOff()
+    {
+        // PostgreSQL's PDO driver uses real prepared statements by default, and
+        // leaving emulatePrepare null keeps that default.
+        $driver = $this->createDriver();
+
+        expect((bool)$driver->getPdo()->getAttribute(\PDO::ATTR_EMULATE_PREPARES))->toBe(false);
+    }
+
+    public function testEmulatePrepareCanBeEnabled()
+    {
+        // The fix: emulatePrepare = true is now actually applied to PDO.
+        $driver = $this->createDriver(['emulatePrepare' => true]);
+
+        expect((bool)$driver->getPdo()->getAttribute(\PDO::ATTR_EMULATE_PREPARES))->toBe(true);
+    }
+
     public function testPdoInstanceCreation()
     {
         $driver = $this->createDriver();

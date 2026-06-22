@@ -61,6 +61,41 @@ class PdoDriverConfigureTest extends Unit
         expect($driver->fetchMode)->toBe(PDO::FETCH_BOTH);
     }
 
+    public function testPasswordIsRedactedFromDumps()
+    {
+        $driver = MySqlDriver::create([
+            'dsn' => 'mysql:host=127.0.0.1',
+            'username' => 'u',
+            'password' => 'sup3r-s3cret',
+        ]);
+
+        ob_start();
+        var_dump($driver);
+        $varDump = ob_get_clean();
+
+        $this->assertStringNotContainsString('sup3r-s3cret', $varDump);
+        $this->assertStringNotContainsString('sup3r-s3cret', print_r($driver, true));
+        // The other properties are still shown so the dump stays useful.
+        $this->assertStringContainsString('mysql:host=127.0.0.1', print_r($driver, true));
+    }
+
+    public function testPasswordIsNotSerialized()
+    {
+        $driver = MySqlDriver::create([
+            'dsn' => 'mysql:host=127.0.0.1',
+            'username' => 'u',
+            'password' => 'sup3r-s3cret',
+        ]);
+
+        $serialized = serialize($driver);
+
+        $this->assertStringNotContainsString('sup3r-s3cret', $serialized);
+
+        // Non-secret state still round-trips.
+        $restored = unserialize($serialized);
+        expect($restored->dsn)->toBe('mysql:host=127.0.0.1');
+    }
+
     public function testReconfigureKeepsValuesNotSuppliedAgain()
     {
         $driver = MySqlDriver::create([
