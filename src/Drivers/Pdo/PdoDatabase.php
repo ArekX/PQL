@@ -48,7 +48,11 @@ class PdoDatabase
      * PdoDatabase::$drivers['customscheme'] = [CustomDriver::class, CustomQueryBuilder::class];
      * ```
      *
-     * @var array<string, array{0: class-string<PdoDriver>, 1: class-string<QueryBuilder>}>
+     * Each value is a `[driver class name, query builder class name]` pair,
+     * where the driver class extends {@see PdoDriver} and the builder class
+     * implements {@see QueryBuilder}.
+     *
+     * @var array<string, array{0: string, 1: string}>
      */
     public static array $drivers = [
         'mysql' => [MySqlDriver::class, MySqlQueryBuilder::class],
@@ -107,7 +111,7 @@ class PdoDatabase
      * Resolve the [driver class, builder class] pair for a DSN scheme.
      *
      * @param string|null $dsn Data source name.
-     * @return array{0: class-string<PdoDriver>, 1: class-string<QueryBuilder>}
+     * @return array{0: string, 1: string} The `[driver class name, builder class name]` pair.
      */
     protected static function resolveClasses(?string $dsn): array
     {
